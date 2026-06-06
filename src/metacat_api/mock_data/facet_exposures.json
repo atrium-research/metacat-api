@@ -1,0 +1,242 @@
+[
+  {
+    "catalogue_id": "ariadne",
+    "facet": "resource-type",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "Site/monument",
+    "top_value_count": 1300000,
+    "total_count": 3170000
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "format",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "PDF",
+    "top_value_count": 1200000,
+    "total_count": 2550000
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "discipline",
+    "status": "implicit",
+    "reason": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
+    "values_count": 1,
+    "top_value": "Archaeology",
+    "top_value_count": 3142897,
+    "total_count": 3142897
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "source",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "ADS",
+    "top_value_count": 1300000,
+    "total_count": 2878000
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "source-2",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 2,
+    "top_value": "Europeana",
+    "top_value_count": 220000,
+    "total_count": 310000
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "subjects",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "coins",
+    "top_value_count": 231000,
+    "total_count": 723000
+  },
+  {
+    "catalogue_id": "clarin-vlo",
+    "facet": "resource-type",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 3,
+    "top_value": "Dataset",
+    "top_value_count": 612000,
+    "total_count": 1027000
+  },
+  {
+    "catalogue_id": "clarin-vlo",
+    "facet": "format",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "text/xml",
+    "top_value_count": 480000,
+    "total_count": 910000
+  },
+  {
+    "catalogue_id": "clarin-vlo",
+    "facet": "discipline",
+    "status": "gap",
+    "reason": "CLARIN VLO does not expose a discipline facet.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "clarin-vlo",
+    "facet": "source",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "CLARIN-D",
+    "top_value_count": 260000,
+    "total_count": 560000
+  },
+  {
+    "catalogue_id": "clarin-vlo",
+    "facet": "source-2",
+    "status": "gap",
+    "reason": "CLARIN VLO exposes no secondary source facet.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "clarin-vlo",
+    "facet": "subjects",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "Linguistics",
+    "top_value_count": 210000,
+    "total_count": 345000
+  },
+  {
+    "catalogue_id": "gotriple",
+    "facet": "resource-type",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 6,
+    "top_value": "article",
+    "top_value_count": 10400000,
+    "total_count": 20980000
+  },
+  {
+    "catalogue_id": "gotriple",
+    "facet": "format",
+    "status": "gap",
+    "reason": "Format is a documented gap in the GoTriple API.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "gotriple",
+    "facet": "discipline",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 5,
+    "top_value": "history",
+    "top_value_count": 4700000,
+    "total_count": 15100000
+  },
+  {
+    "catalogue_id": "gotriple",
+    "facet": "source",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 5,
+    "top_value": "BASE",
+    "top_value_count": 15000000,
+    "total_count": 21906000
+  },
+  {
+    "catalogue_id": "gotriple",
+    "facet": "source-2",
+    "status": "gap",
+    "reason": "GoTriple exposes no secondary source facet.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "gotriple",
+    "facet": "subjects",
+    "status": "gap",
+    "reason": "Subjects are a documented gap in the GoTriple API.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "resource-type",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "Tool",
+    "top_value_count": 1800,
+    "total_count": 5200
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "format",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "Software package",
+    "top_value_count": 1900,
+    "total_count": 4900
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "discipline",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "Digital Humanities",
+    "top_value_count": 1600,
+    "total_count": 4400
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "source",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 3,
+    "top_value": "SSH Open Marketplace curation",
+    "top_value_count": 3000,
+    "total_count": 4900
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "source-2",
+    "status": "gap",
+    "reason": "The SSH Open Marketplace exposes no secondary source facet.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "subjects",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 4,
+    "top_value": "text analysis",
+    "top_value_count": 900,
+    "total_count": 2500
+  }
+]

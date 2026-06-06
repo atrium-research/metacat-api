@@ -1,0 +1,54 @@
+[
+  {
+    "id": "ariadne",
+    "name": "ARIADNE Portal",
+    "domain": "Archaeology",
+    "url": "https://portal.ariadne-infrastructure.eu",
+    "total_resources": 3142897,
+    "vocabularies_count": 14,
+    "vocabularies_mapped": 9,
+    "licence": "CC-BY 4.0",
+    "last_harvest_at": "2026-05-03T02:14:00Z",
+    "harvest_status": "live",
+    "languages_summary": "Primarily English, with national-language records across European partners."
+  },
+  {
+    "id": "clarin-vlo",
+    "name": "CLARIN VLO",
+    "domain": "Linguistics",
+    "url": "https://vlo.clarin.eu",
+    "total_resources": 1087412,
+    "vocabularies_count": 9,
+    "vocabularies_mapped": 5,
+    "licence": "Mixed",
+    "last_harvest_at": "2026-05-03T03:40:00Z",
+    "harvest_status": "live",
+    "languages_summary": "Highly multilingual: 60+ languages, strongest in German, English and Dutch."
+  },
+  {
+    "id": "gotriple",
+    "name": "GoTriple",
+    "domain": "Social Sciences and Humanities",
+    "url": "https://gotriple.eu",
+    "total_resources": 7204551,
+    "vocabularies_count": 11,
+    "vocabularies_mapped": 6,
+    "licence": "CC-BY 4.0",
+    "last_harvest_at": "2026-05-02T23:05:00Z",
+    "harvest_status": "live",
+    "languages_summary": "Multilingual SSH corpus spanning nine European languages."
+  },
+  {
+    "id": "sshomp",
+    "name": "SSH Open Marketplace",
+    "domain": "SSH Tools and Services",
+    "url": "https://marketplace.sshopencloud.eu",
+    "total_resources": 5217,
+    "vocabularies_count": 7,
+    "vocabularies_mapped": 3,
+    "licence": "CC-BY 4.0",
+    "last_harvest_at": "2026-04-28T10:00:00Z",
+    "harvest_status": "degraded",
+    "languages_summary": "English-dominant tool and service descriptions."
+  }
+]
