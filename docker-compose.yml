@@ -1,0 +1,14 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATASOURCE: mock
+      CORS_ORIGINS: http://localhost:5173
+      LOG_LEVEL: INFO
+    volumes:
+      - ./src:/app/src:ro
+    command: >
+      uvicorn metacat_api.main:app
+      --host 0.0.0.0 --port 8000 --reload
