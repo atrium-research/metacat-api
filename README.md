@@ -51,10 +51,21 @@ The backend is selected with the `DATASOURCE` environment variable:
 | Value | Status | Description |
 |---|---|---|
 | `mock` | complete, default | Serves realistic bundled data. No external dependency. |
-| `json` | roadmap | Reads timestamped JSON snapshots from the `metacat-data` store. |
+| `json` | reads a JSON store | Reads timestamped JSON snapshots from a `metacat-data` style directory (`JSON_DATA_DIR`). |
 | `sparql` | roadmap | Queries the GraphDB triplestore on the EOSC EU Node. |
 
 The intended progression is mock, then json, then sparql. See `.env.example` for all settings.
+
+### Harvesting real data
+
+The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). A harvest script populates it with live data from the CLARIN VLO connector in the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout:
+
+```bash
+uv run --with requests --with jq python scripts/harvest_clarin.py
+DATASOURCE=json JSON_DATA_DIR=./data uv run uvicorn metacat_api.main:app --reload
+```
+
+The harvest reuses the existing VLO connector unchanged. It writes real facet counts for `clarin-vlo` and copies the bundled mock for the other three catalogues, so the API stays fully populated. The generated `data/` directory is not committed.
 
 ## Endpoints overview
 
