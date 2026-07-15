@@ -18,4 +18,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docker and docker compose setup, GitHub Actions CI running ruff and pytest.
 - Project documentation: README, this changelog, and ADR-001.
 - Working `json` datasource reading a `metacat-data` style directory, selected with `DATASOURCE=json`.
-- `scripts/harvest_clarin.py`, which reuses the CLARIN VLO connector from metacat-code to harvest live facet counts into the json store.
+- Composable harvest scripts reusing the metacat-code connectors: `harvest_clarin.py` (CLARIN VLO, live), `harvest_gotriple.py` (GoTriple, live) and `harvest_ariadne.py` (ARIADNE SPARQL, ready, needs a reachable endpoint), sharing `harvest_common.py`.

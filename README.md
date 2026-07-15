@@ -58,14 +58,21 @@ The intended progression is mock, then json, then sparql. See `.env.example` for
 
 ### Harvesting real data
 
-The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). A harvest script populates it with live data from the CLARIN VLO connector in the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout:
+The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). The harvest scripts in `scripts/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real. Catalogues that are not harvested fall back to the bundled mock, so the API stays fully populated.
 
 ```bash
 uv run --with requests --with jq python scripts/harvest_clarin.py
+uv run --with requests python scripts/harvest_gotriple.py
 DATASOURCE=json JSON_DATA_DIR=./data uv run uvicorn metacat_api.main:app --reload
 ```
 
-The harvest reuses the existing VLO connector unchanged. It writes real facet counts for `clarin-vlo` and copies the bundled mock for the other three catalogues, so the API stays fully populated. The generated `data/` directory is not committed.
+| Connector | Source | Status |
+|---|---|---|
+| `harvest_clarin.py` | CLARIN VLO REST API | Live, public |
+| `harvest_gotriple.py` | GoTriple aggregation API | Live, public |
+| `harvest_ariadne.py` | ARIADNE GraphDB (SPARQL) | Ready, needs a reachable endpoint |
+
+The ARIADNE GraphDB is behind authentication (it answers 302 to anonymous requests). The script carries the real SPARQL queries and runs once pointed at an authenticated d4science instance or the future EOSC EU Node GraphDB through `ARIADNE_SPARQL_ENDPOINT`; on an unreachable endpoint it exits without writing. The generated `data/` directory is not committed.
 
 ## Endpoints overview
 
