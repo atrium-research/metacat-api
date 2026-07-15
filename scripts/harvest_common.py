@@ -17,7 +17,6 @@ OUT_DIR = REPO_ROOT / "data"
 
 SNAPSHOT_TS = "2026-05-03T00:00:00Z"
 FACET_ORDER = ["resource-type", "format", "discipline", "source", "source-2", "subjects"]
-TOP_N = 50
 COLLECTIONS = [
     "catalogues",
     "facet_values",
@@ -57,8 +56,8 @@ def apply_catalogue(
     status_overrides: dict[str, str] | None = None,
 ) -> None:
     status_overrides = status_overrides or {}
-    capped = {
-        facet: sorted(pairs, key=lambda item: item[1], reverse=True)[:TOP_N]
+    ranked = {
+        facet: sorted(pairs, key=lambda item: item[1], reverse=True)
         for facet, pairs in harvested.items()
         if pairs
     }
@@ -68,7 +67,7 @@ def apply_catalogue(
         e for e in store["facet_exposures"] if e["catalogue_id"] != catalogue_id
     ]
 
-    for facet, pairs in capped.items():
+    for facet, pairs in ranked.items():
         for value, count in pairs:
             store["facet_values"].append(
                 {
@@ -81,7 +80,7 @@ def apply_catalogue(
             )
 
     for facet in FACET_ORDER:
-        pairs = capped.get(facet)
+        pairs = ranked.get(facet)
         if pairs:
             status = status_overrides.get(facet, "exposed")
             top_value, top_count = pairs[0]

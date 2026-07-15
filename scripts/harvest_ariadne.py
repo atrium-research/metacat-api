@@ -14,7 +14,7 @@ never fabricating data.
 import os
 import sys
 
-from harvest_common import TOP_N, Facets, apply_catalogue, load_store, report, write_store
+from harvest_common import Facets, apply_catalogue, load_store, report, write_store
 from SPARQLWrapper import JSON, SPARQLWrapper
 
 ENDPOINT = os.environ.get(
@@ -52,7 +52,7 @@ QUERIES = {
     "subjects": (
         "SELECT ?value (count(?resource) AS ?cnt) WHERE {"
         " ?resource aocat:has_derived_subject ?s . ?s skos:prefLabel ?value }"
-        f" GROUP BY ?value ORDER BY DESC(?cnt) LIMIT {TOP_N}"
+        " GROUP BY ?value ORDER BY DESC(?cnt)"
     ),
 }
 
