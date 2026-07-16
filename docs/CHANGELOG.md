@@ -19,3 +19,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Project documentation: README, this changelog, and ADR-001.
 - Working `json` datasource reading a `metacat-data` style directory, selected with `DATASOURCE=json`.
 - Composable harvest scripts reusing the metacat-code connectors: `harvest_clarin.py` (CLARIN VLO, live), `harvest_gotriple.py` (GoTriple, live) and `harvest_ariadne.py` (ARIADNE SPARQL, ready, needs a reachable endpoint), sharing `harvest_common.py`.
+- README corrections describing the real nature of `metacat-code` (query scripts) and `metacat-data` (a curated file repository, not a timestamped snapshot store).

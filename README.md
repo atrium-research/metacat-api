@@ -8,7 +8,7 @@ MetaCat is the toolset built under ATRIUM (EU Horizon Europe, Grant Agreement No
 
 ## About this repository
 
-`metacat-api` is the serving layer between the MetaCat datastore (timestamped JSON in `metacat-data` and a GraphDB triplestore modelled with the AO-Cat ontology) and the MetaCat React dashboard (`metacat-dashboard`). It exposes a versioned REST contract with auto-generated OpenAPI documentation. Five principles shape the design:
+`metacat-api` is the serving layer between the MetaCat data sources (a curated reference dataset in `metacat-data` and a GraphDB triplestore modelled with the AO-Cat ontology) and the MetaCat React dashboard (`metacat-dashboard`). It exposes a versioned REST contract with auto-generated OpenAPI documentation. Five principles shape the design:
 
 1. Describe catalogues, not resources. The smallest queryable unit is a catalogue, on a facet, at a moment in time.
 2. Gaps are information. When a catalogue does not expose a facet, the API says so explicitly, with a reason.
@@ -88,8 +88,8 @@ The ARIADNE GraphDB is behind authentication (it answers 302 to anonymous reques
 
 ## Architecture context
 
-- `metacat-code`: harvesting connectors that feed the datastore (https://github.com/atrium-research/metacat-code)
-- `metacat-data`: timestamped JSON datastore (https://github.com/atrium-research/metacat-data)
+- `metacat-code`: per-catalogue query scripts that pull facet counts from each catalogue's API or SPARQL endpoint (a CLARIN query module, ARIADNE and GoTriple notebooks). The harvest scripts in this repo reuse them. (https://github.com/atrium-research/metacat-code)
+- `metacat-data`: the datastore. A Baserow reference export (catalogues, sources, providers, resource types, formats) in JSON/XML/RDF, plus per-catalogue facet data such as the CLARIN facets. (https://github.com/atrium-research/metacat-data)
 - `metacat-dashboard`: the React dashboard consuming this API (https://github.com/atrium-research/metacat-dashboard)
 - ATRIUM: https://github.com/atrium-research
 
