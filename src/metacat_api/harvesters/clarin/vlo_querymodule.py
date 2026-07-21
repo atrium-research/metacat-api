@@ -2,13 +2,13 @@ import jq
 import requests
 
 
-def extractFacetValues(collectionDef):
-    queries = collectionDef["queries"]
+def extract_facet_values(collection_def):
+    queries = collection_def["queries"]
     print(f"Processing query collection definition containing {len(queries)} facets.")
 
-    jqQueryString = collectionDef["interpretation"]["jqQuery"]
-    jqQuery = jq.compile(jqQueryString)
-    print(f"Collecting values using JQ query: {jqQuery}")
+    jq_query_string = collection_def["interpretation"]["jqQuery"]
+    jq_query = jq.compile(jq_query_string)
+    print(f"Collecting values using JQ query: {jq_query}")
 
     result = {}
     for facet in queries:
@@ -18,6 +18,6 @@ def extractFacetValues(collectionDef):
             print(f"* Retrieving data for facet '{name}' at <{url}>")
 
             # Query facet values and counts
-            responseJson = requests.get(url).json()
-            result[name] = jqQuery.input_value(responseJson).all()
+            response_json = requests.get(url).json()
+            result[name] = jq_query.input_value(response_json).all()
     return result

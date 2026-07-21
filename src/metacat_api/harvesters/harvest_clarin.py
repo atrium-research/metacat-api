@@ -8,7 +8,7 @@ from the metacat-api root:
 import json
 from pathlib import Path
 
-from metacat_api.harvesters.clarin.vlo_querymodule import extractFacetValues
+from metacat_api.harvesters.clarin.vlo_querymodule import extract_facet_values
 from metacat_api.harvesters.harvest_common import (
     Facets,
     apply_catalogue,
@@ -27,7 +27,7 @@ def harvest() -> Facets:
     with open(Path(__file__).parent / "clarin/vlo-query-collection.json", encoding="utf-8") as handle:
         collection = json.load(handle)
 
-    raw = extractFacetValues(collection)
+    raw = extract_facet_values(collection)
     return {
         facet: [(value, count) for entry in entries for value, count in entry.items()] for facet, entries in raw.items()
     }
