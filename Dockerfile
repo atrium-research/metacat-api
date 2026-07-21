@@ -1,30 +1,30 @@
-FROM python:3.11-slim AS builder
+FROM python:3.14-slim
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
-ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
-WORKDIR /app
-
-COPY pyproject.toml uv.lock README.md ./
-COPY src ./src
-RUN uv sync --frozen --no-dev
-
-FROM python:3.11-slim AS runtime
+COPY --from=ghcr.io/astral-sh/uv:0.11.26 /uv /uvx /bin/
 
 RUN useradd --create-home --uid 1000 app
+USER app
+
+ENV PYTHONUNBUFFERED=1
+ENV UV_COMPILE_BYTE=1
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+
 WORKDIR /app
 
-COPY --from=builder /app/.venv /app/.venv
-COPY --from=builder /app/pyproject.toml /app/README.md ./
-COPY src ./src
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
 
-ENV PATH="/app/.venv/bin:$PATH" \
-    PYTHONUNBUFFERED=1 \
-    DATASOURCE=mock
+COPY --chown=app:app pyproject.toml uv.lock README.md ./
+COPY --chown=app:app src ./src
 
-USER app
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --no-dev
+
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH=/app
+
+CMD ["fastapi", "run", "/app/src/metacat_api/main.py", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 EXPOSE 8000
-
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()"
-
-CMD ["uvicorn", "metacat_api.main:app", "--host", "0.0.0.0", "--port", "8000"]

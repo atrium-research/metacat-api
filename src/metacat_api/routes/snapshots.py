@@ -1,47 +1,24 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 
-from metacat_api.datasources import get_datasource
-from metacat_api.datasources.base import Datasource
+from metacat_api.datasources import datasource_dep
 from metacat_api.models.common import ErrorResponse
 from metacat_api.models.snapshot import Snapshot
 
-router = APIRouter(prefix="/snapshots", tags=["snapshots"])
-activity_router = APIRouter(tags=["activity"])
+router = APIRouter(prefix="/snapshots", tags=["Snapshots"])
 
 
-@router.get("", response_model=list[Snapshot], summary="List snapshots")
-def list_snapshots(ds: Datasource = Depends(get_datasource)) -> list[Snapshot]:
+@router.get("", summary="List snapshots")
+def list_snapshots(ds: datasource_dep) -> list[Snapshot]:
     return sorted(ds.snapshots(), key=lambda snapshot: snapshot.taken_at)
 
 
 @router.get(
     "/latest",
-    response_model=Snapshot,
     responses={404: {"model": ErrorResponse}},
     summary="Current snapshot metadata",
 )
-def latest_snapshot(ds: Datasource = Depends(get_datasource)) -> Snapshot:
+def latest_snapshot(ds: datasource_dep) -> Snapshot:
     snapshots = ds.snapshots()
     if not snapshots:
         raise HTTPException(status_code=404, detail="No snapshot available")
     return max(snapshots, key=lambda snapshot: snapshot.taken_at)
-
-
-@activity_router.get(
-    "/activity",
-    summary="Latest harvest activity per catalogue for the Overview panel",
-)
-def activity(ds: Datasource = Depends(get_datasource)) -> list[dict]:
-    catalogues = sorted(
-        ds.catalogues(), key=lambda catalogue: catalogue.last_harvest_at, reverse=True
-    )
-    return [
-        {
-            "catalogue_id": catalogue.id,
-            "name": catalogue.name,
-            "last_harvest_at": catalogue.last_harvest_at,
-            "harvest_status": catalogue.harvest_status,
-            "total_resources": catalogue.total_resources,
-        }
-        for catalogue in catalogues
-    ]

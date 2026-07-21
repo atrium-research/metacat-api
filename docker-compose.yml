@@ -1,14 +1,23 @@
+name: metacat-api
+
 services:
   api:
     build: .
     ports:
       - "8000:8000"
     environment:
-      DATASOURCE: mock
+      JSON_DATA_DIR: /data
+      DATASOURCE_KIND: json
       CORS_ORIGINS: http://localhost:5173
       LOG_LEVEL: INFO
     volumes:
-      - ./src:/app/src:ro
-    command: >
-      uvicorn metacat_api.main:app
-      --host 0.0.0.0 --port 8000 --reload
+      - ./data:/data
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    develop:
+      watch:
+        - path: ./src
+          action: rebuild

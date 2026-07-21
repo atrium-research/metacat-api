@@ -5,8 +5,7 @@ from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
-class Datasource(StrEnum):
-    mock = "mock"
+class DatasourceKind(StrEnum):
     json = "json"
     sparql = "sparql"
 
@@ -19,12 +18,15 @@ class LogFormat(StrEnum):
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    datasource: Datasource = Datasource.mock
+    datasource_kind: DatasourceKind = DatasourceKind.json
+
     json_data_dir: str = "./data"
+
     sparql_endpoint: str = ""
-    cors_origins: Annotated[list[str], NoDecode] = Field(
-        default=["http://localhost:5173", "http://localhost:3000"]
-    )
+    ariadne_sparql_endpoint: str = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
+
+    cors_origins: Annotated[list[str], NoDecode] = Field(default=["http://localhost:5173", "http://localhost:3000"])
+
     log_level: str = "INFO"
     log_format: LogFormat = LogFormat.console
 

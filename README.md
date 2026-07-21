@@ -18,20 +18,13 @@ MetaCat is the toolset built under ATRIUM (EU Horizon Europe, Grant Agreement No
 
 ## Quickstart
 
-Requires Python 3.11+.
-
 ```bash
 git clone https://github.com/atrium-research/metacat-api.git
 cd metacat-api
 
-# with uv (recommended)
-uv sync --extra dev
-uv run uvicorn metacat_api.main:app --reload
-
-# or with pip
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
-uvicorn metacat_api.main:app --reload
+# with uv
+uv sync
+uv run fastapi run src/metacat_api/main.py --reload
 ```
 
 Then open the interactive documentation at http://localhost:8000/docs (or http://localhost:8000/redoc).
@@ -39,7 +32,7 @@ Then open the interactive documentation at http://localhost:8000/docs (or http:/
 ## Docker quickstart
 
 ```bash
-docker compose up
+docker compose up --build --force-recreate --watch
 ```
 
 Then open http://localhost:8000/docs.
@@ -50,20 +43,19 @@ The backend is selected with the `DATASOURCE` environment variable:
 
 | Value | Status | Description |
 |---|---|---|
-| `mock` | complete, default | Serves realistic bundled data. No external dependency. |
 | `json` | reads a JSON store | Reads timestamped JSON snapshots from a `metacat-data` style directory (`JSON_DATA_DIR`). |
 | `sparql` | roadmap | Queries the GraphDB triplestore on the EOSC EU Node. |
 
-The intended progression is mock, then json, then sparql. See `.env.example` for all settings.
+The intended progression is example json, then json from harvest, then sparql. See `.env.example` for all settings.
 
 ### Harvesting real data
 
-The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). The harvest scripts in `scripts/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real. Catalogues that are not harvested fall back to the bundled mock, so the API stays fully populated.
+The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). The harvest scripts in `src/metacat_api/harvesters/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real.
 
 ```bash
-uv run --with requests --with jq python scripts/harvest_clarin.py
-uv run --with requests python scripts/harvest_gotriple.py
-DATASOURCE=json JSON_DATA_DIR=./data uv run uvicorn metacat_api.main:app --reload
+uv run src/metacat_api/harvesters/harvest_clarin.py
+uv run src/metacat_api/harvesters/harvest_gotriple.py
+DATASOURCE=json JSON_DATA_DIR=./data uv run fastapi run src/metacat_api/main.py --reload
 ```
 
 | Connector | Source | Status |

@@ -2,11 +2,12 @@
 
 Lifts the aggregation query from the GoTriple_stats_queries notebook in the
 metacat-code sibling checkout. Run from the metacat-api root:
-    uv run --with requests python scripts/harvest_gotriple.py
+    uv run src/metacat_api/harvesters/harvest_gotriple.py
 """
 
 import requests
-from harvest_common import Facets, apply_catalogue, load_store, report, write_store
+
+from metacat_api.harvesters.harvest_common import Facets, apply_catalogue, load_store, report, write_store
 
 BASE_URL = "https://api.gotriple.eu/api/documents"
 FACET_AGGS = {"resource-type": "type", "discipline": "topic", "source": "provider"}

@@ -11,9 +11,9 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-MOCK_DIR = REPO_ROOT / "src" / "metacat_api" / "mock_data"
-OUT_DIR = REPO_ROOT / "data"
+from metacat_api.config import settings
+
+OUT_DIR = Path(settings.json_data_dir).resolve()
 
 SNAPSHOT_TS = "2026-05-03T00:00:00Z"
 FACET_ORDER = ["resource-type", "format", "discipline", "source", "source-2", "subjects"]
@@ -36,8 +36,7 @@ def _read(directory: Path, name: str) -> list:
 
 
 def load_store() -> dict[str, list]:
-    base = OUT_DIR if (OUT_DIR / "catalogues.json").exists() else MOCK_DIR
-    return {name: _read(base, name) for name in COLLECTIONS}
+    return {name: _read(OUT_DIR, name) for name in COLLECTIONS}
 
 
 def write_store(store: dict[str, list]) -> None:
@@ -57,15 +56,11 @@ def apply_catalogue(
 ) -> None:
     status_overrides = status_overrides or {}
     ranked = {
-        facet: sorted(pairs, key=lambda item: item[1], reverse=True)
-        for facet, pairs in harvested.items()
-        if pairs
+        facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items() if pairs
     }
 
     store["facet_values"] = [v for v in store["facet_values"] if v["catalogue_id"] != catalogue_id]
-    store["facet_exposures"] = [
-        e for e in store["facet_exposures"] if e["catalogue_id"] != catalogue_id
-    ]
+    store["facet_exposures"] = [e for e in store["facet_exposures"] if e["catalogue_id"] != catalogue_id]
 
     for facet, pairs in ranked.items():
         for value, count in pairs:

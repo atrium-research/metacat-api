@@ -22,9 +22,5 @@ class Vocabulary(BaseModel):
     authority: str = Field(description="Organisation maintaining the vocabulary.")
     uri: HttpUrl | None = Field(default=None, description="Canonical URI of the vocabulary.")
     concepts_count: int = Field(description="Number of concepts in the vocabulary.")
-    used_for_facets: list[PivotFacet] = Field(
-        description="Pivot facets this vocabulary provides terms for."
-    )
-    used_by_catalogues: list[str] = Field(
-        description="Catalogue identifiers using this vocabulary."
-    )
+    used_for_facets: list[PivotFacet] = Field(description="Pivot facets this vocabulary provides terms for.")
+    used_by_catalogues: list[str] = Field(description="Catalogue identifiers using this vocabulary.")

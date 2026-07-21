@@ -3,20 +3,23 @@ name = "metacat-api"
 version = "0.1.0"
 description = "REST API serving the MetaCat catalogue-of-catalogues dashboard for ATRIUM."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 license = { text = "Apache-2.0" }
 authors = [{ name = "Foxcub", email = "julien.homo@foxcub.fr" }]
 dependencies = [
-    "fastapi>=0.111",
-    "uvicorn[standard]>=0.30",
+    "apscheduler>=3.11.3",
+    "fastapi[standard]>=0.139.2",
+    "jq>=1.12.0",
     "pydantic>=2.7",
     "pydantic-settings>=2.3",
+    "requests>=2.34.2",
+    "sparqlwrapper>=2.0.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=8.2",
-    "httpx>=0.27",
+    "httpx2>=2.7.0",
     "ruff>=0.5",
 ]
 
@@ -31,7 +34,7 @@ build-backend = "hatchling.build"
 packages = ["src/metacat_api"]
 
 [tool.ruff]
-line-length = 100
+line-length = 120
 target-version = "py311"
 src = ["src", "tests"]
 
