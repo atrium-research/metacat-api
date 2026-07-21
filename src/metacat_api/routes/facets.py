@@ -19,14 +19,13 @@ def _parse_catalogues(raw: str | None) -> list[str] | None:
     return [item.strip() for item in raw.split(",") if item.strip()]
 
 
-@router.get("", response_model=list[str], summary="List the six pivot facets")
+@router.get("", summary="List the six pivot facets")
 def list_facets() -> list[str]:
     return service.list_facets()
 
 
 @router.get(
     "/{facet}/values",
-    response_model=list[FacetValue],
     summary="Facet values with counts and timestamps",
 )
 def facet_values(
@@ -41,7 +40,6 @@ def facet_values(
 
 @router.get(
     "/{facet}/compare",
-    response_model=FacetComparison,
     summary="Transversal side-by-side comparison across catalogues",
 )
 def facet_compare(
@@ -54,7 +52,6 @@ def facet_compare(
 
 @router.get(
     "/{facet}/timeseries",
-    response_model=list[FacetTimeseriesPoint],
     summary="Evolution of a facet over time",
 )
 def facet_timeseries(

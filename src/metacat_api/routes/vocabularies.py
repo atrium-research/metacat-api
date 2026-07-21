@@ -17,14 +17,13 @@ class PaginatedConcepts(BaseModel):
     items: list[Concept] = Field(description="Concepts in the requested window.")
 
 
-@router.get("", response_model=list[Vocabulary], summary="Vocabulary inventory")
+@router.get("", summary="Vocabulary inventory")
 def list_vocabularies(ds: Datasource = Depends(get_datasource)) -> list[Vocabulary]:
     return service.list_vocabularies(ds)
 
 
 @router.get(
     "/{vocabulary_id}",
-    response_model=Vocabulary,
     responses=_NOT_FOUND,
     summary="Vocabulary detail",
 )
@@ -37,7 +36,6 @@ def get_vocabulary(vocabulary_id: str, ds: Datasource = Depends(get_datasource))
 
 @router.get(
     "/{vocabulary_id}/concepts",
-    response_model=PaginatedConcepts,
     responses=_NOT_FOUND,
     summary="Paginated concepts of a vocabulary",
 )

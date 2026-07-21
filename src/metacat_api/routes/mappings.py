@@ -9,7 +9,7 @@ from metacat_api.services import mappings as service
 router = APIRouter(prefix="/mappings", tags=["mappings"])
 
 
-@router.get("", response_model=list[Mapping], summary="Declared cross-vocabulary mappings")
+@router.get("", summary="Declared cross-vocabulary mappings")
 def list_mappings(
     vocab_a: str | None = Query(default=None),
     vocab_b: str | None = Query(default=None),
@@ -21,7 +21,6 @@ def list_mappings(
 
 @router.get(
     "/overlap",
-    response_model=VocabularyOverlap,
     summary="Transversal overlap between two vocabularies",
 )
 def vocabulary_overlap(

@@ -9,14 +9,13 @@ router = APIRouter(prefix="/snapshots", tags=["snapshots"])
 activity_router = APIRouter(tags=["activity"])
 
 
-@router.get("", response_model=list[Snapshot], summary="List snapshots")
+@router.get("", summary="List snapshots")
 def list_snapshots(ds: Datasource = Depends(get_datasource)) -> list[Snapshot]:
     return sorted(ds.snapshots(), key=lambda snapshot: snapshot.taken_at)
 
 
 @router.get(
     "/latest",
-    response_model=Snapshot,
     responses={404: {"model": ErrorResponse}},
     summary="Current snapshot metadata",
 )
