@@ -43,15 +43,14 @@ The backend is selected with the `DATASOURCE` environment variable:
 
 | Value | Status | Description |
 |---|---|---|
-| `mock` | complete, default | Serves realistic bundled data. No external dependency. |
 | `json` | reads a JSON store | Reads timestamped JSON snapshots from a `metacat-data` style directory (`JSON_DATA_DIR`). |
 | `sparql` | roadmap | Queries the GraphDB triplestore on the EOSC EU Node. |
 
-The intended progression is mock, then json, then sparql. See `.env.example` for all settings.
+The intended progression is mocked json, then json from harvest, then sparql. See `.env.example` for all settings.
 
 ### Harvesting real data
 
-The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). The harvest scripts in `src/metacat_api/harvesters/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real. Catalogues that are not harvested fall back to the bundled mock, so the API stays fully populated.
+The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). The harvest scripts in `src/metacat_api/harvesters/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real.
 
 ```bash
 uv run src/metacat_api/harvesters/harvest_clarin.py

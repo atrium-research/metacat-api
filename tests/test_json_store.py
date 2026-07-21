@@ -3,7 +3,7 @@ from metacat_api.datasources.json_store import JsonStoreDatasource
 
 
 def test_json_store_reads_directory():
-    ds = JsonStoreDatasource(settings.mock_data_dir)
+    ds = JsonStoreDatasource(settings.json_data_dir)
     assert len(ds.catalogues()) == 4
     assert ds.facet_values()
     assert ds.facet_timeseries()

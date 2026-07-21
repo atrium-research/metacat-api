@@ -36,8 +36,7 @@ def _read(directory: Path, name: str) -> list:
 
 
 def load_store() -> dict[str, list]:
-    base = OUT_DIR if (OUT_DIR / "catalogues.json").exists() else Path(settings.mock_data_dir)
-    return {name: _read(base, name) for name in COLLECTIONS}
+    return {name: _read(OUT_DIR, name) for name in COLLECTIONS}
 
 
 def write_store(store: dict[str, list]) -> None:
