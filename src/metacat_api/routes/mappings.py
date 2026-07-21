@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter
 
 from metacat_api.datasources import datasource_dep
 from metacat_api.models.common import MappingRelation
