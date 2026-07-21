@@ -20,12 +20,17 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     datasource: Datasource = Datasource.mock
+
     json_data_dir: str = "./data"
     mock_data_dir: str = "./src/metacat_api/mock_data"
+
     sparql_endpoint: str = ""
+    ariadne_sparql_endpoint: str = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
+
     cors_origins: Annotated[list[str], NoDecode] = Field(
         default=["http://localhost:5173", "http://localhost:3000"]
     )
+
     log_level: str = "INFO"
     log_format: LogFormat = LogFormat.console
 
