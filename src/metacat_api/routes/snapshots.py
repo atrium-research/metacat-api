@@ -32,9 +32,7 @@ def latest_snapshot(ds: Datasource = Depends(get_datasource)) -> Snapshot:
     summary="Latest harvest activity per catalogue for the Overview panel",
 )
 def activity(ds: Datasource = Depends(get_datasource)) -> list[dict]:
-    catalogues = sorted(
-        ds.catalogues(), key=lambda catalogue: catalogue.last_harvest_at, reverse=True
-    )
+    catalogues = sorted(ds.catalogues(), key=lambda catalogue: catalogue.last_harvest_at, reverse=True)
     return [
         {
             "catalogue_id": catalogue.id,

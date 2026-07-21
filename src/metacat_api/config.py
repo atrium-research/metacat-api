@@ -27,9 +27,7 @@ class Settings(BaseSettings):
     sparql_endpoint: str = ""
     ariadne_sparql_endpoint: str = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
 
-    cors_origins: Annotated[list[str], NoDecode] = Field(
-        default=["http://localhost:5173", "http://localhost:3000"]
-    )
+    cors_origins: Annotated[list[str], NoDecode] = Field(default=["http://localhost:5173", "http://localhost:3000"])
 
     log_level: str = "INFO"
     log_format: LogFormat = LogFormat.console

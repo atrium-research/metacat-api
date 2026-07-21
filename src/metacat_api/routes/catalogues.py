@@ -41,9 +41,7 @@ def get_catalogue(catalogue_id: str, ds: Datasource = Depends(get_datasource)) -
     responses=_NOT_FOUND,
     summary="Facet exposure status for a catalogue",
 )
-def catalogue_facets(
-    catalogue_id: str, ds: Datasource = Depends(get_datasource)
-) -> list[FacetExposure]:
+def catalogue_facets(catalogue_id: str, ds: Datasource = Depends(get_datasource)) -> list[FacetExposure]:
     _require(ds, catalogue_id)
     return service.catalogue_facets(ds, catalogue_id)
 
@@ -54,9 +52,7 @@ def catalogue_facets(
     responses=_NOT_FOUND,
     summary="Vocabularies used by a catalogue",
 )
-def catalogue_vocabularies(
-    catalogue_id: str, ds: Datasource = Depends(get_datasource)
-) -> list[Vocabulary]:
+def catalogue_vocabularies(catalogue_id: str, ds: Datasource = Depends(get_datasource)) -> list[Vocabulary]:
     _require(ds, catalogue_id)
     return service.catalogue_vocabularies(ds, catalogue_id)
 

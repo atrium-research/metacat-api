@@ -24,15 +24,12 @@ REASONS = {
 
 
 def harvest() -> Facets:
-    with open(
-        Path(__file__).parent / "clarin/vlo-query-collection.json", encoding="utf-8"
-    ) as handle:
+    with open(Path(__file__).parent / "clarin/vlo-query-collection.json", encoding="utf-8") as handle:
         collection = json.load(handle)
 
     raw = extractFacetValues(collection)
     return {
-        facet: [(value, count) for entry in entries for value, count in entry.items()]
-        for facet, entries in raw.items()
+        facet: [(value, count) for entry in entries for value, count in entry.items()] for facet, entries in raw.items()
     }
 
 

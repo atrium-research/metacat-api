@@ -10,9 +10,7 @@ from metacat_api.services import facets as service
 
 router = APIRouter(prefix="/facets", tags=["facets"])
 
-_CATALOGUES_QUERY = Query(
-    default=None, description="Comma-separated catalogue identifiers to restrict the result."
-)
+_CATALOGUES_QUERY = Query(default=None, description="Comma-separated catalogue identifiers to restrict the result.")
 
 
 def _parse_catalogues(raw: str | None) -> list[str] | None:

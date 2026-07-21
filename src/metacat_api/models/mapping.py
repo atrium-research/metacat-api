@@ -17,6 +17,4 @@ class VocabularyOverlap(BaseModel):
     shared_concepts: int = Field(description="Number of concepts mapped between the two.")
     total_a: int = Field(description="Total concepts in the first vocabulary.")
     total_b: int = Field(description="Total concepts in the second vocabulary.")
-    mapping_relations: dict[MappingRelation, int] = Field(
-        description="Count of shared concepts per mapping relation."
-    )
+    mapping_relations: dict[MappingRelation, int] = Field(description="Count of shared concepts per mapping relation.")

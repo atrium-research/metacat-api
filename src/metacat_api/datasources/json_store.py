@@ -22,9 +22,7 @@ class JsonStoreDatasource(Datasource):
     def __init__(self, data_dir: str) -> None:
         self.data_dir = Path(data_dir)
         self._catalogues = [Catalogue(**item) for item in self._read("catalogues.json")]
-        self._facet_exposures = [
-            FacetExposure(**item) for item in self._read("facet_exposures.json")
-        ]
+        self._facet_exposures = [FacetExposure(**item) for item in self._read("facet_exposures.json")]
         self._facet_values = [FacetValue(**item) for item in self._read("facet_values.json")]
         self._vocabularies = [Vocabulary(**item) for item in self._read("vocabularies.json")]
         self._concepts = [Concept(**item) for item in self._read("concepts.json")]

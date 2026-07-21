@@ -57,15 +57,11 @@ def apply_catalogue(
 ) -> None:
     status_overrides = status_overrides or {}
     ranked = {
-        facet: sorted(pairs, key=lambda item: item[1], reverse=True)
-        for facet, pairs in harvested.items()
-        if pairs
+        facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items() if pairs
     }
 
     store["facet_values"] = [v for v in store["facet_values"] if v["catalogue_id"] != catalogue_id]
-    store["facet_exposures"] = [
-        e for e in store["facet_exposures"] if e["catalogue_id"] != catalogue_id
-    ]
+    store["facet_exposures"] = [e for e in store["facet_exposures"] if e["catalogue_id"] != catalogue_id]
 
     for facet, pairs in ranked.items():
         for value, count in pairs:
