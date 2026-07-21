@@ -11,9 +11,9 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-MOCK_DIR = REPO_ROOT / "src" / "metacat_api" / "mock_data"
-OUT_DIR = REPO_ROOT / "data"
+from metacat_api.config import settings
+
+OUT_DIR = Path(settings.json_data_dir).resolve()
 
 SNAPSHOT_TS = "2026-05-03T00:00:00Z"
 FACET_ORDER = ["resource-type", "format", "discipline", "source", "source-2", "subjects"]
@@ -36,7 +36,7 @@ def _read(directory: Path, name: str) -> list:
 
 
 def load_store() -> dict[str, list]:
-    base = OUT_DIR if (OUT_DIR / "catalogues.json").exists() else MOCK_DIR
+    base = OUT_DIR if (OUT_DIR / "catalogues.json").exists() else Path(settings.mock_data_dir)
     return {name: _read(base, name) for name in COLLECTIONS}
 
 

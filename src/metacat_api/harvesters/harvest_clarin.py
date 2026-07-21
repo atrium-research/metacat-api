@@ -2,7 +2,7 @@
 
 Reuses the VLO connector from the metacat-code sibling checkout unchanged. Run
 from the metacat-api root:
-    uv run scripts/harvest_clarin.py
+    uv run src/metacat_api/harvesters/harvest_clarin.py
 """
 
 import json

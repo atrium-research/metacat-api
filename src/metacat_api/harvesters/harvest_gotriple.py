@@ -2,7 +2,7 @@
 
 Lifts the aggregation query from the GoTriple_stats_queries notebook in the
 metacat-code sibling checkout. Run from the metacat-api root:
-    uv run scripts/harvest_gotriple.py
+    uv run src/metacat_api/harvesters/harvest_gotriple.py
 """
 
 import requests

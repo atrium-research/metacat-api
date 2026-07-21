@@ -51,11 +51,11 @@ The intended progression is mock, then json, then sparql. See `.env.example` for
 
 ### Harvesting real data
 
-The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). The harvest scripts in `scripts/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real. Catalogues that are not harvested fall back to the bundled mock, so the API stays fully populated.
+The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). The harvest scripts in `src/metacat_api/harvesters/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real. Catalogues that are not harvested fall back to the bundled mock, so the API stays fully populated.
 
 ```bash
-uv run scripts/harvest_clarin.py
-uv run scripts/harvest_gotriple.py
+uv run src/metacat_api/harvesters/harvest_clarin.py
+uv run src/metacat_api/harvesters/harvest_gotriple.py
 DATASOURCE=json JSON_DATA_DIR=./data uv run fastapi run src/metacat_api/main.py --reload
 ```
 

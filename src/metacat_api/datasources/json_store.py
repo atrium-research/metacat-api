@@ -16,7 +16,7 @@ class JsonStoreDatasource(Datasource):
     Expects a directory holding the metacat-data layout (one file per
     collection). Missing files are treated as empty collections so a
     partially populated store still serves. The store is produced by the
-    harvesting connectors in metacat-code (see scripts/harvest_clarin.py).
+    harvesting connectors in metacat-code (see src/metacat_api/harvesters/harvest_clarin.py).
     """
 
     def __init__(self, data_dir: str) -> None:

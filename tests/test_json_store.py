@@ -1,12 +1,9 @@
-from pathlib import Path
-
+from metacat_api.config import settings
 from metacat_api.datasources.json_store import JsonStoreDatasource
-
-MOCK_DIR = Path(__file__).resolve().parents[1] / "src" / "metacat_api" / "mock_data"
 
 
 def test_json_store_reads_directory():
-    ds = JsonStoreDatasource(str(MOCK_DIR))
+    ds = JsonStoreDatasource(settings.mock_data_dir)
     assert len(ds.catalogues()) == 4
     assert ds.facet_values()
     assert ds.facet_timeseries()

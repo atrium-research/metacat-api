@@ -21,6 +21,7 @@ class Settings(BaseSettings):
 
     datasource: Datasource = Datasource.mock
     json_data_dir: str = "./data"
+    mock_data_dir: str = "./src/metacat_api/mock_data"
     sparql_endpoint: str = ""
     cors_origins: Annotated[list[str], NoDecode] = Field(
         default=["http://localhost:5173", "http://localhost:3000"]
