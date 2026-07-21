@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
+from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from metacat_api import __version__
 from metacat_api.config import settings
@@ -63,8 +62,8 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    @app.exception_handler(StarletteHTTPException)
-    async def http_exception_handler(request, exc: StarletteHTTPException) -> JSONResponse:
+    @app.exception_handler(HTTPException)
+    async def http_exception_handler(request, exc: HTTPException) -> JSONResponse:
         code = STATUS_CODES.get(exc.status_code, "error")
         body = ErrorResponse(detail=str(exc.detail), code=code)
         return JSONResponse(status_code=exc.status_code, content=body.model_dump())
