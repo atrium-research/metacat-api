@@ -1,3 +1,5 @@
+name: metacat-api
+
 services:
   api:
     build: .

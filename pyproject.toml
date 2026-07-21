@@ -3,7 +3,7 @@ name = "metacat-api"
 version = "0.1.0"
 description = "REST API serving the MetaCat catalogue-of-catalogues dashboard for ATRIUM."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 license = { text = "Apache-2.0" }
 authors = [{ name = "Foxcub", email = "julien.homo@foxcub.fr" }]
 dependencies = [

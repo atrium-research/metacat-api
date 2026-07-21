@@ -18,8 +18,6 @@ MetaCat is the toolset built under ATRIUM (EU Horizon Europe, Grant Agreement No
 
 ## Quickstart
 
-Requires Python 3.11+.
-
 ```bash
 git clone https://github.com/atrium-research/metacat-api.git
 cd metacat-api
