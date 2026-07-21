@@ -28,5 +28,5 @@ ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH=/app
 ENV DATASOURCE=mock
 
-CMD ["uvicorn", "metacat_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["fastapi", "run", "/app/src/metacat_api/main.py", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 EXPOSE 8000

@@ -24,7 +24,7 @@ cd metacat-api
 
 # with uv
 uv sync
-uv run uvicorn metacat_api.main:app --reload
+uv run fastapi run src/metacat_api/main.py --reload
 ```
 
 Then open the interactive documentation at http://localhost:8000/docs (or http://localhost:8000/redoc).
@@ -56,7 +56,7 @@ The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). T
 ```bash
 uv run --with requests --with jq python scripts/harvest_clarin.py
 uv run --with requests python scripts/harvest_gotriple.py
-DATASOURCE=json JSON_DATA_DIR=./data uv run uvicorn metacat_api.main:app --reload
+DATASOURCE=json JSON_DATA_DIR=./data uv run fastapi run src/metacat_api/main.py --reload
 ```
 
 | Connector | Source | Status |
