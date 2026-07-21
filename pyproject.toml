@@ -18,6 +18,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.2",
+    "httpx2>=2.7.0",
     "ruff>=0.5",
 ]
 
