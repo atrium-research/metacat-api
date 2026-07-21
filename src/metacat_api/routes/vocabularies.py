@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
@@ -41,8 +43,8 @@ def get_vocabulary(vocabulary_id: str, ds: datasource_dep) -> Vocabulary:
 def vocabulary_concepts(
     ds: datasource_dep,
     vocabulary_id: str,
-    offset: int = Query(default=0, ge=0),
-    limit: int = Query(default=50, ge=1, le=500),
+    offset: Annotated[int, Query(ge=0)] = 0,
+    limit: Annotated[int, Query(ge=1, le=500)] = 50,
 ) -> PaginatedConcepts:
     if service.get_vocabulary(ds, vocabulary_id) is None:
         raise HTTPException(status_code=404, detail=f"Unknown vocabulary '{vocabulary_id}'")

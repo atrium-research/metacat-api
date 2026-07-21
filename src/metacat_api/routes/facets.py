@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Annotated
 
 from fastapi import APIRouter, Query
 
@@ -9,7 +10,10 @@ from metacat_api.services import facets as service
 
 router = APIRouter(prefix="/facets", tags=["Facets"])
 
-_CATALOGUES_QUERY = Query(default=None, description="Comma-separated catalogue identifiers to restrict the result.")
+_catalogues_query = Annotated[
+    str | None,
+    Query(description="Comma-separated catalogue identifiers to restrict the result."),
+]
 
 
 def _parse_catalogues(raw: str | None) -> list[str] | None:
@@ -30,9 +34,9 @@ def list_facets() -> list[str]:
 def facet_values(
     ds: datasource_dep,
     facet: PivotFacet,
-    catalogues: str | None = _CATALOGUES_QUERY,
-    date_from: datetime | None = Query(default=None, alias="from"),
-    date_to: datetime | None = Query(default=None, alias="to"),
+    catalogues: _catalogues_query = None,
+    date_from: Annotated[datetime | None, Query(alias="from")] = None,
+    date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetValue]:
     return service.facet_values(ds, facet, _parse_catalogues(catalogues), date_from, date_to)
 
@@ -44,7 +48,7 @@ def facet_values(
 def facet_compare(
     ds: datasource_dep,
     facet: PivotFacet,
-    catalogues: str | None = _CATALOGUES_QUERY,
+    catalogues: _catalogues_query = None,
 ) -> FacetComparison:
     return service.facet_compare(ds, facet, _parse_catalogues(catalogues))
 
@@ -56,8 +60,8 @@ def facet_compare(
 def facet_timeseries(
     ds: datasource_dep,
     facet: PivotFacet,
-    catalogues: str | None = _CATALOGUES_QUERY,
-    date_from: datetime | None = Query(default=None, alias="from"),
-    date_to: datetime | None = Query(default=None, alias="to"),
+    catalogues: _catalogues_query = None,
+    date_from: Annotated[datetime | None, Query(alias="from")] = None,
+    date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetTimeseriesPoint]:
     return service.facet_timeseries(ds, facet, _parse_catalogues(catalogues), date_from, date_to)
