@@ -31,28 +31,55 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 QUERIES = {
     "resource-type": (
-        "SELECT ?value (count(?resource) AS ?cnt) WHERE {"
-        " ?resource aocat:has_ARIADNE_subject ?as . ?as skos:prefLabel ?value } GROUP BY ?value"
+        "SELECT ?value (count(?resource) AS ?cnt)"
+        "WHERE {"
+        "  ?resource aocat:has_ARIADNE_subject ?as ."
+        "  ?as skos:prefLabel ?value"
+        "}"
+        "GROUP BY ?value"
     ),
     "format": (
-        "SELECT ?value (count(?resource) AS ?cnt) WHERE {"
-        " ?resource aocat:has_data_type ?dt . ?dt skos:prefLabel ?value } GROUP BY ?value"
+        "SELECT ?value (count(?resource) AS ?cnt)"
+        "WHERE {"
+        "  ?resource aocat:has_data_type ?dt ."
+        "  ?dt skos:prefLabel ?value"
+        "}"
+        "GROUP BY ?value"
     ),
     "source": (
-        "SELECT ?value (count(?resource) AS ?cnt) WHERE {"
-        " GRAPH <https://ariadne-infrastructure.eu/datasourceApis> {"
-        " ?g <http://www.d-net.research-infrastructures.eu/provenance/isApiOf> ?value } ."
-        " GRAPH ?g { {?resource rdf:type aocat:AO_Collection}"
-        " UNION {?resource rdf:type aocat:AO_Individual_Data_Resource} } } GROUP BY ?value"
+        "SELECT ?value (count(?resource) AS ?cnt)"
+        "WHERE {"
+        "  GRAPH <https://ariadne-infrastructure.eu/datasourceApis> {"
+        "    ?g <http://www.d-net.research-infrastructures.eu/provenance/isApiOf> ?value"
+        "  } ."
+        "  GRAPH ?g {"
+        "    {"
+        "       ?resource rdf:type aocat:AO_Collection"
+        "    }"
+        "    UNION"
+        "    {"
+        "       ?resource rdf:type aocat:AO_Individual_Data_Resource"
+        "    }"
+        "  }"
+        "}"
+        "GROUP BY ?value"
     ),
     "source-2": (
-        "SELECT ?value (count(?resource) AS ?cnt) WHERE {"
-        " ?resource aocat:has_publisher ?pub . ?pub aocat:has_name ?value } GROUP BY ?value"
+        "SELECT ?value (count(?resource) AS ?cnt)"
+        "WHERE {"
+        "  ?resource aocat:has_publisher ?pub ."
+        "  ?pub aocat:has_name ?value"
+        "}"
+        "GROUP BY ?value"
     ),
     "subjects": (
-        "SELECT ?value (count(?resource) AS ?cnt) WHERE {"
-        " ?resource aocat:has_derived_subject ?s . ?s skos:prefLabel ?value }"
-        " GROUP BY ?value ORDER BY DESC(?cnt)"
+        "SELECT ?value (count(?resource) AS ?cnt)"
+        "WHERE {"
+        "  ?resource aocat:has_derived_subject ?s ."
+        "  ?s skos:prefLabel ?value"
+        "}"
+        "GROUP BY ?value"
+        "ORDER BY DESC(?cnt)"
     ),
 }
 
