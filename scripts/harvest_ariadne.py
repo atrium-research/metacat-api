@@ -8,7 +8,7 @@ credentials, or the future EOSC EU Node GraphDB. Point it at one with
 ARIADNE_SPARQL_ENDPOINT. On an unreachable endpoint it exits without writing,
 never fabricating data.
 
-    ARIADNE_SPARQL_ENDPOINT=<url> uv run --with SPARQLWrapper python scripts/harvest_ariadne.py
+    ARIADNE_SPARQL_ENDPOINT=<url> uv run scripts/harvest_ariadne.py
 """
 
 import os
