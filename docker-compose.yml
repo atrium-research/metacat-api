@@ -6,11 +6,13 @@ services:
     ports:
       - "8000:8000"
     environment:
+      JSON_DATA_DIR: /data
+      MOCK_DATA_DIR: ./src/metacat_api/mock_data
       DATASOURCE: mock
       CORS_ORIGINS: http://localhost:5173
       LOG_LEVEL: INFO
     volumes:
-      - ./src:/app/src:ro
+      - ./data:/data
     healthcheck:
       test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 10s
