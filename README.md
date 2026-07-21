@@ -46,7 +46,7 @@ The backend is selected with the `DATASOURCE` environment variable:
 | `json` | reads a JSON store | Reads timestamped JSON snapshots from a `metacat-data` style directory (`JSON_DATA_DIR`). |
 | `sparql` | roadmap | Queries the GraphDB triplestore on the EOSC EU Node. |
 
-The intended progression is mocked json, then json from harvest, then sparql. See `.env.example` for all settings.
+The intended progression is example json, then json from harvest, then sparql. See `.env.example` for all settings.
 
 ### Harvesting real data
 

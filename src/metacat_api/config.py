@@ -20,7 +20,7 @@ class Settings(BaseSettings):
 
     datasource_kind: DatasourceKind = DatasourceKind.json
 
-    json_data_dir: str = "./src/metacat_api/mock_data"
+    json_data_dir: str = "./data"
 
     sparql_endpoint: str = ""
     ariadne_sparql_endpoint: str = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
