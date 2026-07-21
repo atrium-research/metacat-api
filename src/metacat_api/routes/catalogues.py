@@ -8,7 +8,7 @@ from metacat_api.models.facet import FacetExposure
 from metacat_api.models.vocabulary import Vocabulary
 from metacat_api.services import catalogues as service
 
-router = APIRouter(prefix="/catalogues", tags=["catalogues"])
+router = APIRouter(prefix="/catalogues", tags=["Catalogues"])
 
 _NOT_FOUND = {404: {"model": ErrorResponse}}
 

@@ -7,7 +7,7 @@ from metacat_api.models.common import PivotFacet
 from metacat_api.models.facet import FacetComparison, FacetTimeseriesPoint, FacetValue
 from metacat_api.services import facets as service
 
-router = APIRouter(prefix="/facets", tags=["facets"])
+router = APIRouter(prefix="/facets", tags=["Facets"])
 
 _CATALOGUES_QUERY = Query(default=None, description="Comma-separated catalogue identifiers to restrict the result.")
 

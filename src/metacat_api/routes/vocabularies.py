@@ -6,7 +6,7 @@ from metacat_api.models.common import ErrorResponse, Pagination
 from metacat_api.models.vocabulary import Concept, Vocabulary
 from metacat_api.services import vocabularies as service
 
-router = APIRouter(prefix="/vocabularies", tags=["vocabularies"])
+router = APIRouter(prefix="/vocabularies", tags=["Vocabularies"])
 
 _NOT_FOUND = {404: {"model": ErrorResponse}}
 

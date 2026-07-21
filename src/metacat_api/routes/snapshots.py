@@ -4,8 +4,7 @@ from metacat_api.datasources import datasource_dep
 from metacat_api.models.common import ErrorResponse
 from metacat_api.models.snapshot import Snapshot
 
-router = APIRouter(prefix="/snapshots", tags=["snapshots"])
-activity_router = APIRouter(tags=["activity"])
+router = APIRouter(prefix="/snapshots", tags=["Snapshots"])
 
 
 @router.get("", summary="List snapshots")
@@ -23,21 +22,3 @@ def latest_snapshot(ds: datasource_dep) -> Snapshot:
     if not snapshots:
         raise HTTPException(status_code=404, detail="No snapshot available")
     return max(snapshots, key=lambda snapshot: snapshot.taken_at)
-
-
-@activity_router.get(
-    "/activity",
-    summary="Latest harvest activity per catalogue for the Overview panel",
-)
-def activity(ds: datasource_dep) -> list[dict]:
-    catalogues = sorted(ds.catalogues(), key=lambda catalogue: catalogue.last_harvest_at, reverse=True)
-    return [
-        {
-            "catalogue_id": catalogue.id,
-            "name": catalogue.name,
-            "last_harvest_at": catalogue.last_harvest_at,
-            "harvest_status": catalogue.harvest_status,
-            "total_resources": catalogue.total_resources,
-        }
-        for catalogue in catalogues
-    ]

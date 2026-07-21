@@ -5,7 +5,7 @@ from metacat_api.models.common import MappingRelation
 from metacat_api.models.mapping import Mapping, VocabularyOverlap
 from metacat_api.services import mappings as service
 
-router = APIRouter(prefix="/mappings", tags=["mappings"])
+router = APIRouter(prefix="/mappings", tags=["Mappings"])
 
 
 @router.get("", summary="Declared cross-vocabulary mappings")
