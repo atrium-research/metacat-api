@@ -19,3 +19,7 @@ services:
       interval: 10s
       timeout: 2s
       retries: 10
+    develop:
+      watch:
+        - path: ./src
+          action: rebuild

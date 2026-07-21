@@ -32,7 +32,7 @@ Then open the interactive documentation at http://localhost:8000/docs (or http:/
 ## Docker quickstart
 
 ```bash
-docker compose up
+docker compose up --build --force-recreate --watch
 ```
 
 Then open http://localhost:8000/docs.
