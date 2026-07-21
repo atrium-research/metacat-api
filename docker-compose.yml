@@ -14,3 +14,8 @@ services:
     command: >
       uvicorn metacat_api.main:app
       --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 2s
+      retries: 10
