@@ -22,14 +22,9 @@ MetaCat is the toolset built under ATRIUM (EU Horizon Europe, Grant Agreement No
 git clone https://github.com/atrium-research/metacat-api.git
 cd metacat-api
 
-# with uv (recommended)
-uv sync --extra dev
+# with uv
+uv sync
 uv run uvicorn metacat_api.main:app --reload
-
-# or with pip
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
-uvicorn metacat_api.main:app --reload
 ```
 
 Then open the interactive documentation at http://localhost:8000/docs (or http://localhost:8000/redoc).
