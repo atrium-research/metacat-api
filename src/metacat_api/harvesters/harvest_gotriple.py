@@ -6,7 +6,8 @@ metacat-code sibling checkout. Run from the metacat-api root:
 """
 
 import requests
-from harvest_common import Facets, apply_catalogue, load_store, report, write_store
+
+from metacat_api.harvesters.harvest_common import Facets, apply_catalogue, load_store, report, write_store
 
 BASE_URL = "https://api.gotriple.eu/api/documents"
 FACET_AGGS = {"resource-type": "type", "discipline": "topic", "source": "provider"}

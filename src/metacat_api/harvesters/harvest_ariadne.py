@@ -14,10 +14,10 @@ never fabricating data.
 import sys
 from datetime import datetime
 
-from harvest_common import Facets, apply_catalogue, load_store, report, write_store
 from SPARQLWrapper import JSON, SPARQLWrapper
 
 from metacat_api.config import settings
+from metacat_api.harvesters.harvest_common import Facets, apply_catalogue, load_store, report, write_store
 
 PREFIXES = """
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>

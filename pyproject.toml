@@ -7,6 +7,7 @@ requires-python = ">=3.14"
 license = { text = "Apache-2.0" }
 authors = [{ name = "Foxcub", email = "julien.homo@foxcub.fr" }]
 dependencies = [
+    "apscheduler>=3.11.3",
     "fastapi[standard]>=0.139.2",
     "jq>=1.12.0",
     "pydantic>=2.7",

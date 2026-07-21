@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,11 +13,13 @@ from metacat_api.routes import (
     activity,
     catalogues,
     facets,
+    harvest,
     mappings,
     snapshots,
     system,
     vocabularies,
 )
+from metacat_api.services.schedule import get_scheduler
 
 DESCRIPTION = (
     "REST serving layer for the MetaCat dashboard. MetaCat catalogues the four major "
@@ -43,6 +47,12 @@ _V1_ROUTERS = (
 )
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    get_scheduler().shutdown()
+
+
 def create_app() -> FastAPI:
     setup_logging()
 
@@ -52,6 +62,7 @@ def create_app() -> FastAPI:
         version=__version__,
         contact={"name": "Foxcub", "email": "julien.homo@foxcub.fr"},
         license_info={"name": "Apache-2.0", "url": "https://www.apache.org/licenses/LICENSE-2.0"},
+        lifespan=lifespan,
     )
 
     app.add_middleware(
@@ -76,6 +87,7 @@ def create_app() -> FastAPI:
     for router in _V1_ROUTERS:
         app.include_router(router, prefix="/v1")
     app.include_router(system.router)
+    app.include_router(harvest.router)
 
     return app
 
