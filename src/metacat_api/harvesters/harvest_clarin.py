@@ -6,28 +6,27 @@ from the metacat-api root:
 """
 
 import json
-import sys
 from pathlib import Path
 
-from harvest_common import Facets, apply_catalogue, load_store, report, write_store
-
-METACAT_CODE = Path(__file__).resolve().parents[2] / "metacat-code"
-QUERYMODULE_DIR = METACAT_CODE / "CLARIN" / "querymodule"
-COLLECTION_PATH = METACAT_CODE / "CLARIN" / "query-collection" / "vlo-query-collection.json"
+from metacat_api.harvesters.clarin.vlo_querymodule import extractFacetValues
+from metacat_api.harvesters.harvest_common import (
+    Facets,
+    apply_catalogue,
+    load_store,
+    report,
+    write_store,
+)
 
 REASONS = {
     "discipline": "CLARIN VLO does not expose a discipline facet.",
     "source-2": "CLARIN VLO exposes no secondary source facet.",
 }
 
-sys.path.insert(0, str(QUERYMODULE_DIR))
-from vlo_querymodule import extractFacetValues  # noqa: E402
-
 
 def harvest() -> Facets:
-    if not COLLECTION_PATH.exists():
-        raise SystemExit(f"metacat-code connector not found at {COLLECTION_PATH}")
-    with COLLECTION_PATH.open(encoding="utf-8") as handle:
+    with open(
+        Path(__file__).parent / "clarin/vlo-query-collection.json", encoding="utf-8"
+    ) as handle:
         collection = json.load(handle)
 
     raw = extractFacetValues(collection)
