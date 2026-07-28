@@ -8,6 +8,7 @@ router = APIRouter(prefix="/snapshots", tags=["Snapshots"])
 
 _NOT_FOUND = {status.HTTP_404_NOT_FOUND: {"model": ErrorResponse}}
 
+
 @router.get("", summary="List snapshots")
 def list_snapshots(ds: datasource_dep) -> list[Snapshot]:
     return sorted(ds.snapshots(), key=lambda snapshot: snapshot.taken_at)

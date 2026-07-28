@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, status
@@ -19,7 +20,10 @@ from metacat_api.routes import (
     system,
     vocabularies,
 )
-from metacat_api.services.schedule import get_scheduler
+from metacat_api.services.schedule import configure_scheduler, get_scheduler
+
+setup_logging()
+logger = logging.getLogger(__name__)
 
 DESCRIPTION = (
     "REST serving layer for the MetaCat dashboard. MetaCat catalogues the four major "
@@ -54,7 +58,7 @@ async def lifespan(app: FastAPI):
 
 
 def create_app() -> FastAPI:
-    setup_logging()
+    configure_scheduler()
 
     app = FastAPI(
         title="MetaCat API",

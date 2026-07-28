@@ -11,7 +11,7 @@ never fabricating data.
     ARIADNE_SPARQL_ENDPOINT=<url> uv run src/metacat_api/harvesters/harvest_ariadne.py
 """
 
-import sys
+import logging
 from datetime import datetime
 
 from SPARQLWrapper import JSON, SPARQLWrapper
@@ -83,13 +83,15 @@ REASONS = {
     "discipline": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
 }
 
+logger = logging.getLogger(__name__)
+
 
 def run_query(client: SPARQLWrapper, query: str, facet: str) -> list[tuple[str, int]]:
-    print(f"Start query {facet}")
+    logger.info(f"Start query {facet}")
     start = datetime.now()
     client.setQuery(PREFIXES + query)
     rows = client.query().convert()["results"]["bindings"]
-    print(f"End query {facet}, duration: {datetime.now() - start}")
+    logger.info(f"End query {facet}, duration: {datetime.now() - start}")
     return [(row["value"]["value"], int(row["cnt"]["value"])) for row in rows]
 
 
@@ -102,7 +104,7 @@ def harvest() -> Facets:
     try:
         facets: Facets = {facet: run_query(client, query, facet) for facet, query in QUERIES.items()}
     except Exception as error:
-        print(f"ARIADNE endpoint is not queryable: {error}", file=sys.stderr)
+        logger.exception(f"ARIADNE endpoint is not queryable: {error}")
         raise error
 
     total = sum(count for _, count in facets["resource-type"])

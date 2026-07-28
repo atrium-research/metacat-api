@@ -8,6 +8,7 @@ connectors in a row keeps both catalogues real.
 """
 
 import json
+import logging
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -28,6 +29,8 @@ COLLECTIONS = [
 ]
 
 Facets = dict[str, list[tuple[str, int]]]
+
+logger = logging.getLogger(__name__)
 
 
 def _read(directory: Path, name: str) -> list:
@@ -113,11 +116,11 @@ def apply_catalogue(
 
 
 def report(catalogue_id: str, harvested: Facets) -> None:
-    print(f"Harvested {catalogue_id} into {OUT_DIR}")
+    logger.info(f"Harvested {catalogue_id} into {OUT_DIR}")
     for facet in FACET_ORDER:
         pairs = harvested.get(facet)
         if pairs:
             top = max(pairs, key=lambda item: item[1])
-            print(f"  {facet}: {len(pairs)} values, top {top[0]!r}={top[1]}")
+            logger.info(f"  {facet}: {len(pairs)} values, top {top[0]!r}={top[1]}")
         else:
-            print(f"  {facet}: gap")
+            logger.info(f"  {facet}: gap")
