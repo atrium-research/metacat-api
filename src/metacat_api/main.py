@@ -36,6 +36,7 @@ DESCRIPTION = (
 STATUS_CODES = {
     status.HTTP_400_BAD_REQUEST: "bad_request",
     status.HTTP_404_NOT_FOUND: "not_found",
+    status.HTTP_408_REQUEST_TIMEOUT: "timeout",
     status.HTTP_409_CONFLICT: "conflict",
     status.HTTP_422_UNPROCESSABLE_CONTENT: "validation_error",
     status.HTTP_500_INTERNAL_SERVER_ERROR: "internal_error",

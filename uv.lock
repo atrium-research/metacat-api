@@ -444,6 +444,7 @@ name = "metacat-api"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "anyio" },
     { name = "apscheduler" },
     { name = "fastapi", extra = ["standard"] },
     { name = "jq" },
@@ -462,6 +463,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "anyio", specifier = ">=4.14.1" },
     { name = "apscheduler", specifier = ">=3.11.3" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.139.2" },
     { name = "jq", specifier = ">=1.12.0" },
