@@ -76,7 +76,7 @@ def create_app() -> FastAPI:
     @app.exception_handler(HTTPException)
     async def http_exception_handler(request, exc: HTTPException) -> JSONResponse:
         code = STATUS_CODES.get(exc.status_code, "error")
-        body = ErrorResponse(detail=str(exc.detail), code=code)
+        body = ErrorResponse(detail=exc.detail, code=code)
         return JSONResponse(status_code=exc.status_code, content=body.model_dump())
 
     @app.exception_handler(RequestValidationError)
