@@ -30,8 +30,8 @@ def harvest() -> Facets:
 
 
 def main() -> None:
-    harvested = harvest()
     store = load_store()
+    harvested = harvest()
     apply_catalogue(store, "gotriple", harvested, REASONS)
     write_store(store)
     report("gotriple", harvested)

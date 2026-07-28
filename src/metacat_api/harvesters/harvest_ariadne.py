@@ -111,8 +111,8 @@ def harvest() -> Facets:
 
 
 def main() -> None:
-    harvested = harvest()
     store = load_store()
+    harvested = harvest()
     apply_catalogue(store, "ariadne", harvested, REASONS, status_overrides={"discipline": "implicit"})
     write_store(store)
     report("ariadne", harvested)

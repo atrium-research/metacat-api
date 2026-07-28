@@ -34,8 +34,8 @@ def harvest() -> Facets:
 
 
 def main() -> None:
-    harvested = harvest()
     store = load_store()
+    harvested = harvest()
     apply_catalogue(store, "clarin-vlo", harvested, REASONS)
     write_store(store)
     report("clarin-vlo", harvested)
