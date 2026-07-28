@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 
 from metacat_api.datasources import datasource_dep
 from metacat_api.datasources.base import Datasource
@@ -10,13 +10,13 @@ from metacat_api.services import catalogues as service
 
 router = APIRouter(prefix="/catalogues", tags=["Catalogues"])
 
-_NOT_FOUND = {404: {"model": ErrorResponse}}
+_NOT_FOUND = {status.HTTP_404_NOT_FOUND: {"model": ErrorResponse}}
 
 
 def _require(ds: Datasource, catalogue_id: str) -> Catalogue:
     catalogue = service.get_catalogue(ds, catalogue_id)
     if catalogue is None:
-        raise HTTPException(status_code=404, detail=f"Unknown catalogue '{catalogue_id}'")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Unknown catalogue '{catalogue_id}'")
     return catalogue
 
 

@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -30,11 +30,11 @@ DESCRIPTION = (
 )
 
 STATUS_CODES = {
-    400: "bad_request",
-    404: "not_found",
-    409: "conflict",
-    422: "validation_error",
-    500: "internal_error",
+    status.HTTP_400_BAD_REQUEST: "bad_request",
+    status.HTTP_404_NOT_FOUND: "not_found",
+    status.HTTP_409_CONFLICT: "conflict",
+    status.HTTP_422_UNPROCESSABLE_CONTENT: "validation_error",
+    status.HTTP_500_INTERNAL_SERVER_ERROR: "internal_error",
 }
 
 _V1_ROUTERS = (

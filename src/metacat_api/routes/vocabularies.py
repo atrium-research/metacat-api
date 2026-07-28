@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, status
 from pydantic import BaseModel, Field
 
 from metacat_api.datasources import datasource_dep
@@ -10,7 +10,7 @@ from metacat_api.services import vocabularies as service
 
 router = APIRouter(prefix="/vocabularies", tags=["Vocabularies"])
 
-_NOT_FOUND = {404: {"model": ErrorResponse}}
+_NOT_FOUND = {status.HTTP_404_NOT_FOUND: {"model": ErrorResponse}}
 
 
 class PaginatedConcepts(BaseModel):
@@ -31,7 +31,7 @@ def list_vocabularies(ds: datasource_dep) -> list[Vocabulary]:
 def get_vocabulary(vocabulary_id: str, ds: datasource_dep) -> Vocabulary:
     vocabulary = service.get_vocabulary(ds, vocabulary_id)
     if vocabulary is None:
-        raise HTTPException(status_code=404, detail=f"Unknown vocabulary '{vocabulary_id}'")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Unknown vocabulary '{vocabulary_id}'")
     return vocabulary
 
 
@@ -47,7 +47,7 @@ def vocabulary_concepts(
     limit: Annotated[int, Query(ge=1, le=500)] = 50,
 ) -> PaginatedConcepts:
     if service.get_vocabulary(ds, vocabulary_id) is None:
-        raise HTTPException(status_code=404, detail=f"Unknown vocabulary '{vocabulary_id}'")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Unknown vocabulary '{vocabulary_id}'")
     items, total = service.vocabulary_concepts(ds, vocabulary_id, offset, limit)
     return PaginatedConcepts(
         pagination=Pagination(offset=offset, limit=limit, total=total),
