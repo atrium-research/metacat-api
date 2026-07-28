@@ -26,5 +26,5 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH=/app
 
-CMD ["fastapi", "run", "/app/src/metacat_api/main.py", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["fastapi", "run", "/app/src/metacat_api/main.py", "--host", "0.0.0.0", "--port", "8000"]
 EXPOSE 8000
