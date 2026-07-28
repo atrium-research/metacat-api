@@ -37,5 +37,7 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in value.split(",") if origin.strip()]
         return value
 
+    admin_password: str
+
 
 settings = Settings()

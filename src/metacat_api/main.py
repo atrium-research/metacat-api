@@ -35,6 +35,7 @@ DESCRIPTION = (
 
 STATUS_CODES = {
     status.HTTP_400_BAD_REQUEST: "bad_request",
+    status.HTTP_401_UNAUTHORIZED: "unauthorized",
     status.HTTP_404_NOT_FOUND: "not_found",
     status.HTTP_408_REQUEST_TIMEOUT: "timeout",
     status.HTTP_409_CONFLICT: "conflict",

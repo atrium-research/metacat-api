@@ -1,12 +1,16 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from metacat_api.models import ErrorResponse
+from metacat_api.services.auth import is_admin
 from metacat_api.services.harvest import harvest
 
 router = APIRouter(prefix="/harvest", tags=["Harvest"])
 
 
-@router.get("/tasks")
+@router.get(
+    "/tasks",
+    dependencies=[Depends(is_admin)],
+)
 async def get_tasks():
     from metacat_api.main import get_scheduler
 
@@ -22,6 +26,7 @@ async def get_tasks():
 
 @router.post(
     "/{catalogue_id}",
+    dependencies=[Depends(is_admin)],
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ErrorResponse},
         status.HTTP_408_REQUEST_TIMEOUT: {"model": ErrorResponse},
