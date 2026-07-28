@@ -18,9 +18,9 @@ class LogFormat(StrEnum):
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    datasource_kind: DatasourceKind = DatasourceKind.json
+    datasource_kind: DatasourceKind
 
-    json_data_dir: str = "./data"
+    json_data_dir: str
 
     sparql_endpoint: str = ""
 

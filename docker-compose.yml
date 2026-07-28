@@ -7,11 +7,12 @@ services:
       - "8000:8000"
     environment:
       JSON_DATA_DIR: /data
-      DATASOURCE_KIND: json
-      CORS_ORIGINS: http://localhost:5173
-      LOG_LEVEL: INFO
+      DATASOURCE_KIND: ${DATASOURCE_KIND:?}
+      CORS_ORIGINS: ${CORS_ORIGINS:?}
+      LOG_LEVEL: ${LOG_LEVEL:?}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?}
     volumes:
-      - ./data:/data
+      - ${JSON_DATA_DIR:?}:/data
     healthcheck:
       test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 10s
