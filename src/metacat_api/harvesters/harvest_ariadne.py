@@ -8,7 +8,7 @@ credentials, or the future EOSC EU Node GraphDB. Point it at one with
 ARIADNE_SPARQL_ENDPOINT. On an unreachable endpoint it exits without writing,
 never fabricating data.
 
-    ARIADNE_SPARQL_ENDPOINT=<url> uv run src/metacat_api/harvesters/harvest_ariadne.py
+    uv run src/metacat_api/harvesters/harvest_ariadne.py
 """
 
 import logging
@@ -16,8 +16,9 @@ from datetime import datetime
 
 from SPARQLWrapper import JSON, SPARQLWrapper
 
-from metacat_api.config import settings
 from metacat_api.harvesters.harvest_common import Facets, apply_catalogue, load_store, report, write_store
+
+ARIADNE_SPARQL_ENDPOINT = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
 
 PREFIXES = """
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
@@ -96,7 +97,7 @@ def run_query(client: SPARQLWrapper, query: str, facet: str) -> list[tuple[str, 
 
 
 def harvest() -> Facets:
-    client = SPARQLWrapper(settings.ariadne_sparql_endpoint)
+    client = SPARQLWrapper(ARIADNE_SPARQL_ENDPOINT)
     client.setReturnFormat(JSON)
     client.customHttpHeaders = {
         "cookie": "SERVER_VALIDATED=true",

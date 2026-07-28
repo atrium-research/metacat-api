@@ -23,7 +23,6 @@ class Settings(BaseSettings):
     json_data_dir: str = "./data"
 
     sparql_endpoint: str = ""
-    ariadne_sparql_endpoint: str = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
 
     cors_origins: Annotated[list[str], NoDecode] = Field(default=["http://localhost:5173", "http://localhost:3000"])
 
