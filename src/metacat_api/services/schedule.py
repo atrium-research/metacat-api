@@ -21,7 +21,6 @@ def get_scheduler() -> BackgroundScheduler:
 def configure_scheduler():
     logger.info("Configuring scheduler")
     trigger = CronTrigger(day_of_week="mon", hour=5, minute=0)
-    trigger = CronTrigger(minute="*/5")
     get_scheduler().add_job(
         harvest_all,
         id="harvest_all",
