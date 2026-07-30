@@ -40,5 +40,5 @@ class Pagination(BaseModel):
 
 
 class ErrorResponse(BaseModel):
-    detail: str = Field(description="Human-readable error message.")
+    detail: str | None = Field(description="Human-readable error message.")
     code: str = Field(description="Machine-readable error code.")

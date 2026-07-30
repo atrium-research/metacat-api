@@ -65,7 +65,7 @@ def facet_compare(
 ) -> FacetComparison:
     facet_all = [v for v in ds.facet_values() if v.facet == facet]
     if catalogues:
-        selected = [c for c in catalogues]
+        selected = list(catalogues)
     else:
         present = {v.catalogue_id for v in facet_all}
         selected = [c for c in CATALOGUE_ORDER if c in present] or sorted(present)

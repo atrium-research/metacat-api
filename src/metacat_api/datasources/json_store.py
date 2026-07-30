@@ -16,15 +16,13 @@ class JsonStoreDatasource(Datasource):
     Expects a directory holding the metacat-data layout (one file per
     collection). Missing files are treated as empty collections so a
     partially populated store still serves. The store is produced by the
-    harvesting connectors in metacat-code (see scripts/harvest_clarin.py).
+    harvesting connectors in metacat-code (see src/metacat_api/harvesters/harvest_clarin.py).
     """
 
     def __init__(self, data_dir: str) -> None:
         self.data_dir = Path(data_dir)
         self._catalogues = [Catalogue(**item) for item in self._read("catalogues.json")]
-        self._facet_exposures = [
-            FacetExposure(**item) for item in self._read("facet_exposures.json")
-        ]
+        self._facet_exposures = [FacetExposure(**item) for item in self._read("facet_exposures.json")]
         self._facet_values = [FacetValue(**item) for item in self._read("facet_values.json")]
         self._vocabularies = [Vocabulary(**item) for item in self._read("vocabularies.json")]
         self._concepts = [Concept(**item) for item in self._read("concepts.json")]

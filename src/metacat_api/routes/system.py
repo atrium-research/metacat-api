@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from metacat_api import __version__
 
-router = APIRouter(tags=["system"])
+router = APIRouter(tags=["System"])
 
 
 @router.get("/health", summary="Liveness probe")

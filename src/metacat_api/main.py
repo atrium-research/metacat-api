@@ -1,21 +1,29 @@
-from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
+import logging
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, status
+from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from metacat_api import __version__
 from metacat_api.config import settings
 from metacat_api.logging_setup import setup_logging
 from metacat_api.models.common import ErrorResponse
 from metacat_api.routes import (
+    activity,
     catalogues,
     facets,
+    harvest,
     mappings,
     snapshots,
     system,
     vocabularies,
 )
+from metacat_api.services.schedule import configure_scheduler, get_scheduler
+
+setup_logging()
+logger = logging.getLogger(__name__)
 
 DESCRIPTION = (
     "REST serving layer for the MetaCat dashboard. MetaCat catalogues the four major "
@@ -26,11 +34,13 @@ DESCRIPTION = (
 )
 
 STATUS_CODES = {
-    400: "bad_request",
-    404: "not_found",
-    409: "conflict",
-    422: "validation_error",
-    500: "internal_error",
+    status.HTTP_400_BAD_REQUEST: "bad_request",
+    status.HTTP_401_UNAUTHORIZED: "unauthorized",
+    status.HTTP_404_NOT_FOUND: "not_found",
+    status.HTTP_408_REQUEST_TIMEOUT: "timeout",
+    status.HTTP_409_CONFLICT: "conflict",
+    status.HTTP_422_UNPROCESSABLE_CONTENT: "validation_error",
+    status.HTTP_500_INTERNAL_SERVER_ERROR: "internal_error",
 }
 
 _V1_ROUTERS = (
@@ -39,12 +49,18 @@ _V1_ROUTERS = (
     vocabularies.router,
     mappings.router,
     snapshots.router,
-    snapshots.activity_router,
+    activity.router,
 )
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    get_scheduler().shutdown()
+
+
 def create_app() -> FastAPI:
-    setup_logging()
+    configure_scheduler()
 
     app = FastAPI(
         title="MetaCat API",
@@ -52,6 +68,7 @@ def create_app() -> FastAPI:
         version=__version__,
         contact={"name": "Foxcub", "email": "julien.homo@foxcub.fr"},
         license_info={"name": "Apache-2.0", "url": "https://www.apache.org/licenses/LICENSE-2.0"},
+        lifespan=lifespan,
     )
 
     app.add_middleware(
@@ -62,10 +79,10 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    @app.exception_handler(StarletteHTTPException)
-    async def http_exception_handler(request, exc: StarletteHTTPException) -> JSONResponse:
+    @app.exception_handler(HTTPException)
+    async def http_exception_handler(request, exc: HTTPException) -> JSONResponse:
         code = STATUS_CODES.get(exc.status_code, "error")
-        body = ErrorResponse(detail=str(exc.detail), code=code)
+        body = ErrorResponse(detail=exc.detail, code=code)
         return JSONResponse(status_code=exc.status_code, content=body.model_dump())
 
     @app.exception_handler(RequestValidationError)
@@ -76,6 +93,7 @@ def create_app() -> FastAPI:
     for router in _V1_ROUTERS:
         app.include_router(router, prefix="/v1")
     app.include_router(system.router)
+    app.include_router(harvest.router)
 
     return app
 

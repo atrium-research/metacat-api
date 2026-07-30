@@ -1,0 +1,37 @@
+{
+    "queries": [
+        {
+            "catalogue": "vlo",
+            "facet": "resource-type",
+            "url": "https://beta-vlo.clarin.eu/api/facets/resourceClass"
+        },
+        {
+            "catalogue": "vlo",
+            "facet": "format",
+            "url": "https://beta-vlo.clarin.eu/api/facets/format"
+        },
+        {
+            "catalogue": "vlo",
+            "facet": "discipline",
+            "url": ""
+        },
+        {
+            "catalogue": "vlo",
+            "facet": "source",
+            "url": "https://beta-vlo.clarin.eu/api/facets/dataProvider"
+        },
+        {
+            "catalogue": "vlo",
+            "facet": "source-2",
+            "url": ""
+        },
+        {
+            "catalogue": "vlo",
+            "facet": "subjects",
+            "url": "https://beta-vlo.clarin.eu/api/facets/subject"
+        }
+    ],
+    "interpretation": {
+        "jqQuery": ".values[]|{(.value): .count}"
+    }
+}
