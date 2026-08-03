@@ -55,7 +55,7 @@ The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). T
 ```bash
 uv run src/metacat_api/harvesters/harvest_clarin.py
 uv run src/metacat_api/harvesters/harvest_gotriple.py
-uv run --with requests python scripts/harvest_sshomp.py
+uv run src/metacat_api/harvesters/harvest_sshomp.py
 DATASOURCE=json JSON_DATA_DIR=./data uv run fastapi run src/metacat_api/main.py --reload
 ```
 

@@ -23,7 +23,8 @@ import re
 from datetime import UTC, date, datetime
 
 import requests
-from harvest_common import Facets, apply_catalogue, load_store, report, write_store
+
+from metacat_api.harvesters.harvest_common import Facets, apply_catalogue, load_store, report, write_store
 
 SNAPSHOT_INDEX_URL = "https://api.github.com/repos/SSHOC/sshompitor/contents/data"
 SNAPSHOT_NAME_RE = re.compile(r"^full_items_(\d+)\.json$")
@@ -87,12 +88,8 @@ def _select_snapshot() -> tuple[str, str]:
         try:
             cutoff = date.fromisoformat(SNAPSHOT_DATE)
         except ValueError as error:
-            raise SystemExit(
-                f"SSHOMP_SNAPSHOT_DATE must be YYYY-MM-DD, got {SNAPSHOT_DATE!r}"
-            ) from error
-        eligible = [
-            (ts, url) for ts, url in snapshots if datetime.fromtimestamp(ts, UTC).date() <= cutoff
-        ]
+            raise SystemExit(f"SSHOMP_SNAPSHOT_DATE must be YYYY-MM-DD, got {SNAPSHOT_DATE!r}") from error
+        eligible = [(ts, url) for ts, url in snapshots if datetime.fromtimestamp(ts, UTC).date() <= cutoff]
         if not eligible:
             raise SystemExit(f"No snapshot available at or before {SNAPSHOT_DATE}")
         ts, url = eligible[-1]
