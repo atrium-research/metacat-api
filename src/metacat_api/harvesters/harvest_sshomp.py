@@ -18,6 +18,7 @@ Run from the metacat-api root:
     SSHOMP_SNAPSHOT_DATE=2025-08-01 uv run --with requests python scripts/harvest_sshomp.py
 """
 
+import logging
 import os
 import re
 from datetime import UTC, date, datetime
@@ -25,6 +26,7 @@ from datetime import UTC, date, datetime
 import requests
 
 from metacat_api.harvesters.harvest_common import Facets, apply_catalogue, load_store, report, write_store
+from metacat_api.logging_setup import setup_logging
 
 SNAPSHOT_INDEX_URL = "https://api.github.com/repos/SSHOC/sshompitor/contents/data"
 SNAPSHOT_NAME_RE = re.compile(r"^full_items_(\d+)\.json$")
@@ -42,6 +44,8 @@ CATEGORY_LABELS = {
 REASONS = {
     "source-2": "The SSH Open Marketplace exposes no secondary source facet.",
 }
+
+logger = logging.getLogger(__name__)
 
 
 def _list_snapshots() -> list[tuple[int, str]]:
@@ -88,6 +92,7 @@ def _select_snapshot() -> tuple[str, str]:
         try:
             cutoff = date.fromisoformat(SNAPSHOT_DATE)
         except ValueError as error:
+            logger.exception(f"SSHOMP Error: SSHOMP_SNAPSHOT_DATE must be YYYY-MM-DD, got {SNAPSHOT_DATE!r}")
             raise SystemExit(f"SSHOMP_SNAPSHOT_DATE must be YYYY-MM-DD, got {SNAPSHOT_DATE!r}") from error
         eligible = [(ts, url) for ts, url in snapshots if datetime.fromtimestamp(ts, UTC).date() <= cutoff]
         if not eligible:
@@ -120,6 +125,8 @@ def harvest() -> tuple[Facets, str]:
         "resource-type", "source", "subjects", "discipline", "format" to a
         list of (value, count) pairs.
     """
+    logger.info("SSHOMP: Start harvest")
+    start = datetime.now()
     url, snapshot_ts = _select_snapshot()
     items = requests.get(url, timeout=120).json()
 
@@ -156,10 +163,11 @@ def harvest() -> tuple[Facets, str]:
         "discipline": list(discipline.items()),
         "format": list(fmt.items()),
     }
+    logger.info(f"SSHOMP: End harvest, duration: {datetime.now() - start}")
     return facets, snapshot_ts
 
 
-def main() -> None:
+def apply() -> None:
     """Harvest sshomp and replace its facet_values/facet_exposures in the store.
 
     Delegates the merge itself to apply_catalogue (shared across connectors),
@@ -169,8 +177,8 @@ def main() -> None:
     the actual snapshot selected by _select_snapshot, so a backdated run via
     SSHOMP_SNAPSHOT_DATE is reflected correctly in the stored data.
     """
-    harvested, snapshot_ts = harvest()
     store = load_store()
+    harvested, snapshot_ts = harvest()
     apply_catalogue(store, "sshomp", harvested, REASONS)
     for row in store["facet_values"]:
         if row["catalogue_id"] == "sshomp":
@@ -180,4 +188,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    setup_logging()
+    apply()

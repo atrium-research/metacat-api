@@ -17,6 +17,7 @@ from datetime import datetime
 from SPARQLWrapper import JSON, SPARQLWrapper
 
 from metacat_api.harvesters.harvest_common import Facets, apply_catalogue, load_store, report, write_store
+from metacat_api.logging_setup import setup_logging
 
 ARIADNE_SPARQL_ENDPOINT = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
 
@@ -97,6 +98,8 @@ def run_query(client: SPARQLWrapper, query: str, facet: str) -> list[tuple[str, 
 
 
 def harvest() -> Facets:
+    logger.info("Ariadne: Start harvest")
+    start = datetime.now()
     client = SPARQLWrapper(ARIADNE_SPARQL_ENDPOINT)
     client.setReturnFormat(JSON)
     client.customHttpHeaders = {
@@ -110,10 +113,11 @@ def harvest() -> Facets:
 
     total = sum(count for _, count in facets["resource-type"])
     facets["discipline"] = [("Archaeology", total)]
+    logger.info(f"Ariadne: End harvest, duration: {datetime.now() - start}")
     return facets
 
 
-def main() -> None:
+def apply() -> None:
     store = load_store()
     harvested = harvest()
     apply_catalogue(store, "ariadne", harvested, REASONS, status_overrides={"discipline": "implicit"})
@@ -122,4 +126,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    setup_logging()
+    apply()

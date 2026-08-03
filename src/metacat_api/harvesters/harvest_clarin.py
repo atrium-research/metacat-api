@@ -6,6 +6,8 @@ from the metacat-api root:
 """
 
 import json
+import logging
+from datetime import datetime
 from pathlib import Path
 
 from metacat_api.harvesters.clarin.vlo_querymodule import extract_facet_values
@@ -16,24 +18,31 @@ from metacat_api.harvesters.harvest_common import (
     report,
     write_store,
 )
+from metacat_api.logging_setup import setup_logging
 
 REASONS = {
     "discipline": "CLARIN VLO does not expose a discipline facet.",
     "source-2": "CLARIN VLO exposes no secondary source facet.",
 }
 
+logger = logging.getLogger(__name__)
+
 
 def harvest() -> Facets:
+    logger.info("Clarin: Start harvest")
+    start = datetime.now()
     with open(Path(__file__).parent / "clarin/vlo-query-collection.json", encoding="utf-8") as handle:
         collection = json.load(handle)
 
     raw = extract_facet_values(collection)
-    return {
+    facets = {
         facet: [(value, count) for entry in entries for value, count in entry.items()] for facet, entries in raw.items()
     }
+    logger.info(f"Clarin: End harvest, duration: {datetime.now() - start}")
+    return facets
 
 
-def main() -> None:
+def apply() -> None:
     store = load_store()
     harvested = harvest()
     apply_catalogue(store, "clarin-vlo", harvested, REASONS)
@@ -42,4 +51,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    setup_logging()
+    apply()

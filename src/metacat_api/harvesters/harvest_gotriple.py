@@ -5,9 +5,13 @@ metacat-code sibling checkout. Run from the metacat-api root:
     uv run src/metacat_api/harvesters/harvest_gotriple.py
 """
 
+import logging
+from datetime import datetime
+
 import requests
 
 from metacat_api.harvesters.harvest_common import Facets, apply_catalogue, load_store, report, write_store
+from metacat_api.logging_setup import setup_logging
 
 BASE_URL = "https://api.gotriple.eu/api/documents"
 FACET_AGGS = {"resource-type": "type", "discipline": "topic", "source": "provider"}
@@ -17,8 +21,10 @@ REASONS = {
     "subjects": "Subjects are a documented gap in the GoTriple API.",
 }
 
+logger = logging.getLogger(__name__)
 
-def fetch(aggs: str) -> list[tuple[str, int]]:
+
+def _fetch(aggs: str) -> list[tuple[str, int]]:
     resp = requests.get(BASE_URL, params={"aggs": aggs}, timeout=60)
     resp.raise_for_status()
     buckets = resp.json().get("aggs", {}).get(aggs, {}).get("buckets", [])
@@ -26,10 +32,14 @@ def fetch(aggs: str) -> list[tuple[str, int]]:
 
 
 def harvest() -> Facets:
-    return {facet: fetch(aggs) for facet, aggs in FACET_AGGS.items()}
+    logger.info("GoTriple: Start harvest")
+    start = datetime.now()
+    facets = {facet: _fetch(aggs) for facet, aggs in FACET_AGGS.items()}
+    logger.info(f"GoTriple: End harvest, duration: {datetime.now() - start}")
+    return facets
 
 
-def main() -> None:
+def apply() -> None:
     store = load_store()
     harvested = harvest()
     apply_catalogue(store, "gotriple", harvested, REASONS)
@@ -38,4 +48,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    setup_logging()
+    apply()
