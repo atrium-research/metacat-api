@@ -2,41 +2,41 @@ import logging
 
 from anyio import fail_after, to_thread
 
-from metacat_api.harvesters import harvest_ariadne, harvest_clarin, harvest_gotriple
-from metacat_api.harvesters.harvest_ariadne import main as harvest_ariadne_main
-from metacat_api.harvesters.harvest_clarin import main as harvest_clarin_main
-from metacat_api.harvesters.harvest_gotriple import main as harvest_gotriple_main
+from metacat_api.harvesters import harvest_ariadne, harvest_clarin, harvest_gotriple, harvest_sshomp
 
 _TIMEOUT = 600
 
 logger = logging.getLogger(__name__)
 
 
+HARVESTERS = {
+    "gotriple": harvest_gotriple.apply,
+    "ariadne": harvest_ariadne.apply,
+    "sshomp": harvest_sshomp.apply,
+    "clarin": harvest_clarin.apply,
+}
+
+
 def harvest_all():
-    logger.info("Start harvest")
-    try:
-        harvest_gotriple_main()
-    except Exception as e:
-        logger.exception(f"harvest_gotriple: error: {e}")
-    try:
-        harvest_clarin_main()
-    except Exception as e:
-        logger.exception(f"harvest_clarin: error: {e}")
-    try:
-        harvest_ariadne_main()
-    except Exception as e:
-        logger.exception(f"harvest_ariadne: error: {e}")
-    logger.info("End harvest")
+    logger.info("Start harvest all")
+
+    for harvester_id, harvester_function in HARVESTERS.items():
+        try:
+            harvester_function()
+        except Exception as e:
+            logger.exception(f"Harvester {harvester_id}: error: {e}")
+    logger.info("End harvest all")
+
+
+async def harvest_all_async():
+    logger.info("Start harvest all async")
+    with fail_after(_TIMEOUT):
+        await to_thread.run_sync(harvest_all)
 
 
 async def harvest(catalogue_id: str):
+    if catalogue_id not in HARVESTERS:
+        raise ValueError(f"Unknown catalogue '{catalogue_id}'")
     with fail_after(_TIMEOUT):
-        match catalogue_id:
-            case "ariadne":
-                await to_thread.run_sync(harvest_ariadne.main)
-            case "gotriple":
-                await to_thread.run_sync(harvest_gotriple.main)
-            case "clarin":
-                await to_thread.run_sync(harvest_clarin.main)
-            case _:
-                raise ValueError(f"Unknown catalogue '{catalogue_id}'")
+        harvester_function = HARVESTERS[catalogue_id]
+        await to_thread.run_sync(harvester_function)
