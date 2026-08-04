@@ -58,7 +58,7 @@ def catalogue_vocabularies(catalogue_id: str) -> list[Vocabulary]:
 @router.get(
     "/{catalogue_id}/facet-coverage",
     responses=_NOT_FOUND,
-    summary="Compact six-cell facet coverage for the Overview cards",
+    summary="Compact facet coverage for the Overview cards",
     dependencies=[Depends(_require_catalogue)],
 )
 def catalogue_facet_coverage(catalogue_id: str) -> dict[PivotFacet, FacetExposureStatus]:

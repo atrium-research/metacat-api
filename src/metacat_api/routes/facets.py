@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -29,9 +29,15 @@ _catalogues_query = Annotated[
 ]
 
 
-@router.get("", summary="List the six pivot facets")
+@router.get("", summary="List the pivot facets")
 def list_facets() -> list[str]:
     return facets_service.list_facets()
+
+
+def _to_utc(dt: datetime | None) -> datetime | None:
+    if not dt:
+        return None
+    return dt.replace(tzinfo=UTC)
 
 
 @router.get(
@@ -44,7 +50,7 @@ def facet_values(
     date_from: Annotated[datetime | None, Query(alias="from")] = None,
     date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetValue]:
-    return facets_service.facet_values(facet, _parse_catalogues(catalogues), date_from, date_to)
+    return facets_service.facet_values(facet, _parse_catalogues(catalogues), _to_utc(date_from), _to_utc(date_to))
 
 
 @router.get(
@@ -68,4 +74,4 @@ def facet_timeseries(
     date_from: Annotated[datetime | None, Query(alias="from")] = None,
     date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetTimeseriesPoint]:
-    return facets_service.facet_timeseries(facet, _parse_catalogues(catalogues), date_from, date_to)
+    return facets_service.facet_timeseries(facet, _parse_catalogues(catalogues), _to_utc(date_from), _to_utc(date_to))
