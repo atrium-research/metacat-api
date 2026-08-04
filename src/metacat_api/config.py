@@ -15,19 +15,8 @@ class Settings(BaseSettings):
 
     json_data_dir: str
 
-    sparql_endpoint: str = ""
-
-    cors_origins: Annotated[list[str], NoDecode] = Field(default=["http://localhost:5173", "http://localhost:3000"])
-
     log_level: str = "INFO"
     log_format: LogFormat = LogFormat.console
-
-    @field_validator("cors_origins", mode="before")
-    @classmethod
-    def split_origins(cls, value: object) -> object:
-        if isinstance(value, str):
-            return [origin.strip() for origin in value.split(",") if origin.strip()]
-        return value
 
     admin_password: str
 
