@@ -27,7 +27,6 @@ import requests
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import PivotFacet
 from metacat_api.models.common import Reasons, StatusOverrides
 from metacat_api.models.facet import Facets
 

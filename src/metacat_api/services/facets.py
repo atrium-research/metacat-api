@@ -9,8 +9,6 @@ from metacat_api.models.facet import (
     FacetValue,
 )
 
-CATALOGUE_ORDER = ["ariadne", "clarin-vlo", "gotriple", "sshomp"]
-
 
 def list_facets() -> list[str]:
     return [facet.value for facet in PivotFacet]
@@ -65,7 +63,7 @@ def facet_compare(
         selected = list(catalogues)
     else:
         present = {v.catalogue_id for v in facet_all}
-        selected = [c for c in CATALOGUE_ORDER if c in present] or sorted(present)
+        selected = [c for c in datasource.catalogue_ids() if c in present] or sorted(present)
 
     latest = max((v.timestamp for v in facet_all), default=None)
     latest_values = [v for v in facet_all if v.timestamp == latest]

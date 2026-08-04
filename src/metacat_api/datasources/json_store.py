@@ -43,6 +43,9 @@ class JsonStoreDatasource:
     def catalogues(self) -> list[Catalogue]:
         return self._catalogues
 
+    def catalogue_ids(self) -> list[str]:
+        return [c.id for c in self.catalogues()]
+
     def facet_exposures(self) -> list[FacetExposure]:
         return self._facet_exposures
 
