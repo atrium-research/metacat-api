@@ -3,6 +3,19 @@ from enum import StrEnum
 from pydantic import BaseModel, Field
 
 
+class Collection(StrEnum):
+    catalogues = "catalogues"
+    facet_values = "facet_values"
+    facet_exposures = "facet_exposures"
+    vocabularies = "vocabularies"
+    concepts = "concepts"
+    mappings = "mappings"
+    snapshots = "snapshots"
+
+
+COLLECTIONS = [facet.value for facet in Collection]
+
+
 class PivotFacet(StrEnum):
     resource_type = "resource-type"
     format = "format"
@@ -14,12 +27,17 @@ class PivotFacet(StrEnum):
 
 FACETS = [facet.value for facet in PivotFacet]
 
+Reasons = dict[PivotFacet, str]
+
 
 class FacetExposureStatus(StrEnum):
     exposed = "exposed"
     partial = "partial"
     implicit = "implicit"
     gap = "gap"
+
+
+StatusOverrides = dict[PivotFacet, FacetExposureStatus]
 
 
 class MappingRelation(StrEnum):

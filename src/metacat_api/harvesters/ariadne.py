@@ -18,6 +18,8 @@ from SPARQLWrapper import JSON, SPARQLWrapper
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
+from metacat_api.models import FacetExposureStatus, PivotFacet
+from metacat_api.models.common import Reasons, StatusOverrides
 from metacat_api.models.facet import Facets
 
 ARIADNE_SPARQL_ENDPOINT = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
@@ -100,15 +102,15 @@ class AriadneHarvester(Harvester):
         return "ariadne"
 
     @property
-    def reasons(self):
+    def reasons(self) -> Reasons:
         return {
-            "discipline": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
+            PivotFacet.discipline: "The whole catalogue is archaeology, so discipline is not a queryable facet.",
         }
 
     @property
-    def status_overrides(self):
+    def status_overrides(self) -> StatusOverrides:
         return {
-            "discipline": "implicit",
+            PivotFacet.discipline: FacetExposureStatus.implicit,
         }
 
     def harvest(self) -> Facets:

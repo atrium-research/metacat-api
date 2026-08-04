@@ -13,6 +13,8 @@ from pathlib import Path
 from metacat_api.harvesters.clarin_lib.vlo_querymodule import extract_facet_values
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
+from metacat_api.models import PivotFacet
+from metacat_api.models.common import Reasons, StatusOverrides
 from metacat_api.models.facet import Facets
 
 logger = logging.getLogger(__name__)
@@ -24,15 +26,15 @@ class ClarinHarvester(Harvester):
         return "clarin-vlo"
 
     @property
-    def reasons(self):
+    def reasons(self) -> Reasons:
         return {
-            "discipline": "CLARIN VLO does not expose a discipline facet.",
-            "source-2": "CLARIN VLO exposes no secondary source facet.",
+            PivotFacet.discipline: "CLARIN VLO does not expose a discipline facet.",
+            PivotFacet.source_2: "CLARIN VLO exposes no secondary source facet.",
         }
 
     @property
-    def status_overrides(self):
-        return None
+    def status_overrides(self) -> StatusOverrides:
+        return {}
 
     def harvest(self) -> Facets:
         logger.info("Clarin: Start harvest")

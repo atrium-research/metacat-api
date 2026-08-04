@@ -5,21 +5,12 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from metacat_api.config import settings
-from metacat_api.models.common import FACETS
+from metacat_api.models.common import COLLECTIONS, FACETS, Collection, Reasons, StatusOverrides
 from metacat_api.models.facet import Facets
 
 OUT_DIR = Path(settings.json_data_dir).resolve()
 
 SNAPSHOT_TS = "2026-05-03T00:00:00Z"
-COLLECTIONS = [
-    "catalogues",
-    "facet_values",
-    "facet_exposures",
-    "vocabularies",
-    "concepts",
-    "mappings",
-    "snapshots",
-]
 
 logger = logging.getLogger(__name__)
 
@@ -29,11 +20,11 @@ def _read(directory: Path, name: str) -> list:
         return json.load(handle)
 
 
-def load_store() -> dict[str, list]:
+def load_store() -> dict[Collection, list]:
     return {name: _read(OUT_DIR, name) for name in COLLECTIONS}
 
 
-def write_store(store: dict[str, list]) -> None:
+def write_store(store: dict[Collection, list]) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for name in COLLECTIONS:
         with (OUT_DIR / f"{name}.json").open("w", encoding="utf-8") as handle:
@@ -42,23 +33,24 @@ def write_store(store: dict[str, list]) -> None:
 
 
 def apply_catalogue(
-    store: dict[str, list],
+    store: dict[Collection, list],
     catalogue_id: str,
     harvested: Facets,
     reasons: dict[str, str],
-    status_overrides: dict[str, str] | None = None,
+    status_overrides: StatusOverrides,
 ) -> None:
-    status_overrides = status_overrides or {}
     ranked = {
         facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items() if pairs
     }
 
-    store["facet_values"] = [v for v in store["facet_values"] if v["catalogue_id"] != catalogue_id]
-    store["facet_exposures"] = [e for e in store["facet_exposures"] if e["catalogue_id"] != catalogue_id]
+    store[Collection.facet_values] = [v for v in store[Collection.facet_values] if v["catalogue_id"] != catalogue_id]
+    store[Collection.facet_exposures] = [
+        e for e in store[Collection.facet_exposures] if e["catalogue_id"] != catalogue_id
+    ]
 
     for facet, pairs in ranked.items():
         for value, count in pairs:
-            store["facet_values"].append(
+            store[Collection.facet_values].append(
                 {
                     "catalogue_id": catalogue_id,
                     "facet": facet,
@@ -73,7 +65,7 @@ def apply_catalogue(
         if pairs:
             status = status_overrides.get(facet, "exposed")
             top_value, top_count = pairs[0]
-            store["facet_exposures"].append(
+            store[Collection.facet_exposures].append(
                 {
                     "catalogue_id": catalogue_id,
                     "facet": facet,
@@ -86,7 +78,7 @@ def apply_catalogue(
                 }
             )
         else:
-            store["facet_exposures"].append(
+            store[Collection.facet_exposures].append(
                 {
                     "catalogue_id": catalogue_id,
                     "facet": facet,
@@ -112,9 +104,9 @@ def report(catalogue_id: str, harvested: Facets) -> None:
         pairs = harvested.get(facet)
         if pairs:
             top = max(pairs, key=lambda item: item[1])
-            logger.info(f"  {facet}: {len(pairs)} values, top {top[0]!r}={top[1]}")
+            logger.info(f"{catalogue_id}: {facet}: {len(pairs)} values, top {top[0]!r}={top[1]}")
         else:
-            logger.info(f"  {facet}: gap")
+            logger.info(f"{catalogue_id}: {facet}: gap")
 
 
 class Harvester(ABC):
@@ -124,11 +116,11 @@ class Harvester(ABC):
 
     @property
     @abstractmethod
-    def reasons(self) -> dict[str, str]: ...
+    def reasons(self) -> Reasons: ...
 
     @property
     @abstractmethod
-    def status_overrides(self) -> dict[str, str]: ...
+    def status_overrides(self) -> StatusOverrides: ...
 
     @abstractmethod
     def harvest(self) -> Facets: ...

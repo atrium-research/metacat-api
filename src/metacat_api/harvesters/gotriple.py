@@ -12,6 +12,7 @@ import requests
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
+from metacat_api.models.common import Reasons, StatusOverrides
 from metacat_api.models.facet import Facets
 
 BASE_URL = "https://api.gotriple.eu/api/documents"
@@ -33,7 +34,7 @@ class GotripleHarvester(Harvester):
         return "gotriple"
 
     @property
-    def reasons(self):
+    def reasons(self) -> Reasons:
         return {
             "format": "Format is a documented gap in the GoTriple API.",
             "source-2": "GoTriple exposes no secondary source facet.",
@@ -41,8 +42,8 @@ class GotripleHarvester(Harvester):
         }
 
     @property
-    def status_overrides(self):
-        return None
+    def status_overrides(self) -> StatusOverrides:
+        return {}
 
     def harvest(self) -> Facets:
         logger.info("GoTriple: Start harvest")
