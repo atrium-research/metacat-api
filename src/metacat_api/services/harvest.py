@@ -2,32 +2,21 @@ import logging
 
 from anyio import fail_after, to_thread
 
-from metacat_api.harvesters.ariadne import AriadneHarvester
-from metacat_api.harvesters.clarin import ClarinHarvester
-from metacat_api.harvesters.gotriple import GotripleHarvester
-from metacat_api.harvesters.sshomp import SshompHarvester
+from metacat_api.harvesters import HARVESTERS
 
 _TIMEOUT = 600
 
 logger = logging.getLogger(__name__)
 
 
-HARVESTERS = {
-    "gotriple": GotripleHarvester().apply,
-    "ariadne": AriadneHarvester().apply,
-    "sshomp": SshompHarvester().apply,
-    "clarin": ClarinHarvester().apply,
-}
-
-
 def harvest_all():
     logger.info("Start harvest all")
 
-    for harvester_id, harvester_function in HARVESTERS.items():
+    for harvester in HARVESTERS:
         try:
-            harvester_function()
+            harvester.apply()
         except Exception as e:
-            logger.exception(f"Harvester {harvester_id}: error: {e}")
+            logger.exception(f"Harvester {harvester.catalogue_id}: error: {e}")
     logger.info("End harvest all")
 
 
@@ -38,8 +27,8 @@ async def harvest_all_async():
 
 
 async def harvest(catalogue_id: str):
-    if catalogue_id not in HARVESTERS:
+    harvester = next(iter([harvester for harvester in HARVESTERS if catalogue_id == harvester.catalogue_id]), None)
+    if not harvester:
         raise ValueError(f"Unknown catalogue '{catalogue_id}'")
     with fail_after(_TIMEOUT):
-        harvester_function = HARVESTERS[catalogue_id]
-        await to_thread.run_sync(harvester_function)
+        await to_thread.run_sync(harvester.apply)
