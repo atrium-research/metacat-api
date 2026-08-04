@@ -8,7 +8,7 @@ services:
     environment:
       JSON_DATA_DIR: /data
       LOG_LEVEL: ${LOG_LEVEL:?}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?}
+      API_KEYS: ${API_KEYS:?}
     volumes:
       - ${JSON_DATA_DIR:?}:/data
     healthcheck:
