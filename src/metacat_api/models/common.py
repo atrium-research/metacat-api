@@ -14,9 +14,6 @@ class Collection(StrEnum):
     snapshots = "snapshots"
 
 
-COLLECTIONS = [collection.value for collection in Collection]
-
-
 CollectionValues = list[dict[str, Any]]
 
 
@@ -28,8 +25,6 @@ class PivotFacet(StrEnum):
     source_2 = "source-2"
     subjects = "subjects"
 
-
-FACETS = [facet.value for facet in PivotFacet]
 
 Reasons = dict[PivotFacet, str]
 

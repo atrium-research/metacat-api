@@ -1,7 +1,5 @@
 from metacat_api.models.catalogue import Catalogue
 from metacat_api.models.common import (
-    COLLECTIONS,
-    FACETS,
     Collection,
     CollectionValues,
     ErrorResponse,
@@ -30,7 +28,6 @@ __all__ = [
     "Catalogue",
     "Collection",
     "CollectionValues",
-    "COLLECTIONS",
     "Concept",
     "ConceptRef",
     "ErrorResponse",
@@ -41,7 +38,6 @@ __all__ = [
     "FacetTimeseriesPoint",
     "FacetValue",
     "Facets",
-    "FACETS",
     "HarvestStatus",
     "Mapping",
     "MappingRelation",

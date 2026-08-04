@@ -8,13 +8,13 @@ from pydantic_core import to_jsonable_python
 
 from metacat_api.config import settings
 from metacat_api.models import (
-    COLLECTIONS,
-    FACETS,
+    Collection,
     CollectionValues,
     FacetExposure,
     Facets,
     FacetValue,
     HarvestStatus,
+    PivotFacet,
     Reasons,
     StatusOverrides,
     Store,
@@ -33,13 +33,16 @@ def _read(directory: Path, name: str) -> CollectionValues:
 
 
 def load_store() -> Store:
-    loaded = {name: _read(OUT_DIR, name) for name in COLLECTIONS}
-    return Store.model_validate(loaded)
+    loaded = {name: _read(OUT_DIR, name) for name in Collection}
+    return Store.model_validate(
+        loaded,
+        extra="forbid",
+    )
 
 
 def write_store(store: Store) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    for name in COLLECTIONS:
+    for name in Collection:
         with (OUT_DIR / f"{name}.json").open("w", encoding="utf-8") as handle:
             json.dump(store.get(name), handle, indent=2, ensure_ascii=False, default=to_jsonable_python)
             handle.write("\n")
@@ -69,11 +72,12 @@ def apply_catalogue(
                         "value": value,
                         "count": count,
                         "timestamp": SNAPSHOT_TS,
-                    }
+                    },
+                    extra="forbid",
                 )
             )
 
-    for facet in FACETS:
+    for facet in PivotFacet:
         pairs = ranked.get(facet)
         if pairs:
             status = status_overrides.get(facet, "exposed")
@@ -89,7 +93,8 @@ def apply_catalogue(
                         "top_value": top_value,
                         "top_value_count": top_count,
                         "total_count": sum(count for _, count in pairs),
-                    }
+                    },
+                    extra="forbid",
                 )
             )
         else:
@@ -104,7 +109,8 @@ def apply_catalogue(
                         "top_value": None,
                         "top_value_count": None,
                         "total_count": None,
-                    }
+                    },
+                    extra="forbid",
                 )
             )
 
@@ -117,7 +123,7 @@ def apply_catalogue(
 
 def report(catalogue_id: str, harvested: Facets) -> None:
     logger.info(f"Harvested {catalogue_id} into {OUT_DIR}")
-    for facet in FACETS:
+    for facet in PivotFacet:
         pairs = harvested.get(facet)
         if pairs:
             top = max(pairs, key=lambda item: item[1])
