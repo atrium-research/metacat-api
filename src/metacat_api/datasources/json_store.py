@@ -1,8 +1,12 @@
 import json
 from collections import defaultdict
+from functools import lru_cache
 from pathlib import Path
+from typing import Annotated
 
-from metacat_api.datasources.base import Datasource
+from fastapi import Depends
+
+from metacat_api.config import settings
 from metacat_api.models.catalogue import Catalogue
 from metacat_api.models.facet import FacetExposure, FacetTimeseriesPoint, FacetValue
 from metacat_api.models.mapping import Mapping
@@ -10,7 +14,7 @@ from metacat_api.models.snapshot import Snapshot
 from metacat_api.models.vocabulary import Concept, Vocabulary
 
 
-class JsonStoreDatasource(Datasource):
+class JsonStoreDatasource:
     """Reads timestamped JSON snapshots from the metacat-data store.
 
     Expects a directory holding the metacat-data layout (one file per
@@ -72,3 +76,6 @@ class JsonStoreDatasource(Datasource):
 
     def snapshots(self) -> list[Snapshot]:
         return self._snapshots
+
+
+datasource = JsonStoreDatasource(settings.json_data_dir)

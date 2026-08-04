@@ -3,7 +3,6 @@ from typing import Annotated
 
 from fastapi import APIRouter, Query
 
-from metacat_api.datasources import datasource_dep
 from metacat_api.models.common import PivotFacet
 from metacat_api.models.facet import FacetComparison, FacetTimeseriesPoint, FacetValue
 from metacat_api.services import facets as service
@@ -32,13 +31,12 @@ def list_facets() -> list[str]:
     summary="Facet values with counts and timestamps",
 )
 def facet_values(
-    ds: datasource_dep,
     facet: PivotFacet,
     catalogues: _catalogues_query = None,
     date_from: Annotated[datetime | None, Query(alias="from")] = None,
     date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetValue]:
-    return service.facet_values(ds, facet, _parse_catalogues(catalogues), date_from, date_to)
+    return service.facet_values(facet, _parse_catalogues(catalogues), date_from, date_to)
 
 
 @router.get(
@@ -46,11 +44,10 @@ def facet_values(
     summary="Transversal side-by-side comparison across catalogues",
 )
 def facet_compare(
-    ds: datasource_dep,
     facet: PivotFacet,
     catalogues: _catalogues_query = None,
 ) -> FacetComparison:
-    return service.facet_compare(ds, facet, _parse_catalogues(catalogues))
+    return service.facet_compare(facet, _parse_catalogues(catalogues))
 
 
 @router.get(
@@ -58,10 +55,9 @@ def facet_compare(
     summary="Evolution of a facet over time",
 )
 def facet_timeseries(
-    ds: datasource_dep,
     facet: PivotFacet,
     catalogues: _catalogues_query = None,
     date_from: Annotated[datetime | None, Query(alias="from")] = None,
     date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetTimeseriesPoint]:
-    return service.facet_timeseries(ds, facet, _parse_catalogues(catalogues), date_from, date_to)
+    return service.facet_timeseries(facet, _parse_catalogues(catalogues), date_from, date_to)

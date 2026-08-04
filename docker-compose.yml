@@ -7,7 +7,6 @@ services:
       - "8000:8000"
     environment:
       JSON_DATA_DIR: /data
-      DATASOURCE_KIND: ${DATASOURCE_KIND:?}
       CORS_ORIGINS: ${CORS_ORIGINS:?}
       LOG_LEVEL: ${LOG_LEVEL:?}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?}

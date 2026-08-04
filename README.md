@@ -37,17 +37,6 @@ docker compose --env-file .env up --build --force-recreate --watch
 
 Then open http://localhost:8000/docs.
 
-## Datasources
-
-The backend is selected with the `DATASOURCE` environment variable:
-
-| Value | Status | Description |
-|---|---|---|
-| `json` | reads a JSON store | Reads timestamped JSON snapshots from a `metacat-data` style directory (`JSON_DATA_DIR`). |
-| `sparql` | roadmap | Queries the GraphDB triplestore on the EOSC EU Node. |
-
-The intended progression is example json, then json from harvest, then sparql. See `.env.example` for all settings.
-
 ### Harvesting real data
 
 The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). The harvest scripts in `src/metacat_api/harvesters/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real.
@@ -56,7 +45,7 @@ The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). T
 uv run src/metacat_api/harvesters/harvest_clarin.py
 uv run src/metacat_api/harvesters/harvest_gotriple.py
 uv run src/metacat_api/harvesters/harvest_sshomp.py
-DATASOURCE=json JSON_DATA_DIR=./data uv run fastapi run src/metacat_api/main.py --reload
+JSON_DATA_DIR=./data uv run fastapi run src/metacat_api/main.py --reload
 ```
 
 | Connector | Source | Status |

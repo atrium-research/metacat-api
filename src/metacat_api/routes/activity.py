@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from metacat_api.datasources import datasource_dep
+from metacat_api.datasources.json_store import datasource
 
 router = APIRouter(prefix="/activity", tags=["Activity"])
 
@@ -9,8 +9,8 @@ router = APIRouter(prefix="/activity", tags=["Activity"])
     "",
     summary="Latest harvest activity per catalogue for the Overview panel",
 )
-def activity(ds: datasource_dep) -> list[dict]:
-    catalogues = sorted(ds.catalogues(), key=lambda catalogue: catalogue.last_harvest_at, reverse=True)
+def activity() -> list[dict]:
+    catalogues = sorted(datasource.catalogues(), key=lambda catalogue: catalogue.last_harvest_at, reverse=True)
     return [
         {
             "catalogue_id": catalogue.id,

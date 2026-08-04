@@ -5,11 +5,6 @@ from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
-class DatasourceKind(StrEnum):
-    json = "json"
-    sparql = "sparql"
-
-
 class LogFormat(StrEnum):
     json = "json"
     console = "console"
@@ -17,8 +12,6 @@ class LogFormat(StrEnum):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
-
-    datasource_kind: DatasourceKind
 
     json_data_dir: str
 

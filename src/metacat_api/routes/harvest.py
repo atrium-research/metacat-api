@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from metacat_api.models import ErrorResponse
 from metacat_api.services.auth import is_admin
-from metacat_api.services.harvest import harvest, harvest_all, harvest_all_async
+from metacat_api.services.harvest import harvest, harvest_all_async
 
 router = APIRouter(prefix="/harvest", tags=["Harvest"])
 
