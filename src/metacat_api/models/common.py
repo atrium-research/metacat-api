@@ -1,7 +1,7 @@
-from enum import StrEnum
-from typing import Any
+from enum import StrEnum, auto
+from typing import Any, TypedDict
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, TypeAdapter
 
 
 class Collection(StrEnum):
@@ -19,11 +19,37 @@ CollectionValues = list[dict[str, Any]]
 
 class PivotFacet(StrEnum):
     resource_type = "resource-type"
-    format = "format"
-    discipline = "discipline"
-    source = "source"
+    format = auto()
+    discipline = auto()
+    source = auto()
     source_2 = "source-2"
-    subjects = "subjects"
+    subjects = auto()
+
+    @staticmethod
+    def from_str(label):
+        match label:
+            case "resource_type":
+                return PivotFacet.resource_type
+            case "source_2":
+                return PivotFacet.source_2
+            case x:
+                return PivotFacet(x)
+
+
+RawFacetValue = tuple[str, int]
+RawFacetValues = list[RawFacetValue]
+
+
+class RawFacets(TypedDict, total=False):
+    resource_type: RawFacetValues
+    format: RawFacetValues
+    discipline: RawFacetValues
+    source: RawFacetValues
+    source_2: RawFacetValues
+    subjects: RawFacetValues
+
+
+raw_facets_adapter = TypeAdapter(RawFacets)
 
 
 Reasons = dict[PivotFacet, str]

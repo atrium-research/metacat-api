@@ -11,10 +11,10 @@ from metacat_api.models import (
     Collection,
     CollectionValues,
     FacetExposure,
-    Facets,
     FacetValue,
     HarvestStatus,
     PivotFacet,
+    RawFacets,
     Reasons,
     StatusOverrides,
     Store,
@@ -51,13 +51,11 @@ def write_store(store: Store) -> None:
 def apply_catalogue(
     store: Store,
     catalogue_id: str,
-    harvested: Facets,
+    harvested: RawFacets,
     reasons: Reasons,
     status_overrides: StatusOverrides,
 ) -> None:
-    ranked = {
-        facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items() if pairs
-    }
+    ranked = {facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items()}
 
     store.facet_values = [v for v in store.facet_values if v.catalogue_id != catalogue_id]
     store.facet_exposures = [e for e in store.facet_exposures if e.catalogue_id != catalogue_id]
@@ -68,7 +66,7 @@ def apply_catalogue(
                 FacetValue.model_validate(
                     {
                         "catalogue_id": catalogue_id,
-                        "facet": facet,
+                        "facet": PivotFacet.from_str(facet),
                         "value": value,
                         "count": count,
                         "timestamp": SNAPSHOT_TS,
@@ -121,7 +119,7 @@ def apply_catalogue(
             catalogue.harvest_status = HarvestStatus.live
 
 
-def report(catalogue_id: str, harvested: Facets) -> None:
+def report(catalogue_id: str, harvested: RawFacets) -> None:
     logger.info(f"Harvested {catalogue_id} into {OUT_DIR}")
     for facet in PivotFacet:
         pairs = harvested.get(facet)
@@ -146,7 +144,7 @@ class Harvester(ABC):
     def status_overrides(self) -> StatusOverrides: ...
 
     @abstractmethod
-    def harvest(self) -> Facets: ...
+    def harvest(self) -> RawFacets: ...
 
     def apply(self) -> None:
         store = load_store()

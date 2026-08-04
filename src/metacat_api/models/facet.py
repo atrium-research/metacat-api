@@ -5,8 +5,6 @@ from pydantic import BaseModel, Field
 from metacat_api.models.common import FacetExposureStatus, PivotFacet
 from metacat_api.models.vocabulary import ConceptRef
 
-Facets = dict[str, list[tuple[str, int]]]
-
 
 class FacetExposure(BaseModel):
     catalogue_id: str = Field(description="Catalogue the exposure refers to.")

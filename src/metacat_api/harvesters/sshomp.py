@@ -27,7 +27,7 @@ import requests
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import Facets, PivotFacet, Reasons, StatusOverrides
+from metacat_api.models import PivotFacet, RawFacets, Reasons, StatusOverrides
 
 SNAPSHOT_INDEX_URL = "https://api.github.com/repos/SSHOC/sshompitor/contents/data"
 SNAPSHOT_NAME_RE = re.compile(r"^full_items_(\d+)\.json$")
@@ -114,7 +114,7 @@ class SshompHarvester(Harvester):
     def status_overrides(self) -> StatusOverrides:
         return {}
 
-    def harvest(self) -> Facets:
+    def harvest(self) -> RawFacets:
         """Download the selected snapshot and tally its five pivot facets.
 
         Each item in the dump is a flat SSH Open Marketplace catalogue record:
@@ -169,13 +169,13 @@ class SshompHarvester(Harvester):
                 elif code == "object-format":
                     fmt[label] = fmt.get(label, 0) + 1
 
-        facets: Facets = {
-            "resource-type": list(resource_type.items()),
-            "source": list(source.items()),
-            "subjects": list(subjects.items()),
-            "discipline": list(discipline.items()),
-            "format": list(fmt.items()),
-        }
+        facets = RawFacets(
+            resource_type=list(resource_type.items()),
+            source=list(source.items()),
+            subjects=list(subjects.items()),
+            discipline=list(discipline.items()),
+            format=list(fmt.items()),
+        )
         logger.info(f"SSHOMP: End harvest, duration: {datetime.now() - start}")
         return facets
 

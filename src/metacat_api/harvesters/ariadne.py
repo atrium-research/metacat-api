@@ -18,7 +18,8 @@ from SPARQLWrapper import JSON, SPARQLWrapper
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import FacetExposureStatus, Facets, PivotFacet, Reasons, StatusOverrides
+from metacat_api.models import FacetExposureStatus, PivotFacet, RawFacets, Reasons, StatusOverrides
+from metacat_api.models.common import raw_facets_adapter
 
 ARIADNE_SPARQL_ENDPOINT = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
 
@@ -30,7 +31,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 """
 
 QUERIES = {
-    "resource-type": """
+    PivotFacet.resource_type: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           ?resource aocat:has_ARIADNE_subject ?as .
@@ -38,7 +39,7 @@ QUERIES = {
         }
         GROUP BY ?value
         """,
-    "format": """
+    PivotFacet.format: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           ?resource aocat:has_data_type ?dt .
@@ -46,7 +47,7 @@ QUERIES = {
         }
         GROUP BY ?value
         """,
-    "source": """
+    PivotFacet.source: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           GRAPH <https://ariadne-infrastructure.eu/datasourceApis> {
@@ -64,7 +65,7 @@ QUERIES = {
         }
         GROUP BY ?value
         """,
-    "source-2": """
+    PivotFacet.source_2: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           ?resource aocat:has_publisher ?pub .
@@ -72,7 +73,7 @@ QUERIES = {
         }
         GROUP BY ?value
         """,
-    "subjects": """
+    PivotFacet.subjects: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           ?resource aocat:has_derived_subject ?s .
@@ -111,7 +112,7 @@ class AriadneHarvester(Harvester):
             PivotFacet.discipline: FacetExposureStatus.implicit,
         }
 
-    def harvest(self) -> Facets:
+    def harvest(self) -> RawFacets:
         logger.info("Ariadne: Start harvest")
         start = datetime.now()
         client = SPARQLWrapper(ARIADNE_SPARQL_ENDPOINT)
@@ -120,13 +121,16 @@ class AriadneHarvester(Harvester):
             "cookie": "SERVER_VALIDATED=true",
         }
         try:
-            facets: Facets = {facet: _run_query(client, query, facet) for facet, query in QUERIES.items()}
+            facets = raw_facets_adapter.validate_python(
+                {facet.name: _run_query(client, query, facet) for facet, query in QUERIES.items()},
+                extra="forbid",
+            )
         except Exception as error:
             logger.exception(f"ARIADNE endpoint is not queryable: {error}")
             raise error
 
-        total = sum(count for _, count in facets["resource-type"])
-        facets["discipline"] = [("Archaeology", total)]
+        total = sum(count for _, count in facets[PivotFacet.resource_type.name])
+        facets[PivotFacet.discipline.name] = [("Archaeology", total)]
         logger.info(f"Ariadne: End harvest, duration: {datetime.now() - start}")
         return facets
 
