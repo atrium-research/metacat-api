@@ -10,16 +10,12 @@ from datetime import datetime
 
 import requests
 
-from metacat_api.harvesters.harvest_common import Facets, apply_catalogue, load_store, report, write_store
+from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
+from metacat_api.models.facet import Facets
 
 BASE_URL = "https://api.gotriple.eu/api/documents"
 FACET_AGGS = {"resource-type": "type", "discipline": "topic", "source": "provider"}
-REASONS = {
-    "format": "Format is a documented gap in the GoTriple API.",
-    "source-2": "GoTriple exposes no secondary source facet.",
-    "subjects": "Subjects are a documented gap in the GoTriple API.",
-}
 
 logger = logging.getLogger(__name__)
 
@@ -31,22 +27,31 @@ def _fetch(aggs: str) -> list[tuple[str, int]]:
     return [(bucket["key"], bucket["doc_count"]) for bucket in buckets]
 
 
-def harvest() -> Facets:
-    logger.info("GoTriple: Start harvest")
-    start = datetime.now()
-    facets = {facet: _fetch(aggs) for facet, aggs in FACET_AGGS.items()}
-    logger.info(f"GoTriple: End harvest, duration: {datetime.now() - start}")
-    return facets
+class GotripleHarvester(Harvester):
+    @property
+    def catalogue_id(self):
+        return "gotriple"
 
+    @property
+    def reasons(self):
+        return {
+            "format": "Format is a documented gap in the GoTriple API.",
+            "source-2": "GoTriple exposes no secondary source facet.",
+            "subjects": "Subjects are a documented gap in the GoTriple API.",
+        }
 
-def apply() -> None:
-    store = load_store()
-    harvested = harvest()
-    apply_catalogue(store, "gotriple", harvested, REASONS)
-    write_store(store)
-    report("gotriple", harvested)
+    @property
+    def status_overrides(self):
+        return None
+
+    def harvest(self) -> Facets:
+        logger.info("GoTriple: Start harvest")
+        start = datetime.now()
+        facets = {facet: _fetch(aggs) for facet, aggs in FACET_AGGS.items()}
+        logger.info(f"GoTriple: End harvest, duration: {datetime.now() - start}")
+        return facets
 
 
 if __name__ == "__main__":
     setup_logging()
-    apply()
+    GotripleHarvester().apply()

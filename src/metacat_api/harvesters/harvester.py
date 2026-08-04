@@ -1,19 +1,12 @@
-"""Shared helpers for the harvest scripts.
-
-Each connector lifts the query logic out of a metacat-code notebook or module,
-returns facet counts as {facet: [(value, count), ...]}, and merges them into a
-metacat-data JSON store the json datasource can serve. Connectors compose: the
-store is loaded from an existing data/ directory when present, so running two
-connectors in a row keeps both catalogues real.
-"""
-
 import json
 import logging
+from abc import ABC, abstractmethod
 from datetime import UTC, datetime
 from pathlib import Path
 
 from metacat_api.config import settings
 from metacat_api.models.common import FACETS
+from metacat_api.models.facet import Facets
 
 OUT_DIR = Path(settings.json_data_dir).resolve()
 
@@ -27,8 +20,6 @@ COLLECTIONS = [
     "mappings",
     "snapshots",
 ]
-
-Facets = dict[str, list[tuple[str, int]]]
 
 logger = logging.getLogger(__name__)
 
@@ -124,3 +115,27 @@ def report(catalogue_id: str, harvested: Facets) -> None:
             logger.info(f"  {facet}: {len(pairs)} values, top {top[0]!r}={top[1]}")
         else:
             logger.info(f"  {facet}: gap")
+
+
+class Harvester(ABC):
+    @property
+    @abstractmethod
+    def catalogue_id(self) -> str: ...
+
+    @property
+    @abstractmethod
+    def reasons(self) -> dict[str, str]: ...
+
+    @property
+    @abstractmethod
+    def status_overrides(self) -> dict[str, str]: ...
+
+    @abstractmethod
+    def harvest(self) -> Facets: ...
+
+    def apply(self) -> None:
+        store = load_store()
+        harvested = self.harvest()
+        apply_catalogue(store, self.catalogue_id, harvested, self.reasons, self.status_overrides)
+        write_store(store)
+        report(self.catalogue_id, harvested)

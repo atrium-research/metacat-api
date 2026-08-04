@@ -2,7 +2,10 @@ import logging
 
 from anyio import fail_after, to_thread
 
-from metacat_api.harvesters import harvest_ariadne, harvest_clarin, harvest_gotriple, harvest_sshomp
+from metacat_api.harvesters.ariadne import AriadneHarvester
+from metacat_api.harvesters.clarin import ClarinHarvester
+from metacat_api.harvesters.gotriple import GotripleHarvester
+from metacat_api.harvesters.sshomp import SshompHarvester
 
 _TIMEOUT = 600
 
@@ -10,10 +13,10 @@ logger = logging.getLogger(__name__)
 
 
 HARVESTERS = {
-    "gotriple": harvest_gotriple.apply,
-    "ariadne": harvest_ariadne.apply,
-    "sshomp": harvest_sshomp.apply,
-    "clarin": harvest_clarin.apply,
+    "gotriple": GotripleHarvester().apply,
+    "ariadne": AriadneHarvester().apply,
+    "sshomp": SshompHarvester().apply,
+    "clarin": ClarinHarvester().apply,
 }
 
 

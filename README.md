@@ -50,14 +50,14 @@ JSON_DATA_DIR=./data uv run fastapi run src/metacat_api/main.py --reload
 
 | Connector | Source | Status |
 |---|---|---|
-| `harvest_clarin.py` | CLARIN VLO REST API | Live, public |
-| `harvest_gotriple.py` | GoTriple aggregation API | Live, public |
-| `harvest_ariadne.py` | ARIADNE GraphDB (SPARQL) | Ready, needs a reachable endpoint |
-| `harvest_sshomp.py` | SSHOC/sshompitor weekly item snapshot | Live, public |
+| `clarin.py` | CLARIN VLO REST API | Live, public |
+| `gotriple.py` | GoTriple aggregation API | Live, public |
+| `ariadne.py` | ARIADNE GraphDB (SPARQL) | Ready, needs a reachable endpoint |
+| `sshomp.py` | SSHOC/sshompitor weekly item snapshot | Live, public |
 
 The ARIADNE GraphDB is behind authentication (it answers 302 to anonymous requests). The script carries the real SPARQL queries and runs once pointed at an authenticated d4science instance or the future EOSC EU Node GraphDB through `ARIADNE_SPARQL_ENDPOINT`; on an unreachable endpoint it exits without writing. The generated `data/` directory is not committed.
 
-`harvest_sshomp.py` : rather than the live SSH Open Marketplace API (whose `item-search` endpoint only aggregates 4 unrelated facets and has no discipline/format aggregation at all), it derives all five non-gap facets from the weekly full-catalogue item dump published by the community [`SSHOC/sshompitor`](https://github.com/SSHOC/sshompitor) monitoring tool, so every facet reflects the same point in time. Set `SSHOMP_SNAPSHOT_DATE=YYYY-MM-DD` to harvest from the nearest snapshot at or before that date instead of the newest one (useful to inspect a past state of the catalogue; each run still fully replaces sshomp's facet data, it does not build up a timeseries).
+`sshomp.py` : rather than the live SSH Open Marketplace API (whose `item-search` endpoint only aggregates 4 unrelated facets and has no discipline/format aggregation at all), it derives all five non-gap facets from the weekly full-catalogue item dump published by the community [`SSHOC/sshompitor`](https://github.com/SSHOC/sshompitor) monitoring tool, so every facet reflects the same point in time. Set `SSHOMP_SNAPSHOT_DATE=YYYY-MM-DD` to harvest from the nearest snapshot at or before that date instead of the newest one (useful to inspect a past state of the catalogue; each run still fully replaces sshomp's facet data, it does not build up a timeseries).
 
 ## Endpoints overview
 
