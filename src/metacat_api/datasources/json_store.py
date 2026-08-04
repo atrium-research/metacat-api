@@ -1,10 +1,7 @@
 import json
+import logging
 from collections import defaultdict
-from functools import lru_cache
 from pathlib import Path
-from typing import Annotated
-
-from fastapi import Depends
 
 from metacat_api.config import settings
 from metacat_api.models.catalogue import Catalogue
@@ -12,6 +9,8 @@ from metacat_api.models.facet import FacetExposure, FacetTimeseriesPoint, FacetV
 from metacat_api.models.mapping import Mapping
 from metacat_api.models.snapshot import Snapshot
 from metacat_api.models.vocabulary import Concept, Vocabulary
+
+logger = logging.getLogger(__name__)
 
 
 class JsonStoreDatasource:
@@ -36,6 +35,7 @@ class JsonStoreDatasource:
     def _read(self, name: str) -> list[dict]:
         path = self.data_dir / name
         if not path.exists():
+            logger.warning(f"Path does not exist: {path}")
             return []
         with path.open(encoding="utf-8") as handle:
             return json.load(handle)
