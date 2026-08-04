@@ -16,7 +16,7 @@ def list_facets() -> list[str]:
 
 def facet_values(
     facet: PivotFacet,
-    catalogues: list[str] | None = None,
+    catalogues: list[str],
     date_from: datetime | None = None,
     date_to: datetime | None = None,
 ) -> list[FacetValue]:
@@ -24,7 +24,7 @@ def facet_values(
     for value in datasource.facet_values():
         if value.facet != facet:
             continue
-        if catalogues and value.catalogue_id not in catalogues:
+        if value.catalogue_id not in catalogues:
             continue
         if date_from and value.timestamp < date_from:
             continue
@@ -36,7 +36,7 @@ def facet_values(
 
 def facet_timeseries(
     facet: PivotFacet,
-    catalogues: list[str] | None = None,
+    catalogues: list[str],
     date_from: datetime | None = None,
     date_to: datetime | None = None,
 ) -> list[FacetTimeseriesPoint]:
@@ -44,7 +44,7 @@ def facet_timeseries(
     for point in datasource.facet_timeseries():
         if point.facet != facet:
             continue
-        if catalogues and point.catalogue_id not in catalogues:
+        if point.catalogue_id not in catalogues:
             continue
         if date_from and point.timestamp < date_from:
             continue
@@ -56,7 +56,7 @@ def facet_timeseries(
 
 def facet_compare(
     facet: PivotFacet,
-    catalogues: list[str] | None = None,
+    catalogues: list[str],
 ) -> FacetComparison:
     facet_all = [v for v in datasource.facet_values() if v.facet == facet]
     if catalogues:

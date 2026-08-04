@@ -1,28 +1,37 @@
 from datetime import datetime
 from typing import Annotated
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from metacat_api.models import FacetComparison, FacetTimeseriesPoint, FacetValue, PivotFacet
-from metacat_api.services import facets as service
+from metacat_api.services import catalogues as catalogues_service
+from metacat_api.services import facets as facets_service
 
 router = APIRouter(prefix="/facets", tags=["Facets"])
 
+
+def _parse_catalogues(raw: str | None) -> list[str]:
+    if not raw:
+        return []
+
+    selected_catalogues = [item.strip() for item in raw.split(",") if item.strip()]
+    known_catalogues = [catalogue.id for catalogue in catalogues_service.list_catalogues()]
+    unknown_catalogues = [catalogue_id for catalogue_id in selected_catalogues if catalogue_id not in known_catalogues]
+    if unknown_catalogues:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Unknown catalogues: '{unknown_catalogues}'")
+    return selected_catalogues
+
+
 _catalogues_query = Annotated[
     str | None,
+    Depends(_parse_catalogues),
     Query(description="Comma-separated catalogue identifiers to restrict the result."),
 ]
 
 
-def _parse_catalogues(raw: str | None) -> list[str] | None:
-    if not raw:
-        return None
-    return [item.strip() for item in raw.split(",") if item.strip()]
-
-
 @router.get("", summary="List the six pivot facets")
 def list_facets() -> list[str]:
-    return service.list_facets()
+    return facets_service.list_facets()
 
 
 @router.get(
@@ -35,7 +44,7 @@ def facet_values(
     date_from: Annotated[datetime | None, Query(alias="from")] = None,
     date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetValue]:
-    return service.facet_values(facet, _parse_catalogues(catalogues), date_from, date_to)
+    return facets_service.facet_values(facet, _parse_catalogues(catalogues), date_from, date_to)
 
 
 @router.get(
@@ -46,7 +55,7 @@ def facet_compare(
     facet: PivotFacet,
     catalogues: _catalogues_query = None,
 ) -> FacetComparison:
-    return service.facet_compare(facet, _parse_catalogues(catalogues))
+    return facets_service.facet_compare(facet, _parse_catalogues(catalogues))
 
 
 @router.get(
@@ -59,4 +68,4 @@ def facet_timeseries(
     date_from: Annotated[datetime | None, Query(alias="from")] = None,
     date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetTimeseriesPoint]:
-    return service.facet_timeseries(facet, _parse_catalogues(catalogues), date_from, date_to)
+    return facets_service.facet_timeseries(facet, _parse_catalogues(catalogues), date_from, date_to)
