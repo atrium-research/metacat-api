@@ -4,9 +4,21 @@ from abc import ABC, abstractmethod
 from datetime import UTC, datetime
 from pathlib import Path
 
+from pydantic_core import to_jsonable_python
+
 from metacat_api.config import settings
-from metacat_api.models.common import COLLECTIONS, FACETS, Collection, Reasons, StatusOverrides
-from metacat_api.models.facet import Facets
+from metacat_api.models import (
+    COLLECTIONS,
+    FACETS,
+    CollectionValues,
+    FacetExposure,
+    Facets,
+    FacetValue,
+    HarvestStatus,
+    Reasons,
+    StatusOverrides,
+    Store,
+)
 
 OUT_DIR = Path(settings.json_data_dir).resolve()
 
@@ -15,49 +27,50 @@ SNAPSHOT_TS = "2026-05-03T00:00:00Z"
 logger = logging.getLogger(__name__)
 
 
-def _read(directory: Path, name: str) -> list:
+def _read(directory: Path, name: str) -> CollectionValues:
     with (directory / f"{name}.json").open(encoding="utf-8") as handle:
         return json.load(handle)
 
 
-def load_store() -> dict[Collection, list]:
-    return {name: _read(OUT_DIR, name) for name in COLLECTIONS}
+def load_store() -> Store:
+    loaded = {name: _read(OUT_DIR, name) for name in COLLECTIONS}
+    return Store.model_validate(loaded)
 
 
-def write_store(store: dict[Collection, list]) -> None:
+def write_store(store: Store) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for name in COLLECTIONS:
         with (OUT_DIR / f"{name}.json").open("w", encoding="utf-8") as handle:
-            json.dump(store[name], handle, indent=2, ensure_ascii=False)
+            json.dump(store.get(name), handle, indent=2, ensure_ascii=False, default=to_jsonable_python)
             handle.write("\n")
 
 
 def apply_catalogue(
-    store: dict[Collection, list],
+    store: Store,
     catalogue_id: str,
     harvested: Facets,
-    reasons: dict[str, str],
+    reasons: Reasons,
     status_overrides: StatusOverrides,
 ) -> None:
     ranked = {
         facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items() if pairs
     }
 
-    store[Collection.facet_values] = [v for v in store[Collection.facet_values] if v["catalogue_id"] != catalogue_id]
-    store[Collection.facet_exposures] = [
-        e for e in store[Collection.facet_exposures] if e["catalogue_id"] != catalogue_id
-    ]
+    store.facet_values = [v for v in store.facet_values if v.catalogue_id != catalogue_id]
+    store.facet_exposures = [e for e in store.facet_exposures if e.catalogue_id != catalogue_id]
 
     for facet, pairs in ranked.items():
         for value, count in pairs:
-            store[Collection.facet_values].append(
-                {
-                    "catalogue_id": catalogue_id,
-                    "facet": facet,
-                    "value": value,
-                    "count": count,
-                    "timestamp": SNAPSHOT_TS,
-                }
+            store.facet_values.append(
+                FacetValue.model_validate(
+                    {
+                        "catalogue_id": catalogue_id,
+                        "facet": facet,
+                        "value": value,
+                        "count": count,
+                        "timestamp": SNAPSHOT_TS,
+                    }
+                )
             )
 
     for facet in FACETS:
@@ -65,37 +78,41 @@ def apply_catalogue(
         if pairs:
             status = status_overrides.get(facet, "exposed")
             top_value, top_count = pairs[0]
-            store[Collection.facet_exposures].append(
-                {
-                    "catalogue_id": catalogue_id,
-                    "facet": facet,
-                    "status": status,
-                    "reason": None if status == "exposed" else reasons.get(facet),
-                    "values_count": len(pairs),
-                    "top_value": top_value,
-                    "top_value_count": top_count,
-                    "total_count": sum(count for _, count in pairs),
-                }
+            store.facet_exposures.append(
+                FacetExposure.model_validate(
+                    {
+                        "catalogue_id": catalogue_id,
+                        "facet": facet,
+                        "status": status,
+                        "reason": None if status == "exposed" else reasons.get(facet),
+                        "values_count": len(pairs),
+                        "top_value": top_value,
+                        "top_value_count": top_count,
+                        "total_count": sum(count for _, count in pairs),
+                    }
+                )
             )
         else:
-            store[Collection.facet_exposures].append(
-                {
-                    "catalogue_id": catalogue_id,
-                    "facet": facet,
-                    "status": "gap",
-                    "reason": reasons.get(facet, "Facet not exposed by the source."),
-                    "values_count": None,
-                    "top_value": None,
-                    "top_value_count": None,
-                    "total_count": None,
-                }
+            store.facet_exposures.append(
+                FacetExposure.model_validate(
+                    {
+                        "catalogue_id": catalogue_id,
+                        "facet": facet,
+                        "status": "gap",
+                        "reason": reasons.get(facet, "Facet not exposed by the source."),
+                        "values_count": None,
+                        "top_value": None,
+                        "top_value_count": None,
+                        "total_count": None,
+                    }
+                )
             )
 
-    harvest_ts = datetime.now(UTC).isoformat()
-    for catalogue in store["catalogues"]:
-        if catalogue["id"] == catalogue_id:
-            catalogue["last_harvest_at"] = harvest_ts
-            catalogue["harvest_status"] = "live"
+    harvest_ts = datetime.now(UTC)
+    for catalogue in store.catalogues:
+        if catalogue.id == catalogue_id:
+            catalogue.last_harvest_at = harvest_ts
+            catalogue.harvest_status = HarvestStatus.live
 
 
 def report(catalogue_id: str, harvested: Facets) -> None:

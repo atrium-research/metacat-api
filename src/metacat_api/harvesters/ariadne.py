@@ -18,9 +18,7 @@ from SPARQLWrapper import JSON, SPARQLWrapper
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import FacetExposureStatus, PivotFacet
-from metacat_api.models.common import Reasons, StatusOverrides
-from metacat_api.models.facet import Facets
+from metacat_api.models import FacetExposureStatus, Facets, PivotFacet, Reasons, StatusOverrides
 
 ARIADNE_SPARQL_ENDPOINT = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
 

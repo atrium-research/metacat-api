@@ -1,8 +1,5 @@
 from metacat_api.datasources.json_store import datasource
-from metacat_api.models.catalogue import Catalogue
-from metacat_api.models.common import FacetExposureStatus, PivotFacet
-from metacat_api.models.facet import FacetExposure
-from metacat_api.models.vocabulary import Vocabulary
+from metacat_api.models import Catalogue, FacetExposure, FacetExposureStatus, PivotFacet, Vocabulary
 
 
 def list_catalogues() -> list[Catalogue]:

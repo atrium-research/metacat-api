@@ -13,9 +13,7 @@ from pathlib import Path
 from metacat_api.harvesters.clarin_lib.vlo_querymodule import extract_facet_values
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import PivotFacet
-from metacat_api.models.common import Reasons, StatusOverrides
-from metacat_api.models.facet import Facets
+from metacat_api.models import Facets, PivotFacet, Reasons, StatusOverrides
 
 logger = logging.getLogger(__name__)
 

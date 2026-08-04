@@ -27,8 +27,7 @@ import requests
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models.common import Reasons, StatusOverrides
-from metacat_api.models.facet import Facets
+from metacat_api.models import Facets, PivotFacet, Reasons, StatusOverrides
 
 SNAPSHOT_INDEX_URL = "https://api.github.com/repos/SSHOC/sshompitor/contents/data"
 SNAPSHOT_NAME_RE = re.compile(r"^full_items_(\d+)\.json$")
@@ -108,7 +107,7 @@ class SshompHarvester(Harvester):
     @property
     def reasons(self) -> Reasons:
         return {
-            "source-2": "The SSH Open Marketplace exposes no secondary source facet.",
+            PivotFacet.source_2: "The SSH Open Marketplace exposes no secondary source facet.",
         }
 
     @property

@@ -4,11 +4,16 @@ from collections import defaultdict
 from pathlib import Path
 
 from metacat_api.config import settings
-from metacat_api.models.catalogue import Catalogue
-from metacat_api.models.facet import FacetExposure, FacetTimeseriesPoint, FacetValue
-from metacat_api.models.mapping import Mapping
-from metacat_api.models.snapshot import Snapshot
-from metacat_api.models.vocabulary import Concept, Vocabulary
+from metacat_api.models import (
+    Catalogue,
+    Concept,
+    FacetExposure,
+    FacetTimeseriesPoint,
+    FacetValue,
+    Mapping,
+    Snapshot,
+    Vocabulary,
+)
 
 logger = logging.getLogger(__name__)
 

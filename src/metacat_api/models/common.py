@@ -1,4 +1,5 @@
 from enum import StrEnum
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -13,7 +14,10 @@ class Collection(StrEnum):
     snapshots = "snapshots"
 
 
-COLLECTIONS = [facet.value for facet in Collection]
+COLLECTIONS = [collection.value for collection in Collection]
+
+
+CollectionValues = list[dict[str, Any]]
 
 
 class PivotFacet(StrEnum):

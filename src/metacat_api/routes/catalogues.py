@@ -1,9 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from metacat_api.models.catalogue import Catalogue
-from metacat_api.models.common import ErrorResponse, FacetExposureStatus, PivotFacet
-from metacat_api.models.facet import FacetExposure
-from metacat_api.models.vocabulary import Vocabulary
+from metacat_api.models import Catalogue, ErrorResponse, FacetExposure, FacetExposureStatus, PivotFacet, Vocabulary
 from metacat_api.services import catalogues as service
 
 router = APIRouter(prefix="/catalogues", tags=["Catalogues"])

@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from metacat_api import __version__
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models.common import ErrorResponse
+from metacat_api.models import ErrorResponse
 from metacat_api.routes import (
     activity,
     catalogues,

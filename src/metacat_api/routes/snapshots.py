@@ -1,8 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 
 from metacat_api.datasources.json_store import datasource
-from metacat_api.models.common import ErrorResponse
-from metacat_api.models.snapshot import Snapshot
+from metacat_api.models import ErrorResponse, Snapshot
 
 router = APIRouter(prefix="/snapshots", tags=["Snapshots"])
 

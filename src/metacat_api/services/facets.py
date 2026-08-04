@@ -1,12 +1,12 @@
 from datetime import datetime
 
 from metacat_api.datasources.json_store import datasource
-from metacat_api.models.common import PivotFacet
-from metacat_api.models.facet import (
+from metacat_api.models import (
     FacetComparison,
     FacetComparisonRow,
     FacetTimeseriesPoint,
     FacetValue,
+    PivotFacet,
 )
 
 

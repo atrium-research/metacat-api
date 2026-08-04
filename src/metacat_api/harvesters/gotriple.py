@@ -12,8 +12,7 @@ import requests
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models.common import Reasons, StatusOverrides
-from metacat_api.models.facet import Facets
+from metacat_api.models import Facets, PivotFacet, Reasons, StatusOverrides
 
 BASE_URL = "https://api.gotriple.eu/api/documents"
 FACET_AGGS = {"resource-type": "type", "discipline": "topic", "source": "provider"}
@@ -36,9 +35,9 @@ class GotripleHarvester(Harvester):
     @property
     def reasons(self) -> Reasons:
         return {
-            "format": "Format is a documented gap in the GoTriple API.",
-            "source-2": "GoTriple exposes no secondary source facet.",
-            "subjects": "Subjects are a documented gap in the GoTriple API.",
+            PivotFacet.format: "Format is a documented gap in the GoTriple API.",
+            PivotFacet.source_2: "GoTriple exposes no secondary source facet.",
+            PivotFacet.subjects: "Subjects are a documented gap in the GoTriple API.",
         }
 
     @property

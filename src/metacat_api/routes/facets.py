@@ -3,8 +3,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Query
 
-from metacat_api.models.common import PivotFacet
-from metacat_api.models.facet import FacetComparison, FacetTimeseriesPoint, FacetValue
+from metacat_api.models import FacetComparison, FacetTimeseriesPoint, FacetValue, PivotFacet
 from metacat_api.services import facets as service
 
 router = APIRouter(prefix="/facets", tags=["Facets"])
