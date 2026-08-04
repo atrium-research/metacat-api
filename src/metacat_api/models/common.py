@@ -12,6 +12,9 @@ class PivotFacet(StrEnum):
     subjects = "subjects"
 
 
+FACETS = [facet.value for facet in PivotFacet]
+
+
 class FacetExposureStatus(StrEnum):
     exposed = "exposed"
     partial = "partial"

@@ -13,11 +13,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from metacat_api.config import settings
+from metacat_api.models.common import FACETS
 
 OUT_DIR = Path(settings.json_data_dir).resolve()
 
 SNAPSHOT_TS = "2026-05-03T00:00:00Z"
-FACET_ORDER = ["resource-type", "format", "discipline", "source", "source-2", "subjects"]
 COLLECTIONS = [
     "catalogues",
     "facet_values",
@@ -77,7 +77,7 @@ def apply_catalogue(
                 }
             )
 
-    for facet in FACET_ORDER:
+    for facet in FACETS:
         pairs = ranked.get(facet)
         if pairs:
             status = status_overrides.get(facet, "exposed")
@@ -117,7 +117,7 @@ def apply_catalogue(
 
 def report(catalogue_id: str, harvested: Facets) -> None:
     logger.info(f"Harvested {catalogue_id} into {OUT_DIR}")
-    for facet in FACET_ORDER:
+    for facet in FACETS:
         pairs = harvested.get(facet)
         if pairs:
             top = max(pairs, key=lambda item: item[1])
