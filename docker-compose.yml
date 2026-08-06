@@ -1,8 +1,11 @@
-name: metacat-api
+name: metacat
 
 services:
   api:
     build:
+      tags:
+        - "metacat-api:${VERSION:?}"
+        - "metacat-api:latest"
       context: .
       args:
         VERSION: ${VERSION:?}
