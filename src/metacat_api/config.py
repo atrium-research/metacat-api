@@ -1,4 +1,6 @@
 from enum import StrEnum
+from functools import lru_cache
+from importlib.metadata import PackageNotFoundError, version
 from typing import Annotated
 
 from pydantic import field_validator
@@ -27,3 +29,11 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
+@lru_cache
+def get_version():
+    try:
+        return version(__package__)
+    except PackageNotFoundError:
+        return "0.0.0-dev"

@@ -1,6 +1,6 @@
 [project]
 name = "metacat-api"
-version = "0.1.0"
+dynamic = ["version"]
 description = "REST API serving the MetaCat catalogue-of-catalogues dashboard for ATRIUM."
 readme = "README.md"
 requires-python = ">=3.14"
@@ -31,12 +31,16 @@ Repository = "https://github.com/atrium-research/metacat-api"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.hatch.version]
+source = "env"
+variable = "VERSION"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/metacat_api"]
 
 [tool.ruff]
 line-length = 120
-target-version = "py311"
+target-version = "py314"
 src = ["src", "tests"]
 
 [tool.ruff.lint]

@@ -23,8 +23,9 @@ git clone https://github.com/atrium-research/metacat-api.git
 cd metacat-api
 
 # with uv
+set -a && source .env && set +a
 uv sync
-uv run fastapi run src/metacat_api/main.py --reload
+uv run fastapi dev src/metacat_api/main.py
 ```
 
 Then open the interactive documentation at http://localhost:8000/docs (or http://localhost:8000/redoc).
