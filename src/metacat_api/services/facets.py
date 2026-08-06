@@ -24,7 +24,7 @@ def facet_values(
     for value in store.facet_values:
         if value.facet != facet:
             continue
-        if value.catalogue_id not in catalogues:
+        if catalogues and value.catalogue_id not in catalogues:
             continue
         if date_from and value.timestamp < date_from:
             continue
@@ -44,7 +44,7 @@ def facet_timeseries(
     for point in store.facet_timeseries:
         if point.facet != facet:
             continue
-        if point.catalogue_id not in catalogues:
+        if catalogues and point.catalogue_id not in catalogues:
             continue
         if date_from and point.timestamp < date_from:
             continue
