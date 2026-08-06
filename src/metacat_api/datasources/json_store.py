@@ -1,16 +1,24 @@
 import json
+import logging
 from collections import defaultdict
 from pathlib import Path
 
-from metacat_api.datasources.base import Datasource
-from metacat_api.models.catalogue import Catalogue
-from metacat_api.models.facet import FacetExposure, FacetTimeseriesPoint, FacetValue
-from metacat_api.models.mapping import Mapping
-from metacat_api.models.snapshot import Snapshot
-from metacat_api.models.vocabulary import Concept, Vocabulary
+from metacat_api.config import settings
+from metacat_api.models import (
+    Catalogue,
+    Concept,
+    FacetExposure,
+    FacetTimeseriesPoint,
+    FacetValue,
+    Mapping,
+    Snapshot,
+    Vocabulary,
+)
+
+logger = logging.getLogger(__name__)
 
 
-class JsonStoreDatasource(Datasource):
+class JsonStoreDatasource:
     """Reads timestamped JSON snapshots from the metacat-data store.
 
     Expects a directory holding the metacat-data layout (one file per
@@ -32,12 +40,16 @@ class JsonStoreDatasource(Datasource):
     def _read(self, name: str) -> list[dict]:
         path = self.data_dir / name
         if not path.exists():
+            logger.warning(f"Path does not exist: {path}")
             return []
         with path.open(encoding="utf-8") as handle:
             return json.load(handle)
 
     def catalogues(self) -> list[Catalogue]:
         return self._catalogues
+
+    def catalogue_ids(self) -> list[str]:
+        return [c.id for c in self.catalogues()]
 
     def facet_exposures(self) -> list[FacetExposure]:
         return self._facet_exposures
@@ -72,3 +84,6 @@ class JsonStoreDatasource(Datasource):
 
     def snapshots(self) -> list[Snapshot]:
         return self._snapshots
+
+
+datasource = JsonStoreDatasource(settings.json_data_dir)

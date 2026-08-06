@@ -1,15 +1,13 @@
 from datetime import datetime
 
-from metacat_api.datasources.base import Datasource
-from metacat_api.models.common import PivotFacet
-from metacat_api.models.facet import (
+from metacat_api.datasources.json_store import datasource
+from metacat_api.models import (
     FacetComparison,
     FacetComparisonRow,
     FacetTimeseriesPoint,
     FacetValue,
+    PivotFacet,
 )
-
-CATALOGUE_ORDER = ["ariadne", "clarin-vlo", "gotriple", "sshomp"]
 
 
 def list_facets() -> list[str]:
@@ -17,17 +15,16 @@ def list_facets() -> list[str]:
 
 
 def facet_values(
-    ds: Datasource,
     facet: PivotFacet,
-    catalogues: list[str] | None = None,
+    catalogues: list[str],
     date_from: datetime | None = None,
     date_to: datetime | None = None,
 ) -> list[FacetValue]:
     result = []
-    for value in ds.facet_values():
+    for value in datasource.facet_values():
         if value.facet != facet:
             continue
-        if catalogues and value.catalogue_id not in catalogues:
+        if value.catalogue_id not in catalogues:
             continue
         if date_from and value.timestamp < date_from:
             continue
@@ -38,17 +35,16 @@ def facet_values(
 
 
 def facet_timeseries(
-    ds: Datasource,
     facet: PivotFacet,
-    catalogues: list[str] | None = None,
+    catalogues: list[str],
     date_from: datetime | None = None,
     date_to: datetime | None = None,
 ) -> list[FacetTimeseriesPoint]:
     result = []
-    for point in ds.facet_timeseries():
+    for point in datasource.facet_timeseries():
         if point.facet != facet:
             continue
-        if catalogues and point.catalogue_id not in catalogues:
+        if point.catalogue_id not in catalogues:
             continue
         if date_from and point.timestamp < date_from:
             continue
@@ -59,16 +55,15 @@ def facet_timeseries(
 
 
 def facet_compare(
-    ds: Datasource,
     facet: PivotFacet,
-    catalogues: list[str] | None = None,
+    catalogues: list[str],
 ) -> FacetComparison:
-    facet_all = [v for v in ds.facet_values() if v.facet == facet]
+    facet_all = [v for v in datasource.facet_values() if v.facet == facet]
     if catalogues:
         selected = list(catalogues)
     else:
         present = {v.catalogue_id for v in facet_all}
-        selected = [c for c in CATALOGUE_ORDER if c in present] or sorted(present)
+        selected = [c for c in datasource.catalogue_ids() if c in present] or sorted(present)
 
     latest = max((v.timestamp for v in facet_all), default=None)
     latest_values = [v for v in facet_all if v.timestamp == latest]

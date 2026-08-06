@@ -3,13 +3,13 @@ from metacat_api.datasources.json_store import JsonStoreDatasource
 
 
 def test_json_store_reads_directory():
-    ds = JsonStoreDatasource(settings.json_data_dir)
-    assert len(ds.catalogues()) == 4
-    assert ds.facet_values()
-    assert ds.facet_timeseries()
+    datasource = JsonStoreDatasource(settings.json_data_dir)
+    assert len(datasource.catalogues()) == 4
+    assert datasource.facet_values()
+    assert datasource.facet_timeseries()
 
 
 def test_json_store_missing_directory_is_empty():
-    ds = JsonStoreDatasource("/nonexistent/metacat/data")
-    assert ds.catalogues() == []
-    assert ds.facet_timeseries() == []
+    datasource = JsonStoreDatasource("/nonexistent/metacat/data")
+    assert datasource.catalogues() == []
+    assert datasource.facet_timeseries() == []

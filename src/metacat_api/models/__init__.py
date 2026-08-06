@@ -1,11 +1,19 @@
 from metacat_api.models.catalogue import Catalogue
 from metacat_api.models.common import (
+    Collection,
+    CollectionValues,
     ErrorResponse,
     FacetExposureStatus,
     HarvestStatus,
     MappingRelation,
     Pagination,
     PivotFacet,
+    RawFacets,
+    RawFacetValue,
+    RawFacetValues,
+    Reasons,
+    StatusOverrides,
+    raw_facets_adapter,
 )
 from metacat_api.models.facet import (
     FacetComparison,
@@ -16,10 +24,13 @@ from metacat_api.models.facet import (
 )
 from metacat_api.models.mapping import Mapping, VocabularyOverlap
 from metacat_api.models.snapshot import Snapshot
+from metacat_api.models.store import Store
 from metacat_api.models.vocabulary import Concept, ConceptRef, Vocabulary
 
 __all__ = [
     "Catalogue",
+    "Collection",
+    "CollectionValues",
     "Concept",
     "ConceptRef",
     "ErrorResponse",
@@ -34,7 +45,14 @@ __all__ = [
     "MappingRelation",
     "Pagination",
     "PivotFacet",
+    "RawFacetValue",
+    "RawFacetValues",
+    "RawFacets",
+    "raw_facets_adapter",
+    "Reasons",
     "Snapshot",
+    "StatusOverrides",
+    "Store",
     "Vocabulary",
     "VocabularyOverlap",
 ]

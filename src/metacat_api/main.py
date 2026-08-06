@@ -7,9 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from metacat_api import __version__
-from metacat_api.config import settings
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models.common import ErrorResponse
+from metacat_api.models import ErrorResponse
 from metacat_api.routes import (
     activity,
     catalogues,
@@ -73,7 +72,7 @@ def create_app() -> FastAPI:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.cors_origins,
+        allow_origins=["*"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
