@@ -13,8 +13,7 @@ from metacat_api.models import (
     Reasons,
     StatusOverrides,
 )
-
-SNAPSHOT_TS = "2026-05-03T00:00:00Z"
+from metacat_api.services.util import now, time_to_str
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +24,8 @@ def apply_catalogue(
     reasons: Reasons,
     status_overrides: StatusOverrides,
 ) -> None:
+    snapshot_ts = time_to_str(now())
+    logger.info(f"Start apply catalogue {catalogue_id} for snapshot {snapshot_ts}")
     ranked = {facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items()}
 
     store.facet_values = [v for v in store.facet_values if v.catalogue_id != catalogue_id]
@@ -39,7 +40,7 @@ def apply_catalogue(
                         "facet": PivotFacet.from_str(facet),
                         "value": value,
                         "count": count,
-                        "timestamp": SNAPSHOT_TS,
+                        "timestamp": snapshot_ts,
                     },
                     extra="forbid",
                 )

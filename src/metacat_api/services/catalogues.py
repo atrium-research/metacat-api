@@ -24,7 +24,7 @@ def facet_coverage(catalogue_id: str) -> dict[PivotFacet, FacetExposureStatus]:
 
 def provenance(catalogue_id: str) -> dict:
     catalogue = get_catalogue(catalogue_id)
-    if catalogue is None:
+    if not catalogue:
         return {}
     return {
         "catalogue_id": catalogue.id,
