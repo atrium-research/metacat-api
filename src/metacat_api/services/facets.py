@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from metacat_api.datasources.json_store import datasource
+from metacat_api.datasources.store import store
 from metacat_api.models import (
     FacetComparison,
     FacetComparisonRow,
@@ -21,7 +21,7 @@ def facet_values(
     date_to: datetime | None = None,
 ) -> list[FacetValue]:
     result = []
-    for value in datasource.facet_values():
+    for value in store.facet_values:
         if value.facet != facet:
             continue
         if value.catalogue_id not in catalogues:
@@ -41,7 +41,7 @@ def facet_timeseries(
     date_to: datetime | None = None,
 ) -> list[FacetTimeseriesPoint]:
     result = []
-    for point in datasource.facet_timeseries():
+    for point in store.facet_timeseries:
         if point.facet != facet:
             continue
         if point.catalogue_id not in catalogues:
@@ -58,12 +58,12 @@ def facet_compare(
     facet: PivotFacet,
     catalogues: list[str],
 ) -> FacetComparison:
-    facet_all = [v for v in datasource.facet_values() if v.facet == facet]
+    facet_all = [v for v in store.facet_values if v.facet == facet]
     if catalogues:
         selected = list(catalogues)
     else:
         present = {v.catalogue_id for v in facet_all}
-        selected = [c for c in datasource.catalogue_ids() if c in present] or sorted(present)
+        selected = [c for c in store.catalogue_ids if c in present] or sorted(present)
 
     latest = max((v.timestamp for v in facet_all), default=None)
     latest_values = [v for v in facet_all if v.timestamp == latest]

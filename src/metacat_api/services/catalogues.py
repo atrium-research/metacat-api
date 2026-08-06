@@ -1,21 +1,21 @@
-from metacat_api.datasources.json_store import datasource
+from metacat_api.datasources.store import store
 from metacat_api.models import Catalogue, FacetExposure, FacetExposureStatus, PivotFacet, Vocabulary
 
 
 def list_catalogues() -> list[Catalogue]:
-    return datasource.catalogues()
+    return store.catalogues
 
 
 def get_catalogue(catalogue_id: str) -> Catalogue | None:
-    return next((c for c in datasource.catalogues() if c.id == catalogue_id), None)
+    return next((c for c in store.catalogues if c.id == catalogue_id), None)
 
 
 def catalogue_facets(catalogue_id: str) -> list[FacetExposure]:
-    return [e for e in datasource.facet_exposures() if e.catalogue_id == catalogue_id]
+    return [e for e in store.facet_exposures if e.catalogue_id == catalogue_id]
 
 
 def catalogue_vocabularies(catalogue_id: str) -> list[Vocabulary]:
-    return [v for v in datasource.vocabularies() if catalogue_id in v.used_by_catalogues]
+    return [v for v in store.vocabularies if catalogue_id in v.used_by_catalogues]
 
 
 def facet_coverage(catalogue_id: str) -> dict[PivotFacet, FacetExposureStatus]:

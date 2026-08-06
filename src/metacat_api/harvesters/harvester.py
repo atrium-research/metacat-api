@@ -1,15 +1,10 @@
-import json
 import logging
 from abc import ABC, abstractmethod
 from datetime import UTC, datetime
-from pathlib import Path
-
-from pydantic_core import to_jsonable_python
 
 from metacat_api.config import settings
+from metacat_api.datasources.store import store, write_store
 from metacat_api.models import (
-    Collection,
-    CollectionValues,
     FacetExposure,
     FacetValue,
     HarvestStatus,
@@ -17,39 +12,14 @@ from metacat_api.models import (
     RawFacets,
     Reasons,
     StatusOverrides,
-    Store,
 )
-
-OUT_DIR = Path(settings.json_data_dir).resolve()
 
 SNAPSHOT_TS = "2026-05-03T00:00:00Z"
 
 logger = logging.getLogger(__name__)
 
 
-def _read(directory: Path, name: str) -> CollectionValues:
-    with (directory / f"{name}.json").open(encoding="utf-8") as handle:
-        return json.load(handle)
-
-
-def load_store() -> Store:
-    loaded = {name: _read(OUT_DIR, name) for name in Collection}
-    return Store.model_validate(
-        loaded,
-        extra="forbid",
-    )
-
-
-def write_store(store: Store) -> None:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    for name in Collection:
-        with (OUT_DIR / f"{name}.json").open("w", encoding="utf-8") as handle:
-            json.dump(store.get(name), handle, indent=2, ensure_ascii=False, default=to_jsonable_python)
-            handle.write("\n")
-
-
 def apply_catalogue(
-    store: Store,
     catalogue_id: str,
     harvested: RawFacets,
     reasons: Reasons,
@@ -120,7 +90,7 @@ def apply_catalogue(
 
 
 def report(catalogue_id: str, harvested: RawFacets) -> None:
-    logger.info(f"Harvested {catalogue_id} into {OUT_DIR}")
+    logger.info(f"Harvested {catalogue_id} into {settings.json_data_path()}")
     for facet in PivotFacet:
         pairs = harvested.get(facet)
         if pairs:
@@ -147,8 +117,7 @@ class Harvester(ABC):
     def harvest(self) -> RawFacets: ...
 
     def apply(self) -> None:
-        store = load_store()
         harvested = self.harvest()
-        apply_catalogue(store, self.catalogue_id, harvested, self.reasons, self.status_overrides)
-        write_store(store)
+        apply_catalogue(self.catalogue_id, harvested, self.reasons, self.status_overrides)
+        write_store()
         report(self.catalogue_id, harvested)
