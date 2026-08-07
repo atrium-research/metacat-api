@@ -14,8 +14,8 @@ sshomp's facet_values with whichever single snapshot was selected (same one-mome
 behaviour as the other connectors).
 
 Run from the metacat-api root:
-    uv run --with requests python scripts/harvest_sshomp.py
-    SSHOMP_SNAPSHOT_DATE=2025-08-01 uv run --with requests python scripts/harvest_sshomp.py
+    uv run --with requests python scripts/sshomp.py
+    SSHOMP_SNAPSHOT_DATE=2025-08-01 uv run --with requests python scripts/sshomp.py
 """
 
 import logging

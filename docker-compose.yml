@@ -1,8 +1,15 @@
-name: metacat-api
+name: metacat
 
 services:
   api:
-    build: .
+    container_name: metacat-api
+    build:
+      tags:
+        - "metacat-api:${VERSION:?}"
+        - "metacat-api:latest"
+      context: .
+      args:
+        VERSION: ${VERSION:?}
     ports:
       - "8000:8000"
     environment:
@@ -10,9 +17,9 @@ services:
       LOG_LEVEL: ${LOG_LEVEL:?}
       API_KEYS: ${API_KEYS:?}
     volumes:
-      - ${JSON_DATA_DIR:?}:/data
+      - data:/data
     healthcheck:
-      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
       interval: 10s
       timeout: 2s
       retries: 10
@@ -20,3 +27,10 @@ services:
       watch:
         - path: ./src
           action: rebuild
+volumes:
+  data:
+     driver: local
+     driver_opts:
+       type: none
+       o: bind
+       device: "${PWD}/${JSON_DATA_DIR:?}"

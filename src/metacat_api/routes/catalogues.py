@@ -12,7 +12,7 @@ _NOT_FOUND = {status.HTTP_404_NOT_FOUND: {"model": ErrorResponse}}
 
 def _require_catalogue(catalogue_id: str) -> Catalogue:
     catalogue = service.get_catalogue(catalogue_id)
-    if catalogue is None:
+    if not catalogue:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Unknown catalogue '{catalogue_id}'")
     return catalogue
 

@@ -6,7 +6,7 @@ from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from metacat_api import __version__
+from metacat_api.config import get_version
 from metacat_api.logging_setup import setup_logging
 from metacat_api.models import ErrorResponse
 from metacat_api.routes import (
@@ -64,7 +64,7 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title="MetaCat API",
         description=DESCRIPTION,
-        version=__version__,
+        version=get_version(),
         contact={"name": "Foxcub", "email": "julien.homo@foxcub.fr"},
         license_info={"name": "Apache-2.0", "url": "https://www.apache.org/licenses/LICENSE-2.0"},
         lifespan=lifespan,

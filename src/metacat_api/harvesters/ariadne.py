@@ -8,7 +8,7 @@ credentials, or the future EOSC EU Node GraphDB. Point it at one with
 ARIADNE_SPARQL_ENDPOINT. On an unreachable endpoint it exits without writing,
 never fabricating data.
 
-    uv run src/metacat_api/harvesters/harvest_ariadne.py
+    uv run src/metacat_api/harvesters/ariadne.py
 """
 
 import logging

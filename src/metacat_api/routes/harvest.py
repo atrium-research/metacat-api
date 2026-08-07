@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from metacat_api.models import ErrorResponse
+from metacat_api.models import ErrorResponse, Task
 from metacat_api.services.auth import is_api_key_valid
 from metacat_api.services.harvest import harvest, harvest_all_async
 
@@ -15,11 +15,15 @@ async def get_tasks():
     from metacat_api.main import get_scheduler
 
     return [
-        {
-            "name": job.name,
-            "id": job.id,
-            "next_run_time": job.next_run_time,
-        }
+        Task.model_validate(
+            {
+                "id": job.id,
+                "name": job.name,
+                "next_run_time": job.next_run_time,
+                "trigger": str(job.trigger),
+            },
+            extra="forbid",
+        )
         for job in get_scheduler().get_jobs()
     ]
 

@@ -23,8 +23,9 @@ git clone https://github.com/atrium-research/metacat-api.git
 cd metacat-api
 
 # with uv
+set -a && source .env && set +a
 uv sync
-uv run fastapi run src/metacat_api/main.py --reload
+uv run fastapi dev src/metacat_api/main.py
 ```
 
 Then open the interactive documentation at http://localhost:8000/docs (or http://localhost:8000/redoc).
@@ -39,13 +40,13 @@ Then open http://localhost:8000/docs.
 
 ### Harvesting real data
 
-The `json` datasource reads whatever is in `JSON_DATA_DIR` (default `./data`). The harvest scripts in `src/metacat_api/harvesters/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real.
+The `json` store reads whatever is in `JSON_DATA_DIR`. The harvest scripts in `src/metacat_api/harvesters/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real.
 
 ```bash
-uv run src/metacat_api/harvesters/harvest_clarin.py
-uv run src/metacat_api/harvesters/harvest_gotriple.py
-uv run src/metacat_api/harvesters/harvest_sshomp.py
-JSON_DATA_DIR=./data uv run fastapi run src/metacat_api/main.py --reload
+uv run src/metacat_api/harvesters/clarin.py
+uv run src/metacat_api/harvesters/gotriple.py
+uv run src/metacat_api/harvesters/sshomp.py
+uv run fastapi dev src/metacat_api/main.py
 ```
 
 | Connector | Source | Status |

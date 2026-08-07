@@ -27,3 +27,9 @@ def setup_logging() -> None:
     root = logging.getLogger()
     root.handlers = [handler]
     root.setLevel(settings.log_level.upper())
+
+    httpx_logger = logging.getLogger("httpx")
+    httpx_logger.setLevel(logging.WARNING)
+
+    httpx2_logger = logging.getLogger("httpx2")
+    httpx2_logger.setLevel(logging.WARNING)

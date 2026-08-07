@@ -1,10 +1,10 @@
-from metacat_api.datasources.json_store import datasource
+from metacat_api.datasources.store import store
 from metacat_api.models.common import MappingRelation
 from metacat_api.models.mapping import Mapping, VocabularyOverlap
 
 
 def _scheme_of(vocabulary_id: str) -> str | None:
-    vocabulary = next((v for v in datasource.vocabularies() if v.id == vocabulary_id), None)
+    vocabulary = next((v for v in store.vocabularies if v.id == vocabulary_id), None)
     return vocabulary.name if vocabulary else None
 
 
@@ -17,7 +17,7 @@ def list_mappings(
     scheme_b = _scheme_of(vocab_b) if vocab_b else None
 
     result = []
-    for mapping in datasource.mappings():
+    for mapping in store.mappings:
         schemes = {mapping.source_concept.scheme, mapping.target_concept.scheme}
         if scheme_a and scheme_a not in schemes:
             continue
@@ -35,13 +35,13 @@ def vocabulary_overlap(vocab_a: str, vocab_b: str) -> VocabularyOverlap:
 
     relations: dict[MappingRelation, int] = {}
     shared = 0
-    for mapping in datasource.mappings():
+    for mapping in store.mappings:
         schemes = {mapping.source_concept.scheme, mapping.target_concept.scheme}
         if scheme_a in schemes and scheme_b in schemes:
             shared += 1
             relations[mapping.relation] = relations.get(mapping.relation, 0) + 1
 
-    vocabularies = {v.id: v for v in datasource.vocabularies()}
+    vocabularies = {v.id: v for v in store.vocabularies}
     total_a = vocabularies[vocab_a].concepts_count if vocab_a in vocabularies else 0
     total_b = vocabularies[vocab_b].concepts_count if vocab_b in vocabularies else 0
 

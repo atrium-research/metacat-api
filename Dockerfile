@@ -1,6 +1,6 @@
 FROM python:3.14-slim
 
-COPY --from=ghcr.io/astral-sh/uv:0.11.26 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.12.1 /uv /uvx /bin/
 
 RUN useradd --create-home --uid 1000 app
 USER app
@@ -11,6 +11,8 @@ ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
 
 WORKDIR /app
+
+ARG VERSION
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \

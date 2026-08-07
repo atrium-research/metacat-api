@@ -1,4 +1,7 @@
 from enum import StrEnum
+from functools import lru_cache
+from importlib.metadata import PackageNotFoundError, version
+from pathlib import Path
 from typing import Annotated
 
 from pydantic import field_validator
@@ -25,5 +28,16 @@ class Settings(BaseSettings):
     def split_api_keys(cls, keys: str) -> list[bytes]:
         return [key.strip().encode("utf-8") for key in keys.split(",") if key.strip()]
 
+    def json_data_path(self) -> Path:
+        return Path(self.json_data_dir).resolve()
+
 
 settings = Settings()
+
+
+@lru_cache
+def get_version():
+    try:
+        return version(__package__)
+    except PackageNotFoundError:
+        return "0.0.0-dev"

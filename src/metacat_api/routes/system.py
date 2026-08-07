@@ -3,7 +3,7 @@ from typing import Literal
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from metacat_api import __version__
+from metacat_api.config import get_version
 
 router = APIRouter(tags=["System"])
 
@@ -24,4 +24,4 @@ class Version(BaseModel):
 
 @router.get("/version", summary="Application name and version")
 def version() -> Version:
-    return Version(name="MetaCat API", version=__version__)
+    return Version(name="MetaCat API", version=get_version())
