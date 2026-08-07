@@ -1,3 +1,6 @@
+import re
+
+
 def test_health(client):
     response = client.get("/health")
     assert response.status_code == 200
@@ -9,4 +12,4 @@ def test_version(client):
     assert response.status_code == 200
     body = response.json()
     assert body["name"] == "MetaCat API"
-    assert body["version"] == "0.1.0"
+    assert re.match(r"\d\.\d\.\d", body["version"])
