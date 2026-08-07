@@ -10,8 +10,8 @@ from metacat_api.models import (
 )
 
 
-def list_facets() -> list[str]:
-    return [facet.value for facet in PivotFacet]
+def list_facets() -> list[PivotFacet]:
+    return list(PivotFacet)
 
 
 def facet_values(

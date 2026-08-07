@@ -30,7 +30,7 @@ _catalogues_query = Annotated[
 
 
 @router.get("", summary="List the pivot facets")
-def list_facets() -> list[str]:
+def list_facets() -> list[PivotFacet]:
     return facets_service.list_facets()
 
 
