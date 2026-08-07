@@ -2,6 +2,7 @@ name: metacat
 
 services:
   api:
+    container_name: metacat-api
     build:
       tags:
         - "metacat-api:${VERSION:?}"
