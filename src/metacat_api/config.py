@@ -40,4 +40,4 @@ def get_version():
     try:
         return version(__package__)
     except PackageNotFoundError:
-        return "0.0.0-dev"
+        return "0.0.0"
