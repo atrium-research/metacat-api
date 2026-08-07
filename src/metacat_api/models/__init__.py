@@ -22,6 +22,7 @@ from metacat_api.models.facet import (
     FacetTimeseriesPoint,
     FacetValue,
 )
+from metacat_api.models.harvest import Task
 from metacat_api.models.mapping import Mapping, VocabularyOverlap
 from metacat_api.models.snapshot import Snapshot
 from metacat_api.models.store import Store
@@ -53,6 +54,7 @@ __all__ = [
     "Snapshot",
     "StatusOverrides",
     "Store",
+    "Task",
     "Vocabulary",
     "VocabularyOverlap",
 ]
