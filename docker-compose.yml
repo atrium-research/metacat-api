@@ -16,7 +16,7 @@ services:
       LOG_LEVEL: ${LOG_LEVEL:?}
       API_KEYS: ${API_KEYS:?}
     volumes:
-      - ${JSON_DATA_DIR:?}:/data
+      - data:/data
     healthcheck:
       test: [ "CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
       interval: 10s
@@ -26,3 +26,10 @@ services:
       watch:
         - path: ./src
           action: rebuild
+volumes:
+  data:
+     driver: local
+     driver_opts:
+       type: none
+       o: bind
+       device: "${PWD}/${JSON_DATA_DIR:?}"
