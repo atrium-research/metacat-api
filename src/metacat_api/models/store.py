@@ -71,3 +71,13 @@ class Store(BaseModel):
                 return self.snapshots
             case _:
                 raise ValueError(f"Unexcepted collection {collection}")
+
+    def update(self, input_store: Store) -> None:
+        tmp_store = input_store.model_copy(deep=True)
+        self.catalogues = tmp_store.catalogues
+        self.facet_values = tmp_store.facet_values
+        self.facet_exposures = tmp_store.facet_exposures
+        self.vocabularies = tmp_store.vocabularies
+        self.concepts = tmp_store.concepts
+        self.mappings = tmp_store.mappings
+        self.snapshots = tmp_store.snapshots

@@ -23,7 +23,7 @@ def _read(directory: Path, name: str) -> CollectionValues:
         return json.load(file)
 
 
-def read_store(json_data_dir: str) -> Store:
+def _read_store(json_data_dir: str) -> Store:
     path = Path(json_data_dir)
     loaded = {name: _read(path, name) for name in Collection}
     return Store.model_validate(
@@ -32,11 +32,15 @@ def read_store(json_data_dir: str) -> Store:
     )
 
 
+store = _read_store(settings.json_data_dir)
+
+
+def set_store(json_data_dir: str):
+    store.update(_read_store(json_data_dir))
+
+
 def write_store() -> None:
     for name in Collection:
         with open(settings.json_data_path() / f"{name}.json", "w", encoding="utf-8") as handle:
             json.dump(store.get(name), handle, indent=2, ensure_ascii=False, default=to_jsonable_python)
             handle.write("\n")
-
-
-store = read_store(settings.json_data_dir)

@@ -1,3 +1,7 @@
+from metacat_api.config import settings
+from metacat_api.datasources.store import set_store
+
+
 def test_list_catalogues(client):
     response = client.get("/v1/catalogues")
     assert response.status_code == 200
@@ -40,3 +44,25 @@ def test_facet_coverage_is_compact(client):
     coverage = response.json()
     assert coverage["discipline"] == "implicit"
     assert len(coverage) == 6
+
+
+def test(client):
+
+    response = client.get("/v1/catalogues")
+    assert response.status_code == 200
+    catalogues = response.json()
+    assert catalogues and {c["id"] for c in catalogues} == {"ariadne", "clarin-vlo", "gotriple", "sshomp"}
+
+    set_store("nonexistent")
+
+    response = client.get("/v1/catalogues")
+    assert response.status_code == 200
+    catalogues = response.json()
+    assert not catalogues
+
+    set_store(settings.json_data_dir)
+
+    response = client.get("/v1/catalogues")
+    assert response.status_code == 200
+    catalogues = response.json()
+    assert catalogues and {c["id"] for c in catalogues} == {"ariadne", "clarin-vlo", "gotriple", "sshomp"}
