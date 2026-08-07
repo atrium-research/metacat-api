@@ -40,7 +40,7 @@ Then open http://localhost:8000/docs.
 
 ### Harvesting real data
 
-The `json` datasource reads whatever is in `JSON_DATA_DIR`. The harvest scripts in `src/metacat_api/harvesters/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real.
+The `json` store reads whatever is in `JSON_DATA_DIR`. The harvest scripts in `src/metacat_api/harvesters/` populate it with live data by reusing the connectors from the [`metacat-code`](https://github.com/atrium-research/metacat-code) sibling checkout. They compose: each one updates its own catalogue and keeps the others, so running several in a row keeps every harvested catalogue real.
 
 ```bash
 uv run src/metacat_api/harvesters/clarin.py
