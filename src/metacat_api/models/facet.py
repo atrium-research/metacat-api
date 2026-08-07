@@ -45,5 +45,4 @@ class FacetComparisonRow(BaseModel):
 class FacetComparison(BaseModel):
     facet: PivotFacet = Field(description="Pivot facet being compared.")
     catalogues: list[str] = Field(description="Catalogues included in the comparison.")
-    snapshot_timestamp: datetime = Field(description="Snapshot the comparison is based on.")
     values: list[FacetComparisonRow] = Field(description="One row per distinct facet value.")

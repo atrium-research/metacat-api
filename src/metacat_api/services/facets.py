@@ -88,6 +88,5 @@ def facet_compare(
     return FacetComparison(
         facet=facet,
         catalogues=selected,
-        snapshot_timestamp=latest,
         values=rows,
     )
