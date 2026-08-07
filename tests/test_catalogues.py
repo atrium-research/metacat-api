@@ -6,9 +6,9 @@ def test_list_catalogues(client):
 
 
 def test_get_catalogue(client):
-    response = client.get("/v1/catalogues/ariadne")
+    response = client.get("/v1/catalogues/clarin-vlo")
     assert response.status_code == 200
-    assert response.json()["total_resources"] == 3142897
+    assert response.json()["total_resources"] == 1087412
 
 
 def test_unknown_catalogue_returns_error_envelope(client):
