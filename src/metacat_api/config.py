@@ -1,11 +1,10 @@
 from enum import StrEnum
-from functools import lru_cache
+from functools import cached_property, lru_cache
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-from typing import Annotated
 
-from pydantic import field_validator
-from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
+from pydantic import SecretBytes, SecretStr, computed_field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class LogFormat(StrEnum):
@@ -23,6 +22,8 @@ class Settings(BaseSettings):
 
     api_keys: SecretStr
 
+    git_username: SecretStr
+    git_password: SecretStr
 
     @computed_field
     @cached_property

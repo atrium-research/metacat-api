@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from metacat_api.models import ErrorResponse
@@ -6,6 +8,8 @@ from metacat_api.services.auth import is_api_key_valid
 from metacat_api.services.backup import BackupError, read_backup, write_backup
 
 router = APIRouter(prefix="/backup", tags=["Backup"])
+
+logger = logging.getLogger(__name__)
 
 
 @router.get(
@@ -16,7 +20,8 @@ async def get_last_update_info() -> BackupInfo:
     try:
         return await read_backup()
     except BackupError as e:
-        raise HTTPException(status.HTTP_502_BAD_GATEWAY, f"Unable to get last update: {str(e)}") from e
+        logger.exception(f"Backup error: {str(e)}")
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Unable to get last update") from e
 
 
 @router.post(
@@ -30,4 +35,5 @@ async def post_create_backup() -> BackupInfo:
     try:
         return await write_backup()
     except BackupError as e:
-        raise HTTPException(status.HTTP_502_BAD_GATEWAY, f"Unable to create backup: {str(e)}") from e
+        logger.exception(f"Backup error: {str(e)}")
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Unable to create backup") from e
