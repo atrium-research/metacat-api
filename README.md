@@ -2,7 +2,7 @@
 
 This page presents the latest data from Metacat harvesters.
 
-The dump was updated on 2026-08-10T10:52:15Z.
+The dump was updated on 2026-08-10T10:56:06Z.
 
 ## Link to data files
 
