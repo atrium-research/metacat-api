@@ -14,6 +14,17 @@ class Collection(StrEnum):
     snapshots = "snapshots"
 
 
+COLLECTION_NAMES: dict[Collection, str] = {
+    Collection.catalogues: "Catalogues",
+    Collection.facet_values: "Facet values",
+    Collection.facet_exposures: "Facet exposures",
+    Collection.vocabularies: "Vocabularies",
+    Collection.concepts: "Concepts",
+    Collection.mappings: "Mappings",
+    Collection.snapshots: "Snapshots",
+}
+
+
 CollectionValues = list[dict[str, Any]]
 
 

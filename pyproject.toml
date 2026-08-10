@@ -15,6 +15,7 @@ dependencies = [
     "requests>=2.34.2",
     "sparqlwrapper>=2.0.0",
     "anyio>=4.14.1",
+    "gitpython>=3.1.58",
 ]
 
 [dependency-groups]
