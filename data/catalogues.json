@@ -3,47 +3,52 @@
     "id": "ariadne",
     "name": "ARIADNE Portal",
     "domain": "Archaeology",
-    "url": "https://portal.ariadne-infrastructure.eu",
+    "url": "https://portal.ariadne-infrastructure.eu/",
     "licence": "CC-BY 4.0",
-    "languages_summary": "Primarily English, with national-language records across European partners."
+    "languages_summary": "Primarily English, with national-language records across European partners.",
+    "total_resources": null,
+    "vocabularies_count": null,
+    "vocabularies_mapped": null,
+    "last_harvest_at": "2026-08-10T12:17:21.551849Z",
+    "harvest_status": "live"
   },
   {
     "id": "clarin-vlo",
     "name": "CLARIN VLO",
     "domain": "Linguistics",
-    "url": "https://vlo.clarin.eu",
+    "url": "https://vlo.clarin.eu/",
     "licence": "Mixed",
     "languages_summary": "Highly multilingual: 60+ languages, strongest in German, English and Dutch.",
     "total_resources": 1087412,
     "vocabularies_count": 9,
     "vocabularies_mapped": 5,
-    "last_harvest_at": "2026-05-03T03:40:00Z",
+    "last_harvest_at": "2026-08-10T12:17:28.898602Z",
     "harvest_status": "live"
   },
   {
     "id": "gotriple",
     "name": "GoTriple",
     "domain": "Social Sciences and Humanities",
-    "url": "https://gotriple.eu",
+    "url": "https://gotriple.eu/",
     "licence": "CC-BY 4.0",
     "languages_summary": "Multilingual SSH corpus spanning nine European languages.",
     "total_resources": 7204551,
     "vocabularies_count": 11,
     "vocabularies_mapped": 6,
-    "last_harvest_at": "2026-05-02T23:05:00Z",
+    "last_harvest_at": "2026-08-10T12:15:07.392325Z",
     "harvest_status": "live"
   },
   {
     "id": "sshomp",
     "name": "SSH Open Marketplace",
     "domain": "SSH Tools and Services",
-    "url": "https://marketplace.sshopencloud.eu",
+    "url": "https://marketplace.sshopencloud.eu/",
     "licence": "CC-BY 4.0",
     "languages_summary": "English-dominant tool and service descriptions.",
     "total_resources": 5217,
     "vocabularies_count": 7,
     "vocabularies_mapped": 3,
-    "last_harvest_at": "2026-04-28T10:00:00Z",
-    "harvest_status": "degraded"
+    "last_harvest_at": "2026-08-10T12:17:24.301840Z",
+    "harvest_status": "live"
   }
 ]

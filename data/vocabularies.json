@@ -95,7 +95,7 @@
     "id": "triple-vocabulary",
     "name": "TRIPLE subject vocabulary",
     "authority": "GoTriple / OPERAS",
-    "uri": "https://gotriple.eu",
+    "uri": "https://gotriple.eu/",
     "concepts_count": 230,
     "used_for_facets": [
       "discipline"
@@ -108,7 +108,7 @@
     "id": "sshomp-keywords",
     "name": "SSHOMP keywords",
     "authority": "SSH Open Marketplace",
-    "uri": "https://marketplace.sshopencloud.eu",
+    "uri": "https://marketplace.sshopencloud.eu/",
     "concepts_count": 1900,
     "used_for_facets": [
       "subjects"
