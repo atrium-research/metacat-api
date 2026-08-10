@@ -1,73 +1,13 @@
 [
   {
-    "catalogue_id": "sshomp",
+    "catalogue_id": "gotriple",
     "facet": "resource-type",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 4,
-    "top_value": "Tool",
-    "top_value_count": 1800,
-    "total_count": 5200
-  },
-  {
-    "catalogue_id": "sshomp",
-    "facet": "format",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 4,
-    "top_value": "Software package",
-    "top_value_count": 1900,
-    "total_count": 4900
-  },
-  {
-    "catalogue_id": "sshomp",
-    "facet": "discipline",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 4,
-    "top_value": "Digital Humanities",
-    "top_value_count": 1600,
-    "total_count": 4400
-  },
-  {
-    "catalogue_id": "sshomp",
-    "facet": "source",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 3,
-    "top_value": "SSH Open Marketplace curation",
-    "top_value_count": 3000,
-    "total_count": 4900
-  },
-  {
-    "catalogue_id": "sshomp",
-    "facet": "source-2",
     "status": "gap",
-    "reason": "The SSH Open Marketplace exposes no secondary source facet.",
+    "reason": "Facet not exposed by the source.",
     "values_count": null,
     "top_value": null,
     "top_value_count": null,
     "total_count": null
-  },
-  {
-    "catalogue_id": "sshomp",
-    "facet": "subjects",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 4,
-    "top_value": "text analysis",
-    "top_value_count": 900,
-    "total_count": 2500
-  },
-  {
-    "catalogue_id": "gotriple",
-    "facet": "resource-type",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 22,
-    "top_value": "typ_article",
-    "top_value_count": 10260387,
-    "total_count": 26915143
   },
   {
     "catalogue_id": "gotriple",
@@ -86,8 +26,8 @@
     "reason": null,
     "values_count": 27,
     "top_value": "hist",
-    "top_value_count": 5458238,
-    "total_count": 45219963
+    "top_value_count": 6591629,
+    "total_count": 51298280
   },
   {
     "catalogue_id": "gotriple",
@@ -96,8 +36,8 @@
     "reason": null,
     "values_count": 36,
     "top_value": "base",
-    "top_value_count": 17023818,
-    "total_count": 27082740
+    "top_value_count": 20390830,
+    "total_count": 30540607
   },
   {
     "catalogue_id": "gotriple",
@@ -120,24 +60,144 @@
     "total_count": null
   },
   {
-    "catalogue_id": "clarin-vlo",
+    "catalogue_id": "ariadne",
     "facet": "resource-type",
+    "status": "gap",
+    "reason": "Facet not exposed by the source.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "format",
     "status": "exposed",
     "reason": null,
-    "values_count": 507,
-    "top_value": "text",
-    "top_value_count": 206205,
-    "total_count": 496852
+    "values_count": 11,
+    "top_value": "Structured Data",
+    "top_value_count": 1503716,
+    "total_count": 2836451
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "discipline",
+    "status": "implicit",
+    "reason": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
+    "values_count": 1,
+    "top_value": "Archaeology",
+    "top_value_count": 4378026,
+    "total_count": 4378026
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "source",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 38,
+    "top_value": "Archaeology Data Service",
+    "top_value_count": 1294639,
+    "total_count": 4273461
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "source-2",
+    "status": "gap",
+    "reason": "Facet not exposed by the source.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "ariadne",
+    "facet": "subjects",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 5921,
+    "top_value": "EARLY WESTERN WORLD COINS",
+    "top_value_count": 230618,
+    "total_count": 12323798
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "resource-type",
+    "status": "gap",
+    "reason": "Facet not exposed by the source.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "format",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 69,
+    "top_value": "text/csv",
+    "top_value_count": 79,
+    "total_count": 607
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "discipline",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 199,
+    "top_value": "SOCIAL SCIENCES",
+    "top_value_count": 435,
+    "total_count": 2883
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "source",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 18,
+    "top_value": "CLARIN Resource Families",
+    "top_value_count": 1463,
+    "total_count": 4708
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "source-2",
+    "status": "gap",
+    "reason": "The SSH Open Marketplace exposes no secondary source facet.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
+  },
+  {
+    "catalogue_id": "sshomp",
+    "facet": "subjects",
+    "status": "exposed",
+    "reason": null,
+    "values_count": 2012,
+    "top_value": "DARIAH Resource",
+    "top_value_count": 640,
+    "total_count": 12275
+  },
+  {
+    "catalogue_id": "clarin-vlo",
+    "facet": "resource-type",
+    "status": "gap",
+    "reason": "Facet not exposed by the source.",
+    "values_count": null,
+    "top_value": null,
+    "top_value_count": null,
+    "total_count": null
   },
   {
     "catalogue_id": "clarin-vlo",
     "facet": "format",
     "status": "exposed",
     "reason": null,
-    "values_count": 169,
+    "values_count": 168,
     "top_value": "text/html",
-    "top_value_count": 296400,
-    "total_count": 1215019
+    "top_value_count": 296281,
+    "total_count": 1206685
   },
   {
     "catalogue_id": "clarin-vlo",
@@ -154,10 +214,10 @@
     "facet": "source",
     "status": "exposed",
     "reason": null,
-    "values_count": 49,
+    "values_count": 48,
     "top_value": "Other",
-    "top_value_count": 129260,
-    "total_count": 565614
+    "top_value_count": 126073,
+    "total_count": 557121
   },
   {
     "catalogue_id": "clarin-vlo",
@@ -174,69 +234,9 @@
     "facet": "subjects",
     "status": "exposed",
     "reason": null,
-    "values_count": 96764,
+    "values_count": 92640,
     "top_value": "unspecified",
-    "top_value_count": 20362,
-    "total_count": 577684
-  },
-  {
-    "catalogue_id": "ariadne",
-    "facet": "resource-type",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 16,
-    "top_value": "Site/monument",
-    "top_value_count": 1355865,
-    "total_count": 4213978
-  },
-  {
-    "catalogue_id": "ariadne",
-    "facet": "format",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 11,
-    "top_value": "Structured Data",
-    "top_value_count": 1503541,
-    "total_count": 2812329
-  },
-  {
-    "catalogue_id": "ariadne",
-    "facet": "discipline",
-    "status": "implicit",
-    "reason": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
-    "values_count": 1,
-    "top_value": "Archaeology",
-    "top_value_count": 4213978,
-    "total_count": 4213978
-  },
-  {
-    "catalogue_id": "ariadne",
-    "facet": "source",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 38,
-    "top_value": "Archaeology Data Service",
-    "top_value_count": 1271252,
-    "total_count": 4123947
-  },
-  {
-    "catalogue_id": "ariadne",
-    "facet": "source-2",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 54,
-    "top_value": "Archaeology Data Service",
-    "top_value_count": 1129371,
-    "total_count": 5799013
-  },
-  {
-    "catalogue_id": "ariadne",
-    "facet": "subjects",
-    "status": "exposed",
-    "reason": null,
-    "values_count": 5920,
-    "top_value": "EARLY WESTERN WORLD COINS",
-    "top_value_count": 230617,
-    "total_count": 12321420
+    "top_value_count": 20364,
+    "total_count": 567046
   }
 ]
