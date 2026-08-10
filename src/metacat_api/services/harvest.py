@@ -9,21 +9,12 @@ _TIMEOUT = 600
 logger = logging.getLogger(__name__)
 
 
-def harvest_all():
+async def harvest_all():
     logger.info("Start harvest all")
-
     for harvester in HARVESTERS:
-        try:
-            harvester.apply()
-        except Exception as e:
-            logger.exception(f"Harvester {harvester.catalogue_id}: error: {e}")
+        with fail_after(_TIMEOUT):
+            await to_thread.run_sync(harvester.apply)
     logger.info("End harvest all")
-
-
-async def harvest_all_async():
-    logger.info("Start harvest all async")
-    with fail_after(_TIMEOUT):
-        await to_thread.run_sync(harvest_all)
 
 
 async def harvest(catalogue_id: str):

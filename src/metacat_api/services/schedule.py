@@ -1,7 +1,6 @@
 import logging
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from metacat_api.services.backup import write_backup

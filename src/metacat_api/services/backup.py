@@ -95,6 +95,7 @@ async def read_backup() -> BackupInfo:
 
 
 async def write_backup() -> BackupInfo:
+    logger.info("Start write backup")
     async with TemporaryDirectory(prefix="repo_dir_w_") as repo_dir:
         repo = _get_repo(repo_dir)
         await _update_data(repo_dir)

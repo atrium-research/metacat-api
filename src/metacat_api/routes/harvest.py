@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from metacat_api.models import ErrorResponse, Task
 from metacat_api.services.auth import is_api_key_valid
-from metacat_api.services.harvest import harvest, harvest_all_async
+from metacat_api.services.harvest import harvest, harvest_all
 
 router = APIRouter(prefix="/harvest", tags=["Harvest"])
 
@@ -40,7 +40,7 @@ async def get_tasks():
 async def post_harvest(catalogue_id: str) -> None:
     try:
         if catalogue_id == "all":
-            await harvest_all_async()
+            await harvest_all()
         else:
             await harvest(catalogue_id)
     except ValueError as e:
