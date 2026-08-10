@@ -2,7 +2,9 @@ FROM python:3.14-slim
 
 COPY --from=ghcr.io/astral-sh/uv:0.12.1 /uv /uvx /bin/
 
-RUN useradd --create-home --uid 1000 app
+RUN apt-get update \
+    && apt-get install -y git \
+    && useradd --create-home --uid 1000 app
 USER app
 
 ENV PYTHONUNBUFFERED=1

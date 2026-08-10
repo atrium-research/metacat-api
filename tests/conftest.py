@@ -1,21 +1,20 @@
-import asyncio
-from unittest.mock import patch
+from collections.abc import Generator
 
 import pytest
 from fastapi.testclient import TestClient
 
-
-def _get_event_loop():
-    try:
-        return asyncio.get_event_loop()
-    except RuntimeError:
-        return asyncio.new_event_loop()
+import tests
+from metacat_api.main import app
 
 
 @pytest.fixture
-def client() -> TestClient:
-    loop = _get_event_loop()
-    with patch("asyncio.get_running_loop", return_value=loop):
-        from metacat_api.main import app
+def client() -> Generator[TestClient]:
+    with TestClient(app) as client:
+        yield client
 
-        return TestClient(app)
+
+@pytest.fixture
+def client_auth(client) -> Generator[TestClient]:
+    client.headers["x-api-key"] = tests.api_key
+    yield client
+    client.headers.clear()

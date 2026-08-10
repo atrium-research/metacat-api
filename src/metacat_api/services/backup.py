@@ -11,7 +11,7 @@ from metacat_api.models.backup import BackupInfo, DataFile
 from metacat_api.models.common import COLLECTION_NAMES, Collection
 from metacat_api.services.util import now, sizeof_fmt, time_to_str
 
-GIT_URL = "https://github.com/atrium-research/metacat-api.git"
+GIT_URL = "github.com/atrium-research/metacat-api.git"
 GIT_BRANCH = "data"
 
 logger = logging.getLogger(__name__)
@@ -21,13 +21,18 @@ class BackupError(RuntimeError):
     pass
 
 
-def _get_repo(tmp_dir: str) -> Repo:
+def _get_auth(with_auth: bool):
+    if with_auth:
+        return f"{settings.git_username.get_secret_value()}:{settings.git_password.get_secret_value()}@"
+    return ""
+
+
+def _get_repo(tmp_dir: str, with_auth=False) -> Repo:
     logger.info("Getting git repo")
     try:
-        repo = Repo.clone_from(GIT_URL, tmp_dir, branch=GIT_BRANCH)
+        repo = Repo.clone_from(f"https://{_get_auth(with_auth)}{GIT_URL}", tmp_dir, branch=GIT_BRANCH)
     except GitCommandError as e:
-        logger.exception(f"Error during git clone: {str(e)}")
-        raise BackupError("Unable to clone repo") from e
+        raise BackupError(f"Error during git clone: {str(e)}") from e
     return repo
 
 
@@ -119,18 +124,20 @@ async def read_backup() -> BackupInfo:
 async def write_backup() -> BackupInfo:
     logger.info("Start write backup")
     async with TemporaryDirectory(prefix="repo_dir_w_") as repo_dir:
-        repo = _get_repo(repo_dir)
+        repo = _get_repo(repo_dir, with_auth=True)
         data_files = await _update_data(repo_dir)
 
         update_date = time_to_str(now())
         await _update_readme(repo_dir, update_date, data_files)
 
         logger.info("Saving to remote repo")
-        repo.index.add(["README.md", "data/*.json"])
-        repo.index.commit(f"Dump at {update_date}")
-        origin = repo.remote("origin")
-        origin.push()
-
+        try:
+            repo.index.add(["README.md", "data/*.json"])
+            repo.index.commit(f"Dump at {update_date}")
+            origin = repo.remote("origin")
+            origin.push()
+        except GitCommandError as e:
+            raise BackupError(f"Error during git writing: {str(e)}") from e
         repo.close()
     return BackupInfo(
         last_update=update_date,

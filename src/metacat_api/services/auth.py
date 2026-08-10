@@ -17,7 +17,11 @@ def is_api_key_valid(
     api_key_header: str = Security(_header_scheme),
 ):
     api_key = api_key_query or api_key_header
-    if api_key and settings.api_keys and api_key.encode("utf-8") in settings.api_keys:
+    if (
+        api_key
+        and settings.api_keys_bytes
+        and api_key.encode("utf-8") in [k.get_secret_value() for k in settings.api_keys_bytes]
+    ):
         return
     logger.warning(
         "Forbidden authentication",

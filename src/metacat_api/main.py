@@ -56,13 +56,12 @@ _V1_ROUTERS = (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    configure_scheduler()
     yield
     get_scheduler().shutdown()
 
 
 def create_app() -> FastAPI:
-    configure_scheduler()
-
     app = FastAPI(
         title="MetaCat API",
         description=DESCRIPTION,
