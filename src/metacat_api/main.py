@@ -11,6 +11,7 @@ from metacat_api.logging_setup import setup_logging
 from metacat_api.models import ErrorResponse
 from metacat_api.routes import (
     activity,
+    backup,
     catalogues,
     facets,
     harvest,
@@ -40,6 +41,7 @@ STATUS_CODES = {
     status.HTTP_409_CONFLICT: "conflict",
     status.HTTP_422_UNPROCESSABLE_CONTENT: "validation_error",
     status.HTTP_500_INTERNAL_SERVER_ERROR: "internal_error",
+    status.HTTP_502_BAD_GATEWAY: "bad_gateway",
 }
 
 _V1_ROUTERS = (
@@ -93,6 +95,7 @@ def create_app() -> FastAPI:
         app.include_router(router, prefix="/v1")
     app.include_router(system.router)
     app.include_router(harvest.router)
+    app.include_router(backup.router)
 
     return app
 

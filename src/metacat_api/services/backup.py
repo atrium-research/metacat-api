@@ -1,13 +1,13 @@
 import logging
-import os
 import re
 import shutil
-from datetime import UTC, datetime
+from datetime import datetime
 
 from anyio import Path, TemporaryDirectory, open_file
 from git import GitCommandError, Repo
 
 from metacat_api.config import settings
+from metacat_api.models.backup import BackupInfo, DataFile
 from metacat_api.services.util import now, time_to_str
 
 GIT_URL = "https://github.com/atrium-research/metacat-api.git"
@@ -50,6 +50,10 @@ async def _get_last_update(repo_dir: str) -> datetime:
         raise BackupError(f"Unable to parse last update: {last_update_str}") from e
 
 
+async def _get_data_files(repo_dir: str) -> list[DataFile]:
+    return [DataFile(name=p.name, size=(await p.stat()).st_size) async for p in Path(f"{repo_dir}/data").iterdir()]
+
+
 async def _update_last_update(repo_dir: str, update_date_str: str) -> None:
     if not update_date_str:
         raise BackupError("No update date defined")
@@ -77,15 +81,20 @@ async def _update_data(repo_dir: str) -> None:
     await current_data_path.copy_into(repo_dir)
 
 
-async def read_backup() -> None:
+async def read_backup() -> BackupInfo:
     async with TemporaryDirectory(prefix="repo_dir_r_") as repo_dir:
         repo = _get_repo(repo_dir)
         last_update = await _get_last_update(repo_dir)
+        data_files = await _get_data_files(repo_dir)
         logger.info(f"Last update: {last_update}, tz = {last_update.tzname()}")
         repo.close()
+    return BackupInfo(
+        last_update=time_to_str(last_update),
+        data_files=data_files,
+    )
 
 
-async def write_backup():
+async def write_backup() -> BackupInfo:
     async with TemporaryDirectory(prefix="repo_dir_w_") as repo_dir:
         repo = _get_repo(repo_dir)
         await _update_data(repo_dir)
@@ -100,3 +109,9 @@ async def write_backup():
         origin.push()
 
         repo.close()
+
+        data_files = await _get_data_files(repo_dir)
+    return BackupInfo(
+        last_update=update_date,
+        data_files=data_files,
+    )
