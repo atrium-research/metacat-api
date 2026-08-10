@@ -4,6 +4,8 @@ from unittest.mock import patch
 import pytest
 from fastapi.testclient import TestClient
 
+import tests
+
 
 def _get_event_loop():
     try:
@@ -19,3 +21,9 @@ def client() -> TestClient:
         from metacat_api.main import app
 
         return TestClient(app)
+
+
+@pytest.fixture
+def client_auth(client) -> TestClient:
+    client.headers["x-api-key"] = tests.api_key
+    return client
