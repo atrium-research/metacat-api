@@ -70,6 +70,9 @@ def create_app() -> FastAPI:
         contact={"name": "Foxcub", "email": "julien.homo@foxcub.fr"},
         license_info={"name": "Apache-2.0", "url": "https://www.apache.org/licenses/LICENSE-2.0"},
         lifespan=lifespan,
+        swagger_ui_parameters={
+            "displayRequestDuration": True,
+        },
     )
 
     app.add_middleware(
