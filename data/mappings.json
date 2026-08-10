@@ -1,0 +1,72 @@
+[
+  {
+    "source_concept": {
+      "uri": "http://vocab.getty.edu/aat/300037222",
+      "pref_label": "coins",
+      "scheme": "Getty AAT"
+    },
+    "target_concept": {
+      "uri": "https://id.loc.gov/authorities/subjects/sh85093019",
+      "pref_label": "Numismatics",
+      "scheme": "LCSH"
+    },
+    "relation": "closeMatch",
+    "authority": "ARIADNE mapping registry"
+  },
+  {
+    "source_concept": {
+      "uri": "http://vocab.getty.edu/aat/300000745",
+      "pref_label": "settlements",
+      "scheme": "Getty AAT"
+    },
+    "target_concept": {
+      "uri": "https://id.loc.gov/authorities/subjects/sh85064931",
+      "pref_label": "Human settlements",
+      "scheme": "LCSH"
+    },
+    "relation": "broadMatch",
+    "authority": "ARIADNE mapping registry"
+  },
+  {
+    "source_concept": {
+      "uri": "http://vocab.getty.edu/aat/300005425",
+      "pref_label": "houses",
+      "scheme": "Getty AAT"
+    },
+    "target_concept": {
+      "uri": "https://id.loc.gov/authorities/subjects/sh85040004",
+      "pref_label": "Dwellings",
+      "scheme": "LCSH"
+    },
+    "relation": "exactMatch",
+    "authority": "Getty"
+  },
+  {
+    "source_concept": {
+      "uri": "https://vocabularies.unesco.org/thesaurus/concept500",
+      "pref_label": "Linguistics",
+      "scheme": "UNESCO Thesaurus"
+    },
+    "target_concept": {
+      "uri": "https://id.loc.gov/authorities/subjects/sh85077222",
+      "pref_label": "Linguistics",
+      "scheme": "LCSH"
+    },
+    "relation": "exactMatch",
+    "authority": "CLARIN mapping registry"
+  },
+  {
+    "source_concept": {
+      "uri": "http://vocab.getty.edu/aat/300000593",
+      "pref_label": "trenches",
+      "scheme": "Getty AAT"
+    },
+    "target_concept": {
+      "uri": "https://id.loc.gov/authorities/subjects/sh85045116",
+      "pref_label": "Excavations (Archaeology)",
+      "scheme": "LCSH"
+    },
+    "relation": "relatedMatch",
+    "authority": "ARIADNE mapping registry"
+  }
+]

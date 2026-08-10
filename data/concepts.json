@@ -1,0 +1,62 @@
+[
+  {
+    "uri": "http://vocab.getty.edu/aat/300037222",
+    "pref_label": "coins",
+    "scheme": "Getty AAT",
+    "vocabulary_id": "getty-aat"
+  },
+  {
+    "uri": "http://vocab.getty.edu/aat/300000593",
+    "pref_label": "trenches",
+    "scheme": "Getty AAT",
+    "vocabulary_id": "getty-aat"
+  },
+  {
+    "uri": "http://vocab.getty.edu/aat/300000745",
+    "pref_label": "settlements",
+    "scheme": "Getty AAT",
+    "vocabulary_id": "getty-aat"
+  },
+  {
+    "uri": "http://vocab.getty.edu/aat/300005425",
+    "pref_label": "houses",
+    "scheme": "Getty AAT",
+    "vocabulary_id": "getty-aat"
+  },
+  {
+    "uri": "http://vocab.getty.edu/aat/300010666",
+    "pref_label": "pottery",
+    "scheme": "Getty AAT",
+    "vocabulary_id": "getty-aat"
+  },
+  {
+    "uri": "http://vocab.getty.edu/aat/300005912",
+    "pref_label": "graves",
+    "scheme": "Getty AAT",
+    "vocabulary_id": "getty-aat"
+  },
+  {
+    "uri": "http://vocab.getty.edu/aat/300002469",
+    "pref_label": "walls",
+    "scheme": "Getty AAT",
+    "vocabulary_id": "getty-aat"
+  },
+  {
+    "uri": "http://vocab.getty.edu/aat/300008217",
+    "pref_label": "roads",
+    "scheme": "Getty AAT",
+    "vocabulary_id": "getty-aat"
+  },
+  {
+    "uri": "https://id.loc.gov/authorities/subjects/sh85006507",
+    "pref_label": "Archaeology",
+    "scheme": "LCSH",
+    "vocabulary_id": "lcsh"
+  },
+  {
+    "uri": "https://id.loc.gov/authorities/subjects/sh85077222",
+    "pref_label": "Linguistics",
+    "scheme": "LCSH",
+    "vocabulary_id": "lcsh"
+  }
+]

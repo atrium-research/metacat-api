@@ -1,0 +1,120 @@
+[
+  {
+    "id": "getty-aat",
+    "name": "Getty AAT",
+    "authority": "Getty Research Institute",
+    "uri": "https://www.getty.edu/research/tools/vocabularies/aat/",
+    "concepts_count": 68000,
+    "used_for_facets": [
+      "subjects"
+    ],
+    "used_by_catalogues": [
+      "ariadne"
+    ]
+  },
+  {
+    "id": "unesco-thesaurus",
+    "name": "UNESCO Thesaurus",
+    "authority": "UNESCO",
+    "uri": "https://vocabularies.unesco.org/thesaurus",
+    "concepts_count": 4520,
+    "used_for_facets": [
+      "subjects"
+    ],
+    "used_by_catalogues": [
+      "clarin-vlo"
+    ]
+  },
+  {
+    "id": "lcsh",
+    "name": "LCSH",
+    "authority": "Library of Congress",
+    "uri": "https://id.loc.gov/authorities/subjects.html",
+    "concepts_count": 350000,
+    "used_for_facets": [
+      "subjects"
+    ],
+    "used_by_catalogues": [
+      "clarin-vlo",
+      "sshomp"
+    ]
+  },
+  {
+    "id": "iso-639-3",
+    "name": "ISO 639-3",
+    "authority": "SIL International",
+    "uri": "https://iso639-3.sil.org/",
+    "concepts_count": 7916,
+    "used_for_facets": [],
+    "used_by_catalogues": [
+      "clarin-vlo"
+    ]
+  },
+  {
+    "id": "olac-disciplines",
+    "name": "OLAC Disciplines",
+    "authority": "Open Language Archives Community",
+    "uri": "http://www.language-archives.org/REC/discourse.html",
+    "concepts_count": 120,
+    "used_for_facets": [
+      "discipline"
+    ],
+    "used_by_catalogues": [
+      "clarin-vlo"
+    ]
+  },
+  {
+    "id": "clarin-ccr",
+    "name": "CLARIN Concept Registry",
+    "authority": "CLARIN",
+    "uri": "https://concepts.clarin.eu/",
+    "concepts_count": 3800,
+    "used_for_facets": [
+      "resource-type",
+      "format",
+      "subjects"
+    ],
+    "used_by_catalogues": [
+      "clarin-vlo"
+    ]
+  },
+  {
+    "id": "aocat-resource-types",
+    "name": "AO-Cat resource types",
+    "authority": "ARIADNE / AO-Cat",
+    "uri": "https://github.com/ARIADNE-Infrastructure/AO-Cat-Ontology",
+    "concepts_count": 42,
+    "used_for_facets": [
+      "resource-type"
+    ],
+    "used_by_catalogues": [
+      "ariadne"
+    ]
+  },
+  {
+    "id": "triple-vocabulary",
+    "name": "TRIPLE subject vocabulary",
+    "authority": "GoTriple / OPERAS",
+    "uri": "https://gotriple.eu",
+    "concepts_count": 230,
+    "used_for_facets": [
+      "discipline"
+    ],
+    "used_by_catalogues": [
+      "gotriple"
+    ]
+  },
+  {
+    "id": "sshomp-keywords",
+    "name": "SSHOMP keywords",
+    "authority": "SSH Open Marketplace",
+    "uri": "https://marketplace.sshopencloud.eu",
+    "concepts_count": 1900,
+    "used_for_facets": [
+      "subjects"
+    ],
+    "used_by_catalogues": [
+      "sshomp"
+    ]
+  }
+]
