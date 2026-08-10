@@ -21,12 +21,17 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     log_format: LogFormat = LogFormat.console
 
-    api_keys: Annotated[list[bytes], NoDecode]
+    api_keys: SecretStr
 
-    @field_validator("api_keys", mode="before")
-    @classmethod
-    def split_api_keys(cls, keys: str) -> list[bytes]:
-        return [key.strip().encode("utf-8") for key in keys.split(",") if key.strip()]
+
+    @computed_field
+    @cached_property
+    def api_keys_bytes(self) -> list[SecretBytes]:
+        return [
+            SecretBytes(key.strip().encode("utf-8"))
+            for key in self.api_keys.get_secret_value().split(",")
+            if key.strip()
+        ]
 
     def json_data_path(self) -> Path:
         return Path(self.json_data_dir).resolve()
