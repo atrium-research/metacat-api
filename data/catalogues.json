@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ariadne",
+    "name": "ARIADNE Portal",
+    "domain": "Archaeology",
+    "url": "https://portal.ariadne-infrastructure.eu",
+    "licence": "CC-BY 4.0",
+    "languages_summary": "Primarily English, with national-language records across European partners."
+  },
+  {
+    "id": "clarin-vlo",
+    "name": "CLARIN VLO",
+    "domain": "Linguistics",
+    "url": "https://vlo.clarin.eu",
+    "licence": "Mixed",
+    "languages_summary": "Highly multilingual: 60+ languages, strongest in German, English and Dutch."
+  },
+  {
+    "id": "gotriple",
+    "name": "GoTriple",
+    "domain": "Social Sciences and Humanities",
+    "url": "https://gotriple.eu",
+    "licence": "CC-BY 4.0",
+    "languages_summary": "Multilingual SSH corpus spanning nine European languages."
+  },
+  {
+    "id": "sshomp",
+    "name": "SSH Open Marketplace",
+    "domain": "SSH Tools and Services",
+    "url": "https://marketplace.sshopencloud.eu",
+    "licence": "CC-BY 4.0",
+    "languages_summary": "English-dominant tool and service descriptions."
+  }
+]
