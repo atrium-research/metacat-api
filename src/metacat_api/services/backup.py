@@ -8,7 +8,8 @@ from git import GitCommandError, Repo
 
 from metacat_api.config import settings
 from metacat_api.models.backup import BackupInfo, DataFile
-from metacat_api.services.util import now, time_to_str
+from metacat_api.models.common import COLLECTION_NAMES, Collection
+from metacat_api.services.util import now, sizeof_fmt, time_to_str
 
 GIT_URL = "https://github.com/atrium-research/metacat-api.git"
 GIT_BRANCH = "data"
@@ -51,27 +52,47 @@ async def _get_last_update(repo_dir: str) -> datetime:
 
 
 async def _get_data_files(repo_dir: str) -> list[DataFile]:
-    return [DataFile(name=p.name, size=(await p.stat()).st_size) async for p in Path(f"{repo_dir}/data").iterdir()]
+    return [
+        DataFile(
+            name=COLLECTION_NAMES[Collection(p.name.removesuffix(".json"))],
+            filename=p.name,
+            size=(await p.stat()).st_size,
+        )
+        async for p in Path(f"{repo_dir}/data").iterdir()
+    ]
 
 
-async def _update_last_update(repo_dir: str, update_date_str: str) -> None:
+async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[DataFile]) -> None:
+    if not data_files:
+        raise BackupError("No data files")
     if not update_date_str:
         raise BackupError("No update date defined")
     logger.info(f"New update date: {update_date_str}")
 
-    readme = await _read_readme(repo_dir)
-    new_readme = re.sub(
-        r"The dump was updated on ([^.]+)\.",
-        f"The dump was updated on {update_date_str}.",
-        readme,
+    readme = (
+        "# Metacat API Data\n"
+        "\n"
+        "This page presents the latest data from Metacat harvesters.\n"
+        "\n"
+        f"The dump was updated on {update_date_str}.\n"
+        "\n"
+        "## Link to data files\n"
+        "\n"
+        "| Collection | Link | Size |\n"
+        "| :--------- | :--- | ---: |\n"
     )
-    if not new_readme:
-        raise BackupError(f"Unable to replace last update from: {readme}")
+    for data_file in data_files:
+        readme += (
+            f"| {data_file.name} "
+            f"| [data/{data_file.filename}](data/{data_file.filename}) "
+            f"| {sizeof_fmt(data_file.size)} |\n"
+        )
+
     async with await open_file(f"{repo_dir}/README.md", mode="w", encoding="utf-8") as fw:
-        await fw.write(new_readme)
+        await fw.write(readme)
 
 
-async def _update_data(repo_dir: str) -> None:
+async def _update_data(repo_dir: str) -> list[DataFile]:
     logger.info("Updating data files")
     current_data_path = Path(settings.json_data_dir)
     git_data_path = Path(f"{repo_dir}/data")
@@ -79,6 +100,7 @@ async def _update_data(repo_dir: str) -> None:
         raise BackupError(f"No previous git data folder at {git_data_path}")
     shutil.rmtree(git_data_path)
     await current_data_path.copy_into(repo_dir)
+    return await _get_data_files(repo_dir)
 
 
 async def read_backup() -> BackupInfo:
@@ -98,10 +120,10 @@ async def write_backup() -> BackupInfo:
     logger.info("Start write backup")
     async with TemporaryDirectory(prefix="repo_dir_w_") as repo_dir:
         repo = _get_repo(repo_dir)
-        await _update_data(repo_dir)
+        data_files = await _update_data(repo_dir)
 
         update_date = time_to_str(now())
-        await _update_last_update(repo_dir, update_date)
+        await _update_readme(repo_dir, update_date, data_files)
 
         logger.info("Saving to remote repo")
         repo.index.add(["README.md", "data/*.json"])
@@ -110,8 +132,6 @@ async def write_backup() -> BackupInfo:
         origin.push()
 
         repo.close()
-
-        data_files = await _get_data_files(repo_dir)
     return BackupInfo(
         last_update=update_date,
         data_files=data_files,
