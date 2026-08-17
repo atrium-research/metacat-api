@@ -26,8 +26,8 @@
     "reason": null,
     "values_count": 27,
     "top_value": "hist",
-    "top_value_count": 6591629,
-    "total_count": 51298280
+    "top_value_count": 6773529,
+    "total_count": 52722179
   },
   {
     "catalogue_id": "gotriple",
@@ -36,8 +36,8 @@
     "reason": null,
     "values_count": 36,
     "top_value": "base",
-    "top_value_count": 20390830,
-    "total_count": 30540607
+    "top_value_count": 21233208,
+    "total_count": 31387801
   },
   {
     "catalogue_id": "gotriple",
@@ -76,8 +76,8 @@
     "reason": null,
     "values_count": 11,
     "top_value": "Structured Data",
-    "top_value_count": 1503716,
-    "total_count": 2836451
+    "top_value_count": 1503732,
+    "total_count": 2836590
   },
   {
     "catalogue_id": "ariadne",
@@ -86,8 +86,8 @@
     "reason": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
     "values_count": 1,
     "top_value": "Archaeology",
-    "top_value_count": 4378026,
-    "total_count": 4378026
+    "top_value_count": 4378112,
+    "total_count": 4378112
   },
   {
     "catalogue_id": "ariadne",
@@ -96,8 +96,8 @@
     "reason": null,
     "values_count": 38,
     "top_value": "Archaeology Data Service",
-    "top_value_count": 1294639,
-    "total_count": 4273461
+    "top_value_count": 1294721,
+    "total_count": 4273543
   },
   {
     "catalogue_id": "ariadne",
@@ -117,7 +117,7 @@
     "values_count": 5921,
     "top_value": "EARLY WESTERN WORLD COINS",
     "top_value_count": 230618,
-    "total_count": 12323798
+    "total_count": 12324076
   },
   {
     "catalogue_id": "sshomp",
@@ -147,7 +147,7 @@
     "values_count": 199,
     "top_value": "SOCIAL SCIENCES",
     "top_value_count": 435,
-    "total_count": 2883
+    "total_count": 2893
   },
   {
     "catalogue_id": "sshomp",
@@ -177,7 +177,7 @@
     "values_count": 2012,
     "top_value": "DARIAH Resource",
     "top_value_count": 640,
-    "total_count": 12275
+    "total_count": 12305
   },
   {
     "catalogue_id": "clarin-vlo",
@@ -194,10 +194,10 @@
     "facet": "format",
     "status": "exposed",
     "reason": null,
-    "values_count": 168,
+    "values_count": 171,
     "top_value": "text/html",
-    "top_value_count": 296281,
-    "total_count": 1206685
+    "top_value_count": 295978,
+    "total_count": 1163335
   },
   {
     "catalogue_id": "clarin-vlo",
@@ -216,8 +216,8 @@
     "reason": null,
     "values_count": 48,
     "top_value": "Other",
-    "top_value_count": 126073,
-    "total_count": 557121
+    "top_value_count": 126328,
+    "total_count": 533147
   },
   {
     "catalogue_id": "clarin-vlo",
@@ -234,9 +234,9 @@
     "facet": "subjects",
     "status": "exposed",
     "reason": null,
-    "values_count": 92640,
+    "values_count": 92039,
     "top_value": "unspecified",
-    "top_value_count": 20364,
-    "total_count": 567046
+    "top_value_count": 20356,
+    "total_count": 547200
   }
 ]
