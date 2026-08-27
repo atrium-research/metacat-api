@@ -25,7 +25,12 @@ logger = logging.getLogger(__name__)
 
 
 def _fetch(aggs: str) -> list[tuple[str, int]]:
-    resp = requests.get(BASE_URL, params={"aggs": aggs}, timeout=60)
+    resp = requests.get(
+        BASE_URL,
+        params={"aggs": aggs, "size": 0},
+        timeout=60,
+        headers={"User-Agent": "Metacat"},
+    )
     resp.raise_for_status()
     buckets = resp.json().get("aggs", {}).get(aggs, {}).get("buckets", [])
     return [(bucket["key"], bucket["doc_count"]) for bucket in buckets]
