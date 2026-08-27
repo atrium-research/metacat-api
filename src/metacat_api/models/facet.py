@@ -12,8 +12,6 @@ class FacetExposure(BaseModel):
     status: FacetExposureStatus = Field(description="How the catalogue exposes this facet.")
     reason: str | None = Field(default=None, description="Explanation when the facet is a gap, implicit or partial.")
     values_count: int | None = Field(default=None, description="Number of distinct values, null when not exposed.")
-    top_value: str | None = Field(default=None, description="Most frequent value, null when not exposed.")
-    top_value_count: int | None = Field(default=None, description="Count of the most frequent value.")
     total_count: int | None = Field(default=None, description="Sum of counts across all values of the facet.")
 
 

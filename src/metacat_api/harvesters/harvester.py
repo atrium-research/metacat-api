@@ -50,7 +50,6 @@ def apply_catalogue(
         pairs = ranked.get(facet)
         if pairs:
             status = status_overrides.get(facet, "exposed")
-            top_value, top_count = pairs[0]
             store.facet_exposures.append(
                 FacetExposure.model_validate(
                     {
@@ -59,8 +58,6 @@ def apply_catalogue(
                         "status": status,
                         "reason": None if status == "exposed" else reasons.get(facet),
                         "values_count": len(pairs),
-                        "top_value": top_value,
-                        "top_value_count": top_count,
                         "total_count": sum(count for _, count in pairs),
                     },
                     extra="forbid",
@@ -75,8 +72,6 @@ def apply_catalogue(
                         "status": "gap",
                         "reason": reasons.get(facet, "Facet not exposed by the source."),
                         "values_count": None,
-                        "top_value": None,
-                        "top_value_count": None,
                         "total_count": None,
                     },
                     extra="forbid",
