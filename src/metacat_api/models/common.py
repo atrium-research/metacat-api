@@ -10,7 +10,6 @@ class Collection(StrEnum):
     facet_exposures = "facet_exposures"
     vocabularies = "vocabularies"
     concepts = "concepts"
-    mappings = "mappings"
     snapshots = "snapshots"
 
 
@@ -20,7 +19,6 @@ COLLECTION_NAMES: dict[Collection, str] = {
     Collection.facet_exposures: "Facet exposures",
     Collection.vocabularies: "Vocabularies",
     Collection.concepts: "Concepts",
-    Collection.mappings: "Mappings",
     Collection.snapshots: "Snapshots",
 }
 
@@ -74,14 +72,6 @@ class FacetExposureStatus(StrEnum):
 
 
 StatusOverrides = dict[PivotFacet, FacetExposureStatus]
-
-
-class MappingRelation(StrEnum):
-    exactMatch = "exactMatch"
-    closeMatch = "closeMatch"
-    broadMatch = "broadMatch"
-    narrowMatch = "narrowMatch"
-    relatedMatch = "relatedMatch"
 
 
 class HarvestStatus(StrEnum):

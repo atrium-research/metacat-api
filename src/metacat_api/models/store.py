@@ -7,7 +7,6 @@ from pydantic import BaseModel, computed_field
 from metacat_api.models.catalogue import Catalogue
 from metacat_api.models.common import Collection
 from metacat_api.models.facet import FacetExposure, FacetTimeseriesPoint, FacetValue
-from metacat_api.models.mapping import Mapping
 from metacat_api.models.snapshot import Snapshot
 from metacat_api.models.vocabulary import Concept, Vocabulary
 
@@ -28,7 +27,6 @@ class Store(BaseModel):
     facet_exposures: list[FacetExposure]
     vocabularies: list[Vocabulary]
     concepts: list[Concept]
-    mappings: list[Mapping]
     snapshots: list[Snapshot]
 
     @computed_field
@@ -63,10 +61,6 @@ class Store(BaseModel):
                 return self.facet_exposures
             case Collection.vocabularies:
                 return self.vocabularies
-            case Collection.concepts:
-                return self.concepts
-            case Collection.mappings:
-                return self.mappings
             case Collection.snapshots:
                 return self.snapshots
             case _:
@@ -79,5 +73,4 @@ class Store(BaseModel):
         self.facet_exposures = tmp_store.facet_exposures
         self.vocabularies = tmp_store.vocabularies
         self.concepts = tmp_store.concepts
-        self.mappings = tmp_store.mappings
         self.snapshots = tmp_store.snapshots

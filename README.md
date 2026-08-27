@@ -1,10 +1,10 @@
 # metacat-api
 
-REST serving layer that catalogues the SSH catalogues: facets, vocabularies and their mappings, over time.
+REST serving layer that catalogues the SSH catalogues: facets and vocabularies over time.
 
 ## About MetaCat
 
-MetaCat is the toolset built under ATRIUM (EU Horizon Europe, Grant Agreement No. 101132163), WP3, Task 3.2 (Metadata harmonisation and enrichment). Its goal is to catalogue the catalogues: it systematically describes four major Social Sciences and Humanities European catalogues (ARIADNE Portal, CLARIN VLO, GoTriple, SSH Open Marketplace), their facets, controlled vocabularies, and the mappings between them. The audience is data stewards, catalogue maintainers, repository providers and policy makers.
+MetaCat is the toolset built under ATRIUM (EU Horizon Europe, Grant Agreement No. 101132163), WP3, Task 3.2 (Metadata harmonisation and enrichment). Its goal is to catalogue the catalogues: it systematically describes four major Social Sciences and Humanities European catalogues (ARIADNE Portal, CLARIN VLO, GoTriple, SSH Open Marketplace), their facets, and controlled vocabularies. The audience is data stewards, catalogue maintainers, repository providers and policy makers.
 
 ## About this repository
 
@@ -67,7 +67,6 @@ The ARIADNE GraphDB is behind authentication (it answers 302 to anonymous reques
 | Catalogues | `/v1/catalogues` | Catalogue list, detail, facet exposure, vocabularies, coverage, provenance |
 | Facets | `/v1/facets` | Facet list, values, cross-catalogue compare, timeseries |
 | Vocabularies | `/v1/vocabularies` | Inventory, detail, paginated concepts |
-| Mappings | `/v1/mappings` | Declared mappings and vocabulary overlap |
 | Snapshots | `/v1/snapshots` | Snapshot list and latest snapshot metadata |
 | Activity | `/v1/activity` | Latest harvest activity per catalogue |
 | System | `/health`, `/version` | Liveness probe and version, unversioned |

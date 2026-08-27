@@ -15,7 +15,6 @@ from metacat_api.routes import (
     catalogues,
     facets,
     harvest,
-    mappings,
     snapshots,
     system,
     vocabularies,
@@ -28,7 +27,7 @@ logger = logging.getLogger(__name__)
 DESCRIPTION = (
     "REST serving layer for the MetaCat dashboard. MetaCat catalogues the four major "
     "SSH European catalogues (ARIADNE Portal, CLARIN VLO, GoTriple, SSH Open Marketplace), "
-    "their facets, controlled vocabularies and cross-mappings. The smallest queryable unit "
+    "their facets and controlled vocabularies. The smallest queryable unit "
     "is always a catalogue, on a facet, at a moment in time. "
     "Source: https://github.com/atrium-research/metacat-api"
 )
@@ -48,7 +47,6 @@ _V1_ROUTERS = (
     catalogues.router,
     facets.router,
     vocabularies.router,
-    mappings.router,
     snapshots.router,
     activity.router,
 )

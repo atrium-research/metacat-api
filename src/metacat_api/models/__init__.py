@@ -5,7 +5,6 @@ from metacat_api.models.common import (
     ErrorResponse,
     FacetExposureStatus,
     HarvestStatus,
-    MappingRelation,
     Pagination,
     PivotFacet,
     RawFacets,
@@ -23,7 +22,6 @@ from metacat_api.models.facet import (
     FacetValue,
 )
 from metacat_api.models.harvest import Task
-from metacat_api.models.mapping import Mapping, VocabularyOverlap
 from metacat_api.models.snapshot import Snapshot
 from metacat_api.models.store import Store
 from metacat_api.models.vocabulary import Concept, ConceptRef, Vocabulary
@@ -42,8 +40,6 @@ __all__ = [
     "FacetTimeseriesPoint",
     "FacetValue",
     "HarvestStatus",
-    "Mapping",
-    "MappingRelation",
     "Pagination",
     "PivotFacet",
     "RawFacetValue",
@@ -56,5 +52,4 @@ __all__ = [
     "Store",
     "Task",
     "Vocabulary",
-    "VocabularyOverlap",
 ]
