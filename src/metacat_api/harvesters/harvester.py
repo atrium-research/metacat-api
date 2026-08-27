@@ -44,24 +44,29 @@ class Harvester(ABC):
     @abstractmethod
     def harvest(self) -> RawFacets: ...
 
-    def apply_catalogue(self, harvested: RawFacets) -> None:
+    def apply_catalogue(self, harvested: RawFacets | None) -> None:
         version_ts = now()
-        logger.info(f"Start apply catalogue {self.catalogue_id} for version {time_to_str(version_ts)}")
-        ranked = {facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items()}
-
-        store.facet_values = [v for v in store.facet_values if v.catalogue_id != self.catalogue_id]
+        logger.info(f"Start apply catalogue {self.catalogue_id} at {time_to_str(version_ts)}")
 
         new_version = CatalogueVersion(
             catalogue_id=self.catalogue_id,
             version_id=uuid.uuid4(),
             total_resources=0,
             harvest_at=version_ts,
-            harvest_status=HarvestStatus.success,
             vocabularies=self.vocabularies,
         )
-
         store.catalogues_versions.append(new_version)
 
+        if not harvested:
+            new_version.harvest_status = HarvestStatus.error
+            new_version.harvest_error = "No facet harvested"
+            return
+
+        new_version.harvest_status = HarvestStatus.success
+
+        store.facet_values = [v for v in store.facet_values if v.catalogue_id != self.catalogue_id]
+
+        ranked = {facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items()}
         for facet, pairs in ranked.items():
             for value, count in pairs:
                 store.facet_values.append(
@@ -90,8 +95,27 @@ class Harvester(ABC):
             facet_exposure.total_count or 0 for facet_exposure in new_version.facet_exposures
         )
 
+    def _error_version(self, e: Exception):
+        version_ts = now()
+        logger.info(f"Start error version for catalogue {self.catalogue_id} at {time_to_str(version_ts)}")
+        new_version = CatalogueVersion(
+            catalogue_id=self.catalogue_id,
+            version_id=uuid.uuid4(),
+            total_resources=0,
+            harvest_at=version_ts,
+            harvest_status=HarvestStatus.error,
+            harvest_error=str(e),
+            vocabularies=self.vocabularies,
+        )
+        store.catalogues_versions.append(new_version)
+
     def apply(self) -> None:
-        harvested = self.harvest()
-        self.apply_catalogue(harvested)
+        try:
+            harvested = self.harvest()
+            self.apply_catalogue(harvested)
+            _report(self.catalogue_id, harvested)
+        except Exception as e:
+            logger.exception(f"Unexpected error during harvest: {e}")
+            self._error_version(e)
+
         write_store()
-        _report(self.catalogue_id, harvested)
