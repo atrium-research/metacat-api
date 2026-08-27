@@ -4,9 +4,9 @@ from metacat_api.datasources.store import store
 from metacat_api.models import (
     FacetComparison,
     FacetComparisonRow,
+    FacetId,
     FacetTimeseriesPoint,
     FacetValue,
-    FacetId,
 )
 
 

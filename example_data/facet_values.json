@@ -2685,12 +2685,7 @@
     "facet": "subjects",
     "value": "coins",
     "count": 231000,
-    "timestamp": "2026-05-03T00:00:00Z",
-    "vocabulary_term": {
-      "uri": "http://vocab.getty.edu/aat/300037222",
-      "pref_label": "coins",
-      "scheme": "Getty AAT"
-    }
+    "timestamp": "2026-05-03T00:00:00Z"
   },
   {
     "catalogue_id": "ariadne",
@@ -2858,12 +2853,7 @@
     "facet": "subjects",
     "value": "trenches",
     "count": 168000,
-    "timestamp": "2026-05-03T00:00:00Z",
-    "vocabulary_term": {
-      "uri": "http://vocab.getty.edu/aat/300000593",
-      "pref_label": "trenches",
-      "scheme": "Getty AAT"
-    }
+    "timestamp": "2026-05-03T00:00:00Z"
   },
   {
     "catalogue_id": "ariadne",
@@ -3031,12 +3021,7 @@
     "facet": "subjects",
     "value": "settlements",
     "count": 166000,
-    "timestamp": "2026-05-03T00:00:00Z",
-    "vocabulary_term": {
-      "uri": "http://vocab.getty.edu/aat/300000745",
-      "pref_label": "settlements",
-      "scheme": "Getty AAT"
-    }
+    "timestamp": "2026-05-03T00:00:00Z"
   },
   {
     "catalogue_id": "ariadne",
@@ -3204,12 +3189,7 @@
     "facet": "subjects",
     "value": "houses",
     "count": 158000,
-    "timestamp": "2026-05-03T00:00:00Z",
-    "vocabulary_term": {
-      "uri": "http://vocab.getty.edu/aat/300005425",
-      "pref_label": "houses",
-      "scheme": "Getty AAT"
-    }
+    "timestamp": "2026-05-03T00:00:00Z"
   },
   {
     "catalogue_id": "clarin-vlo",
@@ -5225,12 +5205,7 @@
     "facet": "subjects",
     "value": "Linguistics",
     "count": 210000,
-    "timestamp": "2026-05-03T00:00:00Z",
-    "vocabulary_term": {
-      "uri": "https://vocabularies.unesco.org/thesaurus/concept500",
-      "pref_label": "Linguistics",
-      "scheme": "UNESCO Thesaurus"
-    }
+    "timestamp": "2026-05-03T00:00:00Z"
   },
   {
     "catalogue_id": "clarin-vlo",

@@ -86,7 +86,9 @@ class Harvester(ABC):
                 facet_exposure.values_count = len(pairs)
                 facet_exposure.total_count = sum(count for _, count in pairs)
 
-        new_version.total_resources = sum(facet_exposure.total_count or 0 for facet_exposure in new_version.facet_exposures)
+        new_version.total_resources = sum(
+            facet_exposure.total_count or 0 for facet_exposure in new_version.facet_exposures
+        )
 
     def apply(self) -> None:
         harvested = self.harvest()
