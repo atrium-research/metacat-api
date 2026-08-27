@@ -3,7 +3,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
-from metacat_api.models import FacetComparison, FacetId, FacetTimeseriesPoint, FacetValue
+from metacat_api.models import FacetId, FacetValue
 from metacat_api.services import catalogues as catalogues_service
 from metacat_api.services import facets as facets_service
 
@@ -51,27 +51,3 @@ def facet_values(
     date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetValue]:
     return facets_service.facet_values(facet, _parse_catalogues(catalogues), _to_utc(date_from), _to_utc(date_to))
-
-
-@router.get(
-    "/{facet}/compare",
-    summary="Transversal side-by-side comparison across catalogues",
-)
-def facet_compare(
-    facet: FacetId,
-    catalogues: _catalogues_query = None,
-) -> FacetComparison:
-    return facets_service.facet_compare(facet, _parse_catalogues(catalogues))
-
-
-@router.get(
-    "/{facet}/timeseries",
-    summary="Evolution of a facet over time",
-)
-def facet_timeseries(
-    facet: FacetId,
-    catalogues: _catalogues_query = None,
-    date_from: Annotated[datetime | None, Query(alias="from")] = None,
-    date_to: Annotated[datetime | None, Query(alias="to")] = None,
-) -> list[FacetTimeseriesPoint]:
-    return facets_service.facet_timeseries(facet, _parse_catalogues(catalogues), _to_utc(date_from), _to_utc(date_to))

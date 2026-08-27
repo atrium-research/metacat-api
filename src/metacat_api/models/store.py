@@ -1,12 +1,11 @@
 import logging
-from collections import defaultdict
 from functools import cached_property
 
 from pydantic import BaseModel, computed_field
 
 from metacat_api.models.catalogue import Catalogue, CatalogueVersion
 from metacat_api.models.common import Collection
-from metacat_api.models.facet import FacetTimeseriesPoint, FacetValue
+from metacat_api.models.facet import FacetValue
 from metacat_api.models.vocabulary import Vocabulary
 
 logger = logging.getLogger(__name__)
@@ -30,23 +29,6 @@ class Store(BaseModel):
     @cached_property
     def catalogue_ids(self) -> list[str]:
         return [c.id for c in self.catalogues]
-
-    @computed_field
-    def facet_timeseries(self) -> list[FacetTimeseriesPoint]:
-        totals: dict[tuple, int] = defaultdict(int)
-        for value in self.facet_values:
-            totals[(value.catalogue_id, value.facet, value.timestamp)] += value.count
-        points = [
-            FacetTimeseriesPoint(
-                catalogue_id=catalogue_id,
-                facet=facet,
-                timestamp=timestamp,
-                total_count=total,
-            )
-            for (catalogue_id, facet, timestamp), total in totals.items()
-        ]
-        points.sort(key=lambda point: (point.catalogue_id, point.facet.value, point.timestamp))
-        return points
 
     def get(self, collection: Collection) -> list[BaseModel]:
         match collection:

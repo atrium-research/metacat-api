@@ -12,13 +12,7 @@ from metacat_api.models.common import (
     RawFacetValues,
     raw_facets_adapter,
 )
-from metacat_api.models.facet import (
-    FacetComparison,
-    FacetComparisonRow,
-    FacetExposure,
-    FacetTimeseriesPoint,
-    FacetValue,
-)
+from metacat_api.models.facet import FacetExposure, FacetValue
 from metacat_api.models.harvest import Task
 from metacat_api.models.store import Store
 from metacat_api.models.vocabulary import Vocabulary
@@ -29,11 +23,8 @@ __all__ = [
     "Collection",
     "CollectionValues",
     "ErrorResponse",
-    "FacetComparison",
-    "FacetComparisonRow",
     "FacetExposure",
     "FacetExposureStatus",
-    "FacetTimeseriesPoint",
     "FacetValue",
     "HarvestStatus",
     "Pagination",

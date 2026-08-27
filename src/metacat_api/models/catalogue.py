@@ -22,9 +22,9 @@ class Catalogue(BaseModel):
 class CatalogueVersion(BaseModel):
     catalogue_id: CatalogueId = Field(description="Stable identifier, lowercase and hyphen-separated.")
     version_id: VersionId = Field(description="Version identifier.")
-    total_resources: int | None = Field(description="Total resources described by the catalogue.", default=None)
-    harvest_at: datetime | None = Field(description="Timestamp of the harvest.", default=None)
-    harvest_status: HarvestStatus | None = Field(description="Status of harvest.", default=None)
+    total_resources: int = Field(description="Total resources described by the catalogue.", default=0)
+    harvest_at: datetime = Field(description="Timestamp of the harvest.")
+    harvest_status: HarvestStatus = Field(description="Status of harvest.", default=HarvestStatus.success)
     harvest_error: str | None = Field(description="Reason of harvest error.", default=None)
     vocabularies: list[str] = Field(description="Used vocabularies.", default=[])
     facet_exposures: list[FacetExposure] = Field(description="Facet exposures.", default=[])
