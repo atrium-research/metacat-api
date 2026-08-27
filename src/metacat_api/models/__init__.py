@@ -24,14 +24,12 @@ from metacat_api.models.facet import (
 from metacat_api.models.harvest import Task
 from metacat_api.models.snapshot import Snapshot
 from metacat_api.models.store import Store
-from metacat_api.models.vocabulary import Concept, ConceptRef, Vocabulary
+from metacat_api.models.vocabulary import Vocabulary
 
 __all__ = [
     "Catalogue",
     "Collection",
     "CollectionValues",
-    "Concept",
-    "ConceptRef",
     "ErrorResponse",
     "FacetComparison",
     "FacetComparisonRow",

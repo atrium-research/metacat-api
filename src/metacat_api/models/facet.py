@@ -3,7 +3,6 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 
 from metacat_api.models.common import FacetExposureStatus, PivotFacet
-from metacat_api.models.vocabulary import ConceptRef
 
 
 class FacetExposure(BaseModel):
@@ -21,9 +20,6 @@ class FacetValue(BaseModel):
     value: str = Field(description="Facet value label.")
     count: int = Field(description="Number of resources carrying this value.")
     timestamp: datetime = Field(description="Snapshot timestamp of the count.")
-    vocabulary_term: ConceptRef | None = Field(
-        default=None, description="Controlled vocabulary term backing the value, if any."
-    )
 
 
 class FacetTimeseriesPoint(BaseModel):

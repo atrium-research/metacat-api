@@ -9,7 +9,6 @@ class Collection(StrEnum):
     facet_values = "facet_values"
     facet_exposures = "facet_exposures"
     vocabularies = "vocabularies"
-    concepts = "concepts"
     snapshots = "snapshots"
 
 
@@ -18,7 +17,6 @@ COLLECTION_NAMES: dict[Collection, str] = {
     Collection.facet_values: "Facet values",
     Collection.facet_exposures: "Facet exposures",
     Collection.vocabularies: "Vocabularies",
-    Collection.concepts: "Concepts",
     Collection.snapshots: "Snapshots",
 }
 

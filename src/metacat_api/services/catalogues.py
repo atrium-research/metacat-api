@@ -15,7 +15,8 @@ def catalogue_facets(catalogue_id: str) -> list[FacetExposure]:
 
 
 def catalogue_vocabularies(catalogue_id: str) -> list[Vocabulary]:
-    return [v for v in store.vocabularies if catalogue_id in v.used_by_catalogues]
+    # TODO replace
+    return []
 
 
 def facet_coverage(catalogue_id: str) -> dict[PivotFacet, FacetExposureStatus]:

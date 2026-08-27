@@ -8,7 +8,7 @@ from metacat_api.models.catalogue import Catalogue
 from metacat_api.models.common import Collection
 from metacat_api.models.facet import FacetExposure, FacetTimeseriesPoint, FacetValue
 from metacat_api.models.snapshot import Snapshot
-from metacat_api.models.vocabulary import Concept, Vocabulary
+from metacat_api.models.vocabulary import Vocabulary
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,6 @@ class Store(BaseModel):
     facet_values: list[FacetValue]
     facet_exposures: list[FacetExposure]
     vocabularies: list[Vocabulary]
-    concepts: list[Concept]
     snapshots: list[Snapshot]
 
     @computed_field
@@ -72,5 +71,4 @@ class Store(BaseModel):
         self.facet_values = tmp_store.facet_values
         self.facet_exposures = tmp_store.facet_exposures
         self.vocabularies = tmp_store.vocabularies
-        self.concepts = tmp_store.concepts
         self.snapshots = tmp_store.snapshots
