@@ -101,6 +101,10 @@ class AriadneHarvester(Harvester):
         return "ariadne"
 
     @property
+    def vocabularies(self) -> list[str]:
+        return ["getty-aat", "aocat-resource-types"]
+
+    @property
     def reasons(self) -> Reasons:
         return {
             PivotFacet.discipline: "The whole catalogue is archaeology, so discipline is not a queryable facet.",

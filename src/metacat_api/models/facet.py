@@ -19,13 +19,13 @@ class FacetValue(BaseModel):
     facet: PivotFacet = Field(description="Pivot facet the value belongs to.")
     value: str = Field(description="Facet value label.")
     count: int = Field(description="Number of resources carrying this value.")
-    timestamp: datetime = Field(description="Snapshot timestamp of the count.")
+    timestamp: datetime = Field(description="Version timestamp of the count.")
 
 
 class FacetTimeseriesPoint(BaseModel):
     catalogue_id: str = Field(description="Catalogue the point belongs to.")
     facet: PivotFacet = Field(description="Pivot facet the point belongs to.")
-    timestamp: datetime = Field(description="Timestamp of the snapshot.")
+    timestamp: datetime = Field(description="Timestamp of the version.")
     total_count: int = Field(description="Total count for the facet at this timestamp.")
 
 

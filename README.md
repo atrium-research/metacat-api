@@ -64,10 +64,9 @@ The ARIADNE GraphDB is behind authentication (it answers 302 to anonymous reques
 
 | Group | Prefix | Purpose |
 |---|---|---|
-| Catalogues | `/v1/catalogues` | Catalogue list, detail, facet exposure, vocabularies, coverage, provenance |
+| Catalogues | `/v1/catalogues` | Catalogue list, detail, facet exposure, vocabularies, coverage |
 | Facets | `/v1/facets` | Facet list, values, cross-catalogue compare, timeseries |
 | Vocabularies | `/v1/vocabularies` | Inventory, detail |
-| Snapshots | `/v1/snapshots` | Snapshot list and latest snapshot metadata |
 | Activity | `/v1/activity` | Latest harvest activity per catalogue |
 | System | `/health`, `/version` | Liveness probe and version, unversioned |
 

@@ -105,6 +105,10 @@ class SshompHarvester(Harvester):
         return "sshomp"
 
     @property
+    def vocabularies(self) -> list[str]:
+        return ["lcsh", "sshomp-keywords"]
+
+    @property
     def reasons(self) -> Reasons:
         return {
             PivotFacet.source_2: "The SSH Open Marketplace exposes no secondary source facet.",

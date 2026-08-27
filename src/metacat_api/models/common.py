@@ -6,18 +6,18 @@ from pydantic import BaseModel, Field, TypeAdapter
 
 class Collection(StrEnum):
     catalogues = "catalogues"
+    catalogues_versions = "catalogues_versions"
     facet_values = "facet_values"
     facet_exposures = "facet_exposures"
     vocabularies = "vocabularies"
-    snapshots = "snapshots"
 
 
 COLLECTION_NAMES: dict[Collection, str] = {
     Collection.catalogues: "Catalogues",
+    Collection.catalogues_versions: "Catalogues versions",
     Collection.facet_values: "Facet values",
     Collection.facet_exposures: "Facet exposures",
     Collection.vocabularies: "Vocabularies",
-    Collection.snapshots: "Snapshots",
 }
 
 

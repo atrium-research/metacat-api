@@ -4,17 +4,16 @@ from functools import cached_property
 
 from pydantic import BaseModel, computed_field
 
-from metacat_api.models.catalogue import Catalogue
+from metacat_api.models.catalogue import Catalogue, CatalogueVersion
 from metacat_api.models.common import Collection
 from metacat_api.models.facet import FacetExposure, FacetTimeseriesPoint, FacetValue
-from metacat_api.models.snapshot import Snapshot
 from metacat_api.models.vocabulary import Vocabulary
 
 logger = logging.getLogger(__name__)
 
 
 class Store(BaseModel):
-    """Reads timestamped JSON snapshots from the metacat-data store.
+    """Reads timestamped JSON from the metacat-data store.
 
     Expects a directory holding the metacat-data layout (one file per
     collection). Missing files are treated as empty collections so a
@@ -23,10 +22,10 @@ class Store(BaseModel):
     """
 
     catalogues: list[Catalogue]
+    catalogues_versions: list[CatalogueVersion]
     facet_values: list[FacetValue]
     facet_exposures: list[FacetExposure]
     vocabularies: list[Vocabulary]
-    snapshots: list[Snapshot]
 
     @computed_field
     @cached_property
@@ -54,21 +53,21 @@ class Store(BaseModel):
         match collection:
             case Collection.catalogues:
                 return self.catalogues
+            case Collection.catalogues_versions:
+                return self.catalogues_versions
             case Collection.facet_values:
                 return self.facet_values
             case Collection.facet_exposures:
                 return self.facet_exposures
             case Collection.vocabularies:
                 return self.vocabularies
-            case Collection.snapshots:
-                return self.snapshots
             case _:
                 raise ValueError(f"Unexcepted collection {collection}")
 
     def update(self, input_store: Store) -> None:
         tmp_store = input_store.model_copy(deep=True)
         self.catalogues = tmp_store.catalogues
+        self.catalogues_versions = tmp_store.catalogues_versions
         self.facet_values = tmp_store.facet_values
         self.facet_exposures = tmp_store.facet_exposures
         self.vocabularies = tmp_store.vocabularies
-        self.snapshots = tmp_store.snapshots

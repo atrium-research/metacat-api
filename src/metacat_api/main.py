@@ -10,12 +10,10 @@ from metacat_api.config import get_version
 from metacat_api.logging_setup import setup_logging
 from metacat_api.models import ErrorResponse
 from metacat_api.routes import (
-    activity,
     backup,
     catalogues,
     facets,
     harvest,
-    snapshots,
     system,
     vocabularies,
 )
@@ -47,8 +45,6 @@ _V1_ROUTERS = (
     catalogues.router,
     facets.router,
     vocabularies.router,
-    snapshots.router,
-    activity.router,
 )
 
 

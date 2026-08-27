@@ -40,7 +40,7 @@ def set_store(json_data_dir: str):
 
 
 def write_store() -> None:
-    for name in Collection:
+    for name in [Collection.catalogues_versions, Collection.facet_exposures, Collection.facet_values]:
         with open(settings.json_data_path() / f"{name}.json", "w", encoding="utf-8") as handle:
             json.dump(store.get(name), handle, indent=2, ensure_ascii=False, default=to_jsonable_python)
             handle.write("\n")

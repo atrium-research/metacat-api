@@ -13,12 +13,7 @@
     "domain": "Linguistics",
     "url": "https://vlo.clarin.eu",
     "licence": "Mixed",
-    "languages_summary": "Highly multilingual: 60+ languages, strongest in German, English and Dutch.",
-    "total_resources": 1087412,
-    "vocabularies_count": 9,
-    "vocabularies_mapped": 5,
-    "last_harvest_at": "2026-05-03T03:40:00Z",
-    "harvest_status": "live"
+    "languages_summary": "Highly multilingual: 60+ languages, strongest in German, English and Dutch."
   },
   {
     "id": "gotriple",
@@ -26,12 +21,7 @@
     "domain": "Social Sciences and Humanities",
     "url": "https://gotriple.eu",
     "licence": "CC-BY 4.0",
-    "languages_summary": "Multilingual SSH corpus spanning nine European languages.",
-    "total_resources": 7204551,
-    "vocabularies_count": 11,
-    "vocabularies_mapped": 6,
-    "last_harvest_at": "2026-05-02T23:05:00Z",
-    "harvest_status": "live"
+    "languages_summary": "Multilingual SSH corpus spanning nine European languages."
   },
   {
     "id": "sshomp",
@@ -40,10 +30,5 @@
     "url": "https://marketplace.sshopencloud.eu",
     "licence": "CC-BY 4.0",
     "languages_summary": "English-dominant tool and service descriptions.",
-    "total_resources": 5217,
-    "vocabularies_count": 7,
-    "vocabularies_mapped": 3,
-    "last_harvest_at": "2026-04-28T10:00:00Z",
-    "harvest_status": "degraded"
   }
 ]

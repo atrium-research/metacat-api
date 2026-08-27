@@ -37,6 +37,10 @@ class GotripleHarvester(Harvester):
         return "gotriple"
 
     @property
+    def vocabularies(self) -> list[str]:
+        return ["triple-vocabulary"]
+
+    @property
     def reasons(self) -> Reasons:
         return {
             PivotFacet.format: "Format is a documented gap in the GoTriple API.",

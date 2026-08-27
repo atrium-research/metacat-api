@@ -24,8 +24,8 @@ def apply_catalogue(
     reasons: Reasons,
     status_overrides: StatusOverrides,
 ) -> None:
-    snapshot_ts = time_to_str(now())
-    logger.info(f"Start apply catalogue {catalogue_id} for snapshot {snapshot_ts}")
+    version_ts = time_to_str(now())
+    logger.info(f"Start apply catalogue {catalogue_id} for version {version_ts}")
     ranked = {facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items()}
 
     store.facet_values = [v for v in store.facet_values if v.catalogue_id != catalogue_id]
@@ -40,7 +40,7 @@ def apply_catalogue(
                         "facet": PivotFacet.from_str(facet),
                         "value": value,
                         "count": count,
-                        "timestamp": snapshot_ts,
+                        "timestamp": version_ts,
                     },
                     extra="forbid",
                 )
@@ -80,12 +80,12 @@ def apply_catalogue(
 
     harvest_ts = datetime.now(UTC)
     for catalogue in store.catalogues:
-        if catalogue.id == catalogue_id:
-            catalogue.last_harvest_at = harvest_ts
+        if catalogue.catalogue_id == catalogue_id:
+            catalogue.harvest_at = harvest_ts
             catalogue.harvest_status = HarvestStatus.live
 
 
-def report(catalogue_id: str, harvested: RawFacets) -> None:
+def _report(catalogue_id: str, harvested: RawFacets) -> None:
     logger.info(f"Harvested {catalogue_id} into {settings.json_data_path()}")
     for facet in PivotFacet:
         pairs = harvested.get(facet)
@@ -103,6 +103,10 @@ class Harvester(ABC):
 
     @property
     @abstractmethod
+    def vocabularies(self) -> list[str]: ...
+
+    @property
+    @abstractmethod
     def reasons(self) -> Reasons: ...
 
     @property
@@ -116,4 +120,4 @@ class Harvester(ABC):
         harvested = self.harvest()
         apply_catalogue(self.catalogue_id, harvested, self.reasons, self.status_overrides)
         write_store()
-        report(self.catalogue_id, harvested)
+        _report(self.catalogue_id, harvested)

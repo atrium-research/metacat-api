@@ -24,6 +24,10 @@ class ClarinHarvester(Harvester):
         return "clarin-vlo"
 
     @property
+    def vocabularies(self) -> list[str]:
+        return ["unesco-thesaurus", "lcsh", "iso-639-3", "olac-disciplines", "clarin-ccr"]
+
+    @property
     def reasons(self) -> Reasons:
         return {
             PivotFacet.discipline: "CLARIN VLO does not expose a discipline facet.",
