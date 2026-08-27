@@ -3,7 +3,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
-from metacat_api.models import FacetComparison, FacetTimeseriesPoint, FacetValue, PivotFacet
+from metacat_api.models import FacetComparison, FacetId, FacetTimeseriesPoint, FacetValue
 from metacat_api.services import catalogues as catalogues_service
 from metacat_api.services import facets as facets_service
 
@@ -29,8 +29,8 @@ _catalogues_query = Annotated[
 ]
 
 
-@router.get("", summary="List the pivot facets")
-def list_facets() -> list[PivotFacet]:
+@router.get("", summary="List the facets")
+def list_facets() -> list[FacetId]:
     return facets_service.list_facets()
 
 
@@ -45,7 +45,7 @@ def _to_utc(dt: datetime | None) -> datetime | None:
     summary="Facet values with counts and timestamps",
 )
 def facet_values(
-    facet: PivotFacet,
+    facet: FacetId,
     catalogues: _catalogues_query = None,
     date_from: Annotated[datetime | None, Query(alias="from")] = None,
     date_to: Annotated[datetime | None, Query(alias="to")] = None,
@@ -58,7 +58,7 @@ def facet_values(
     summary="Transversal side-by-side comparison across catalogues",
 )
 def facet_compare(
-    facet: PivotFacet,
+    facet: FacetId,
     catalogues: _catalogues_query = None,
 ) -> FacetComparison:
     return facets_service.facet_compare(facet, _parse_catalogues(catalogues))
@@ -69,7 +69,7 @@ def facet_compare(
     summary="Evolution of a facet over time",
 )
 def facet_timeseries(
-    facet: PivotFacet,
+    facet: FacetId,
     catalogues: _catalogues_query = None,
     date_from: Annotated[datetime | None, Query(alias="from")] = None,
     date_to: Annotated[datetime | None, Query(alias="to")] = None,

@@ -34,4 +34,3 @@ def list_vocabularies() -> list[Vocabulary]:
 )
 def get_vocabulary(vocabulary_id: str, vocabulary: required_vocabulary) -> Vocabulary:
     return vocabulary
-

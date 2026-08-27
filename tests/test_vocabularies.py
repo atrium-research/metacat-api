@@ -14,4 +14,3 @@ def test_unknown_vocabulary_returns_error_envelope(client):
     response = client.get("/v1/vocabularies/nope")
     assert response.status_code == 404
     assert response.json()["code"] == "not_found"
-

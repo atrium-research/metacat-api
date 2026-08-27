@@ -12,13 +12,13 @@ import requests
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import PivotFacet, RawFacets, Reasons, StatusOverrides, raw_facets_adapter
+from metacat_api.models import FacetExposure, FacetExposureStatus, FacetId, RawFacets, raw_facets_adapter
 
 BASE_URL = "https://api.gotriple.eu/api/documents"
 FACET_AGGS = {
-    PivotFacet.resource_type: "type",
-    PivotFacet.discipline: "topic",
-    PivotFacet.source: "provider",
+    FacetId.resource_type: "type",
+    FacetId.discipline: "topic",
+    FacetId.source: "provider",
 }
 
 logger = logging.getLogger(__name__)
@@ -41,16 +41,24 @@ class GotripleHarvester(Harvester):
         return ["triple-vocabulary"]
 
     @property
-    def reasons(self) -> Reasons:
-        return {
-            PivotFacet.format: "Format is a documented gap in the GoTriple API.",
-            PivotFacet.source_2: "GoTriple exposes no secondary source facet.",
-            PivotFacet.subjects: "Subjects are a documented gap in the GoTriple API.",
-        }
-
-    @property
-    def status_overrides(self) -> StatusOverrides:
-        return {}
+    def facet_exposures(self) -> list[FacetExposure]:
+        return [
+            FacetExposure(
+                facet=FacetId.format,
+                status=FacetExposureStatus.gap,
+                reason="Format is a documented gap in the GoTriple API.",
+            ),
+            FacetExposure(
+                facet=FacetId.source_2,
+                status=FacetExposureStatus.gap,
+                reason="GoTriple exposes no secondary source facet.",
+            ),
+            FacetExposure(
+                facet=FacetId.subjects,
+                status=FacetExposureStatus.gap,
+                reason="Subjects are a documented gap in the GoTriple API.",
+            ),
+        ]
 
     def harvest(self) -> RawFacets:
         logger.info("GoTriple: Start harvest")

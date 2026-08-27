@@ -1,7 +1,7 @@
 from uuid import UUID
 
 from metacat_api.datasources.store import store
-from metacat_api.models import Catalogue, CatalogueVersion, FacetExposure, FacetExposureStatus, PivotFacet
+from metacat_api.models import Catalogue, CatalogueVersion
 
 
 def list_catalogues() -> list[Catalogue]:
@@ -27,11 +27,3 @@ def get_last_catalogue_version(catalogue_id: str) -> CatalogueVersion | None:
     if not versions:
         return None
     return max(versions, key=lambda v: v.harvest_at)
-
-
-def get_catalogue_facets(catalogue_id: str) -> list[FacetExposure]:
-    return [e for e in store.facet_exposures if e.catalogue_id == catalogue_id]
-
-
-def get_facet_coverage(catalogue_id: str) -> dict[PivotFacet, FacetExposureStatus]:
-    return {e.facet: e.status for e in get_catalogue_facets(catalogue_id)}

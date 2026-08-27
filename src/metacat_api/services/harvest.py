@@ -18,7 +18,7 @@ async def harvest_all():
 
 
 async def harvest(catalogue_id: str):
-    harvester = next(iter([harvester for harvester in HARVESTERS if catalogue_id == harvester.catalogue_id]), None)
+    harvester = next((harvester for harvester in HARVESTERS if catalogue_id == harvester.catalogue_id), None)
     if not harvester:
         raise ValueError(f"Unknown catalogue '{catalogue_id}'")
     with fail_after(_TIMEOUT):

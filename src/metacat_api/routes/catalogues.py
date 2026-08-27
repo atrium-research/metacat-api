@@ -7,9 +7,6 @@ from metacat_api.models import (
     Catalogue,
     CatalogueVersion,
     ErrorResponse,
-    FacetExposure,
-    FacetExposureStatus,
-    PivotFacet,
 )
 from metacat_api.services import catalogues as service
 
@@ -97,23 +94,3 @@ def catalogue_version_by_id(
     catalogue_id: str, version_id: UUID, catalogue_version: required_catalogue_version
 ) -> CatalogueVersion:
     return catalogue_version
-
-
-@router.get(
-    "/{catalogue_id}/facets",
-    responses=_NOT_FOUND,
-    summary="Facet exposure status for a catalogue",
-    dependencies=[Depends(_require_catalogue)],
-)
-def catalogue_facets(catalogue_id: str) -> list[FacetExposure]:
-    return service.get_catalogue_facets(catalogue_id)
-
-
-@router.get(
-    "/{catalogue_id}/facet-coverage",
-    responses=_NOT_FOUND,
-    summary="Compact facet coverage for the Overview cards",
-    dependencies=[Depends(_require_catalogue)],
-)
-def catalogue_facet_coverage(catalogue_id: str) -> dict[PivotFacet, FacetExposureStatus]:
-    return service.get_facet_coverage(catalogue_id)

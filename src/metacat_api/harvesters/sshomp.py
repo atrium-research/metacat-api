@@ -27,7 +27,7 @@ import requests
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import PivotFacet, RawFacets, Reasons, StatusOverrides
+from metacat_api.models import FacetExposure, FacetExposureStatus, FacetId, RawFacets
 
 SNAPSHOT_INDEX_URL = "https://api.github.com/repos/SSHOC/sshompitor/contents/data"
 SNAPSHOT_NAME_RE = re.compile(r"^full_items_(\d+)\.json$")
@@ -109,17 +109,17 @@ class SshompHarvester(Harvester):
         return ["lcsh", "sshomp-keywords"]
 
     @property
-    def reasons(self) -> Reasons:
-        return {
-            PivotFacet.source_2: "The SSH Open Marketplace exposes no secondary source facet.",
-        }
-
-    @property
-    def status_overrides(self) -> StatusOverrides:
-        return {}
+    def facet_exposures(self) -> list[FacetExposure]:
+        return [
+            FacetExposure(
+                facet=FacetId.source_2,
+                status=FacetExposureStatus.gap,
+                reason="The SSH Open Marketplace exposes no secondary source facet.",
+            ),
+        ]
 
     def harvest(self) -> RawFacets:
-        """Download the selected snapshot and tally its five pivot facets.
+        """Download the selected snapshot and tally its five facets.
 
         Each item in the dump is a flat SSH Open Marketplace catalogue record:
             - "category": the item's resource type (tool-or-service, dataset,

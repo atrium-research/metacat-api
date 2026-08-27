@@ -6,16 +6,16 @@ from metacat_api.models import (
     FacetComparisonRow,
     FacetTimeseriesPoint,
     FacetValue,
-    PivotFacet,
+    FacetId,
 )
 
 
-def list_facets() -> list[PivotFacet]:
-    return list(PivotFacet)
+def list_facets() -> list[FacetId]:
+    return list(FacetId)
 
 
 def facet_values(
-    facet: PivotFacet,
+    facet: FacetId,
     catalogues: list[str],
     date_from: datetime | None = None,
     date_to: datetime | None = None,
@@ -35,7 +35,7 @@ def facet_values(
 
 
 def facet_timeseries(
-    facet: PivotFacet,
+    facet: FacetId,
     catalogues: list[str],
     date_from: datetime | None = None,
     date_to: datetime | None = None,
@@ -55,7 +55,7 @@ def facet_timeseries(
 
 
 def facet_compare(
-    facet: PivotFacet,
+    facet: FacetId,
     catalogues: list[str],
 ) -> FacetComparison:
     facet_all = [v for v in store.facet_values if v.facet == facet]

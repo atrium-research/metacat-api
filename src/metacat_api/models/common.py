@@ -8,7 +8,6 @@ class Collection(StrEnum):
     catalogues = "catalogues"
     catalogues_versions = "catalogues_versions"
     facet_values = "facet_values"
-    facet_exposures = "facet_exposures"
     vocabularies = "vocabularies"
 
 
@@ -16,7 +15,6 @@ COLLECTION_NAMES: dict[Collection, str] = {
     Collection.catalogues: "Catalogues",
     Collection.catalogues_versions: "Catalogues versions",
     Collection.facet_values: "Facet values",
-    Collection.facet_exposures: "Facet exposures",
     Collection.vocabularies: "Vocabularies",
 }
 
@@ -24,7 +22,7 @@ COLLECTION_NAMES: dict[Collection, str] = {
 CollectionValues = list[dict[str, Any]]
 
 
-class PivotFacet(StrEnum):
+class FacetId(StrEnum):
     resource_type = "resource-type"
     format = auto()
     discipline = auto()
@@ -36,11 +34,11 @@ class PivotFacet(StrEnum):
     def from_str(label):
         match label:
             case "resource_type":
-                return PivotFacet.resource_type
+                return FacetId.resource_type
             case "source_2":
-                return PivotFacet.source_2
+                return FacetId.source_2
             case x:
-                return PivotFacet(x)
+                return FacetId(x)
 
 
 RawFacetValue = tuple[str, int]
@@ -59,17 +57,10 @@ class RawFacets(TypedDict, total=False):
 raw_facets_adapter = TypeAdapter(RawFacets)
 
 
-Reasons = dict[PivotFacet, str]
-
-
 class FacetExposureStatus(StrEnum):
     exposed = "exposed"
-    partial = "partial"
     implicit = "implicit"
     gap = "gap"
-
-
-StatusOverrides = dict[PivotFacet, FacetExposureStatus]
 
 
 class HarvestStatus(StrEnum):

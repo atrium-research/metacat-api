@@ -8,6 +8,50 @@
     "vocabularies": [
       "getty-aat",
       "aocat-resource-types"
+    ],
+    "facets": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 3170000
+      },
+      {
+        "facet": "format",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 2550000
+      },
+      {
+        "facet": "discipline",
+        "status": "implicit",
+        "reason": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
+        "values_count": 1,
+        "total_count": 3142897
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 2878000
+      },
+      {
+        "facet": "source-2",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 2,
+        "total_count": 310000
+      },
+      {
+        "facet": "subjects",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 723000
+      }
     ]
   },
   {
@@ -19,13 +63,57 @@
     "vocabularies": [
       "getty-aat",
       "aocat-resource-types"
+    ],
+    "facets": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 3170000
+      },
+      {
+        "facet": "format",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 2550000
+      },
+      {
+        "facet": "discipline",
+        "status": "implicit",
+        "reason": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
+        "values_count": 1,
+        "total_count": 3142897
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 2878000
+      },
+      {
+        "facet": "source-2",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 2,
+        "total_count": 310000
+      },
+      {
+        "facet": "subjects",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 723000
+      }
     ]
   },
   {
     "catalogue_id": "clarin-vlo",
     "version_id": "1abd5556-8c86-4c71-871d-747993920b98",
     "total_resources": 1087412,
-    "": "2026-05-03T03:40:00Z",
+    "harvest_at": "2026-05-03T03:40:00Z",
     "harvest_status": "success",
     "vocabularies": [
       "unesco-thesaurus",
@@ -33,6 +121,50 @@
       "iso-639-3",
       "olac-disciplines",
       "clarin-ccr"
+    ],
+    "facets": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 3,
+        "total_count": 1027000
+      },
+      {
+        "facet": "format",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 910000
+      },
+      {
+        "facet": "discipline",
+        "status": "gap",
+        "reason": "CLARIN VLO does not expose a discipline facet.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 560000
+      },
+      {
+        "facet": "source-2",
+        "status": "gap",
+        "reason": "CLARIN VLO exposes no secondary source facet.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "subjects",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 345000
+      }
     ]
   },
   {
@@ -43,6 +175,50 @@
     "harvest_status": "success",
     "vocabularies": [
       "triple-vocabulary"
+    ],
+    "facets": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 6,
+        "total_count": 20980000
+      },
+      {
+        "facet": "format",
+        "status": "gap",
+        "reason": "Format is a documented gap in the GoTriple API.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "discipline",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 5,
+        "total_count": 15100000
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 5,
+        "total_count": 21906000
+      },
+      {
+        "facet": "source-2",
+        "status": "gap",
+        "reason": "GoTriple exposes no secondary source facet.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "subjects",
+        "status": "gap",
+        "reason": "Subjects are a documented gap in the GoTriple API.",
+        "values_count": null,
+        "total_count": null
+      }
     ]
   },
   {
@@ -54,6 +230,50 @@
     "vocabularies": [
       "lcsh",
       "sshomp-keywords"
+    ],
+    "facets": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 5200
+      },
+      {
+        "facet": "format",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 4900
+      },
+      {
+        "facet": "discipline",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 4400
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 3,
+        "total_count": 4900
+      },
+      {
+        "facet": "source-2",
+        "status": "gap",
+        "reason": "The SSH Open Marketplace exposes no secondary source facet.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "subjects",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 4,
+        "total_count": 2500
+      }
     ]
   }
 ]
