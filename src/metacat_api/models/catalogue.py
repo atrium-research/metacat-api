@@ -16,6 +16,5 @@ class StaticCatalogue(BaseModel):
 
 class Catalogue(StaticCatalogue):
     total_resources: int | None = Field(description="Total resources described by the catalogue.", default=None)
-    vocabularies_count: int | None = Field(description="Number of vocabularies used by the catalogue.", default=None)
     last_harvest_at: datetime | None = Field(description="Timestamp of the last successful harvest.", default=None)
     harvest_status: HarvestStatus | None = Field(description="Status of the most recent harvest.", default=None)
