@@ -26,4 +26,4 @@ class CatalogueVersion(BaseModel):
     harvest_at: datetime | None = Field(description="Timestamp of the harvest.", default=None)
     harvest_status: HarvestStatus | None = Field(description="Status of harvest.", default=None)
     vocabularies: list[str] = Field(description="Used vocabularies.", default=[])
-    facets: list[FacetExposure] = Field(description="Facet exposures.", default=[])
+    facet_exposures: list[FacetExposure] = Field(description="Facet exposures.", default=[])

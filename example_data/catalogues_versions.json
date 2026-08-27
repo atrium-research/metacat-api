@@ -9,7 +9,7 @@
       "getty-aat",
       "aocat-resource-types"
     ],
-    "facets": [
+    "facet_exposures": [
       {
         "facet": "resource-type",
         "status": "exposed",
@@ -64,7 +64,7 @@
       "getty-aat",
       "aocat-resource-types"
     ],
-    "facets": [
+    "facet_exposures": [
       {
         "facet": "resource-type",
         "status": "exposed",
@@ -122,7 +122,7 @@
       "olac-disciplines",
       "clarin-ccr"
     ],
-    "facets": [
+    "facet_exposures": [
       {
         "facet": "resource-type",
         "status": "exposed",
@@ -176,7 +176,7 @@
     "vocabularies": [
       "triple-vocabulary"
     ],
-    "facets": [
+    "facet_exposures": [
       {
         "facet": "resource-type",
         "status": "exposed",
@@ -223,42 +223,42 @@
   },
   {
     "catalogue_id": "sshomp",
-    "version_id": "1abd5556-8c86-4c71-871d-747993920b98",
-    "total_resources": 5217,
-    "harvest_at": "2026-04-28T10:00:00Z",
+    "version_id": "fcf0f473-910b-4c11-af35-dc7ecf78fe8f",
+    "total_resources": 20557,
+    "harvest_at": "2026-08-27T15:33:57.358155Z",
     "harvest_status": "success",
     "vocabularies": [
       "lcsh",
       "sshomp-keywords"
     ],
-    "facets": [
+    "facet_exposures": [
       {
         "facet": "resource-type",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 5200
+        "values_count": null,
+        "total_count": null
       },
       {
         "facet": "format",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 4900
+        "values_count": 69,
+        "total_count": 607
       },
       {
         "facet": "discipline",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 4400
+        "values_count": 199,
+        "total_count": 2903
       },
       {
         "facet": "source",
         "status": "exposed",
         "reason": null,
-        "values_count": 3,
-        "total_count": 4900
+        "values_count": 18,
+        "total_count": 4709
       },
       {
         "facet": "source-2",
@@ -271,8 +271,8 @@
         "facet": "subjects",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 2500
+        "values_count": 2014,
+        "total_count": 12338
       }
     ]
   }

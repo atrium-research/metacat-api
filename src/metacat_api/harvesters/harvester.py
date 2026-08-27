@@ -60,7 +60,7 @@ class Harvester(ABC):
             vocabularies=self.vocabularies,
         )
 
-        store.facet_exposures.append(new_version)
+        store.catalogues_versions.append(new_version)
 
         for facet, pairs in ranked.items():
             for value, count in pairs:
@@ -75,17 +75,18 @@ class Harvester(ABC):
                 )
 
         for facet_id in FacetId:
-            facet_exposure = next((fe for fe in self.facet_exposures if fe.facet == facet_id), None)
-            if not facet_exposure:
-                facet_exposure = FacetExposure(facet=facet_id)
-                self.facet_exposures.append(facet_exposure)
+            facet_exposure = next(
+                (fe for fe in self.facet_exposures if fe.facet == facet_id),
+                FacetExposure(facet=facet_id),
+            )
+            new_version.facet_exposures.append(facet_exposure)
 
             pairs = ranked.get(facet_id)
             if pairs:
                 facet_exposure.values_count = len(pairs)
                 facet_exposure.total_count = sum(count for _, count in pairs)
 
-        new_version.total_resources = sum(facet_exposure.total_count or 0 for facet_exposure in self.facet_exposures)
+        new_version.total_resources = sum(facet_exposure.total_count or 0 for facet_exposure in new_version.facet_exposures)
 
     def apply(self) -> None:
         harvested = self.harvest()

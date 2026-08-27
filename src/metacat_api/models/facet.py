@@ -7,7 +7,10 @@ from metacat_api.models.common import FacetExposureStatus, FacetId
 
 class FacetExposure(BaseModel):
     facet: FacetId = Field(description="The facet identifier.")
-    status: FacetExposureStatus = Field(description="How the catalogue exposes this facet.")
+    status: FacetExposureStatus = Field(
+        default=FacetExposureStatus.exposed,
+        description="How the catalogue exposes this facet.",
+    )
     reason: str | None = Field(default=None, description="Explanation when the facet is a gap, or implicit.")
     values_count: int | None = Field(default=None, description="Number of distinct values, null when not exposed.")
     total_count: int | None = Field(default=None, description="Sum of counts across all values of the facet.")
