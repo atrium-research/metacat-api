@@ -82,7 +82,7 @@ def apply_catalogue(
     for catalogue in store.catalogues:
         if catalogue.catalogue_id == catalogue_id:
             catalogue.harvest_at = harvest_ts
-            catalogue.harvest_status = HarvestStatus.live
+            catalogue.harvest_status = HarvestStatus.success
 
 
 def _report(catalogue_id: str, harvested: RawFacets) -> None:

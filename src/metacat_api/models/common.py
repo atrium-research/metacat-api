@@ -73,9 +73,8 @@ StatusOverrides = dict[PivotFacet, FacetExposureStatus]
 
 
 class HarvestStatus(StrEnum):
-    live = "live"
-    degraded = "degraded"
-    unreachable = "unreachable"
+    success = "success"
+    error = "error"
 
 
 class Pagination(BaseModel):
