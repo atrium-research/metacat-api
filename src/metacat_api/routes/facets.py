@@ -40,10 +40,7 @@ def _to_utc(dt: datetime | None) -> datetime | None:
     return dt.replace(tzinfo=UTC)
 
 
-@router.get(
-    "/{facet}/values",
-    summary="Facet values with counts and timestamps",
-)
+@router.get("/{facet}/values", summary="Facet values")
 def facet_values(
     facet: FacetId,
     catalogues: _catalogues_query = None,

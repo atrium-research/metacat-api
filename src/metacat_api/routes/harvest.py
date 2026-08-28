@@ -10,8 +10,9 @@ router = APIRouter(prefix="/harvest", tags=["Harvest"])
 @router.get(
     "/tasks",
     dependencies=[Depends(is_api_key_valid)],
+    summary="Scheduled tasks information",
 )
-async def get_tasks():
+async def get_tasks() -> list[Task]:
     from metacat_api.main import get_scheduler
 
     return [
@@ -36,6 +37,7 @@ async def get_tasks():
         status.HTTP_408_REQUEST_TIMEOUT: {"model": ErrorResponse},
     },
     status_code=status.HTTP_204_NO_CONTENT,
+    summary="Harvest a specific catalogue or all",
 )
 async def post_harvest(catalogue_id: str) -> None:
     try:

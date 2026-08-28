@@ -13,12 +13,17 @@ router = APIRouter(prefix="/backup", tags=["Backup"])
 logger = logging.getLogger(__name__)
 
 
-@router.get("/page", response_class=RedirectResponse, status_code=301)
+@router.get(
+    "/page",
+    response_class=RedirectResponse,
+    status_code=status.HTTP_301_MOVED_PERMANENTLY,
+    summary="Backup page redirection",
+)
 async def get_page():
     return GIT_PAGE
 
 
-@router.get("/last-update")
+@router.get("/last-update", summary="Last backup timestamp")
 async def get_last_update() -> BackupLastUpdate:
     return await read_last_update_from_url()
 
@@ -26,6 +31,7 @@ async def get_last_update() -> BackupLastUpdate:
 @router.get(
     "/last-update-info",
     dependencies=[Depends(is_api_key_valid)],
+    summary="Last backup information",
 )
 async def get_last_update_info() -> BackupInfo:
     try:
@@ -41,6 +47,7 @@ async def get_last_update_info() -> BackupInfo:
     responses={
         status.HTTP_502_BAD_GATEWAY: {"model": ErrorResponse},
     },
+    summary="Create a new backup manually",
 )
 async def post_create_backup() -> BackupInfo:
     try:
