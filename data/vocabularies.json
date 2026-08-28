@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "id": "getty-aat",
+    "name": "Getty AAT",
+    "authority": "Getty Research Institute",
+    "uri": "https://www.getty.edu/research/tools/vocabularies/aat/"
+  },
+  {
+    "id": "unesco-thesaurus",
+    "name": "UNESCO Thesaurus",
+    "authority": "UNESCO",
+    "uri": "https://vocabularies.unesco.org/thesaurus"
+  },
+  {
+    "id": "lcsh",
+    "name": "LCSH",
+    "authority": "Library of Congress",
+    "uri": "https://id.loc.gov/authorities/subjects.html"
+  },
+  {
+    "id": "iso-639-3",
+    "name": "ISO 639-3",
+    "authority": "SIL International",
+    "uri": "https://iso639-3.sil.org/"
+  },
+  {
+    "id": "olac-disciplines",
+    "name": "OLAC Disciplines",
+    "authority": "Open Language Archives Community",
+    "uri": "http://www.language-archives.org/REC/discourse.html"
+  },
+  {
+    "id": "clarin-ccr",
+    "name": "CLARIN Concept Registry",
+    "authority": "CLARIN",
+    "uri": "https://concepts.clarin.eu/"
+  },
+  {
+    "id": "aocat-resource-types",
+    "name": "AO-Cat resource types",
+    "authority": "ARIADNE / AO-Cat",
+    "uri": "https://github.com/ARIADNE-Infrastructure/AO-Cat-Ontology"
+  },
+  {
+    "id": "triple-vocabulary",
+    "name": "TRIPLE subject vocabulary",
+    "authority": "GoTriple / OPERAS",
+    "uri": "https://gotriple.eu"
+  },
+  {
+    "id": "sshomp-keywords",
+    "name": "SSHOMP keywords",
+    "authority": "SSH Open Marketplace",
+    "uri": "https://marketplace.sshopencloud.eu"
+  }
+]

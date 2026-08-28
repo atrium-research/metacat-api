@@ -3,52 +3,32 @@
     "id": "ariadne",
     "name": "ARIADNE Portal",
     "domain": "Archaeology",
-    "url": "https://portal.ariadne-infrastructure.eu/",
+    "url": "https://portal.ariadne-infrastructure.eu",
     "licence": "CC-BY 4.0",
-    "languages_summary": "Primarily English, with national-language records across European partners.",
-    "total_resources": null,
-    "vocabularies_count": null,
-    "vocabularies_mapped": null,
-    "last_harvest_at": "2026-08-17T05:04:14.331551Z",
-    "harvest_status": "live"
+    "languages_summary": "Primarily English, with national-language records across European partners."
   },
   {
     "id": "clarin-vlo",
     "name": "CLARIN VLO",
     "domain": "Linguistics",
-    "url": "https://vlo.clarin.eu/",
+    "url": "https://vlo.clarin.eu",
     "licence": "Mixed",
-    "languages_summary": "Highly multilingual: 60+ languages, strongest in German, English and Dutch.",
-    "total_resources": null,
-    "vocabularies_count": null,
-    "vocabularies_mapped": null,
-    "last_harvest_at": "2026-08-17T05:04:27.282246Z",
-    "harvest_status": "live"
+    "languages_summary": "Highly multilingual: 60+ languages, strongest in German, English and Dutch."
   },
   {
     "id": "gotriple",
     "name": "GoTriple",
     "domain": "Social Sciences and Humanities",
-    "url": "https://gotriple.eu/",
+    "url": "https://gotriple.eu",
     "licence": "CC-BY 4.0",
-    "languages_summary": "Multilingual SSH corpus spanning nine European languages.",
-    "total_resources": null,
-    "vocabularies_count": null,
-    "vocabularies_mapped": null,
-    "last_harvest_at": "2026-08-17T05:00:05.435811Z",
-    "harvest_status": "live"
+    "languages_summary": "Multilingual SSH corpus spanning nine European languages."
   },
   {
     "id": "sshomp",
     "name": "SSH Open Marketplace",
     "domain": "SSH Tools and Services",
-    "url": "https://marketplace.sshopencloud.eu/",
+    "url": "https://marketplace.sshopencloud.eu",
     "licence": "CC-BY 4.0",
-    "languages_summary": "English-dominant tool and service descriptions.",
-    "total_resources": null,
-    "vocabularies_count": null,
-    "vocabularies_mapped": null,
-    "last_harvest_at": "2026-08-17T05:04:22.586567Z",
-    "harvest_status": "live"
+    "languages_summary": "English-dominant tool and service descriptions."
   }
 ]
