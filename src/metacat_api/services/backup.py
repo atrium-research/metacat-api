@@ -12,6 +12,7 @@ from metacat_api.models.common import COLLECTION_NAMES, Collection
 from metacat_api.services.util import now, sizeof_fmt, time_to_str
 
 GIT_URL = "github.com/atrium-research/metacat-api.git"
+GIT_PAGE = "https://atrium-research.github.io/metacat-api"
 GIT_BRANCH = "data"
 
 logger = logging.getLogger(__name__)
