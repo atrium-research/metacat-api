@@ -58,14 +58,17 @@ async def _get_last_update(repo_dir: str) -> datetime:
 
 
 async def _get_data_files(repo_dir: str) -> list[DataFile]:
-    return [
-        DataFile(
-            name=COLLECTION_NAMES[Collection(p.name.removesuffix(".json"))],
-            filename=p.name,
-            size=(await p.stat()).st_size,
-        )
-        async for p in Path(f"{repo_dir}/data").iterdir()
-    ]
+    return sorted(
+        [
+            DataFile(
+                name=COLLECTION_NAMES[Collection(p.name.removesuffix(".json"))],
+                filename=p.name,
+                size=(await p.stat()).st_size,
+            )
+            async for p in Path(f"{repo_dir}/data").iterdir()
+        ],
+        key=lambda d: d.name,
+    )
 
 
 async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[DataFile]) -> None:
