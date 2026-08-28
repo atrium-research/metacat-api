@@ -4,13 +4,23 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 
 from metacat_api.models import ErrorResponse
-from metacat_api.models.backup import BackupInfo
+from metacat_api.models.backup import BackupInfo, BackupLastUpdate
 from metacat_api.services.auth import is_api_key_valid
-from metacat_api.services.backup import GIT_PAGE, BackupError, read_backup, write_backup
+from metacat_api.services.backup import GIT_PAGE, BackupError, read_backup, read_last_update_from_url, write_backup
 
 router = APIRouter(prefix="/backup", tags=["Backup"])
 
 logger = logging.getLogger(__name__)
+
+
+@router.get("/page", response_class=RedirectResponse, status_code=301)
+async def get_page():
+    return GIT_PAGE
+
+
+@router.get("/last-update")
+async def get_last_update() -> BackupLastUpdate:
+    return await read_last_update_from_url()
 
 
 @router.get(
@@ -23,11 +33,6 @@ async def get_last_update_info() -> BackupInfo:
     except BackupError as e:
         logger.exception(f"Backup error: {str(e)}")
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Unable to get last update") from e
-
-
-@router.get("/page", response_class=RedirectResponse, status_code=301)
-async def get_page():
-    return GIT_PAGE
 
 
 @router.post(

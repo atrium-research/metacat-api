@@ -16,6 +16,9 @@ class DataFile(BaseModel):
         return sizeof_fmt(self.size)
 
 
-class BackupInfo(BaseModel):
+class BackupLastUpdate(BaseModel):
     last_update: str
+
+
+class BackupInfo(BackupLastUpdate):
     data_files: list[DataFile] = []

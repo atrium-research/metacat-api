@@ -3,11 +3,12 @@ import re
 import shutil
 from datetime import datetime
 
+import aiohttp
 from anyio import Path, TemporaryDirectory, open_file
 from git import GitCommandError, Repo
 
 from metacat_api.config import settings
-from metacat_api.models.backup import BackupInfo, DataFile
+from metacat_api.models.backup import BackupInfo, BackupLastUpdate, DataFile
 from metacat_api.models.common import COLLECTION_NAMES, Collection
 from metacat_api.services.util import now, sizeof_fmt, time_to_str
 
@@ -37,7 +38,7 @@ def _get_repo(tmp_dir: str, with_auth=False) -> Repo:
     return repo
 
 
-async def _read_readme(repo_dir) -> str:
+async def _read_readme_from_repo(repo_dir) -> str:
     path = Path(f"{repo_dir}/README.md")
     if not await path.exists():
         raise BackupError("No README.md")
@@ -45,8 +46,15 @@ async def _read_readme(repo_dir) -> str:
         return await f.read()
 
 
-async def _get_last_update(repo_dir: str) -> datetime:
-    readme = await _read_readme(repo_dir)
+async def _read_readme_from_url() -> str:
+    async with aiohttp.ClientSession() as session:
+        async with session.get(GIT_PAGE) as response:
+            if not response.ok:
+                raise BackupError(f"Unable to get online README: {response.status}")
+            return await response.text()
+
+
+def _get_last_update(readme: str) -> datetime:
     last_update = re.search(r"The dump was updated on ([^.]+)\.", readme)
     if not last_update:
         raise BackupError(f"Unable to read last update from: {readme}")
@@ -66,6 +74,7 @@ async def _get_data_files(repo_dir: str) -> list[DataFile]:
                 size=(await p.stat()).st_size,
             )
             async for p in Path(f"{repo_dir}/data").iterdir()
+            if p.name.removesuffix(".json") in Collection
         ],
         key=lambda d: d.name,
     )
@@ -115,7 +124,8 @@ async def _update_data(repo_dir: str) -> list[DataFile]:
 async def read_backup() -> BackupInfo:
     async with TemporaryDirectory(prefix="repo_dir_r_") as repo_dir:
         repo = _get_repo(repo_dir)
-        last_update = await _get_last_update(repo_dir)
+        readme = await _read_readme_from_repo(repo_dir)
+        last_update = _get_last_update(readme)
         data_files = await _get_data_files(repo_dir)
         logger.info(f"Last update: {last_update}, tz = {last_update.tzname()}")
         repo.close()
@@ -123,6 +133,13 @@ async def read_backup() -> BackupInfo:
         last_update=time_to_str(last_update),
         data_files=data_files,
     )
+
+
+async def read_last_update_from_url() -> BackupLastUpdate:
+    readme = await _read_readme_from_url()
+    last_update = _get_last_update(readme)
+    logger.info(f"Last update: {last_update}, tz = {last_update.tzname()}")
+    return BackupLastUpdate(last_update=time_to_str(last_update))
 
 
 async def write_backup() -> BackupInfo:
