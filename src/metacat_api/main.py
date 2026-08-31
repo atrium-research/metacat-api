@@ -13,6 +13,7 @@ from metacat_api.models import ErrorResponse
 from metacat_api.routes import (
     backup,
     catalogues,
+    export,
     facets,
     harvest,
     system,
@@ -93,6 +94,7 @@ def create_app() -> FastAPI:
     app.include_router(system.router)
     app.include_router(harvest.router)
     app.include_router(backup.router)
+    app.include_router(export.router)
 
     add_pagination(app)
     return app
