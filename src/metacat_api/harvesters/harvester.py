@@ -88,8 +88,7 @@ class Harvester(ABC):
                 FacetExposure(facet=facet_id),
             )
             new_version.facet_exposures.append(facet_exposure)
-
-            pairs = ranked.get(facet_id)
+            pairs = ranked.get(facet_id.name)
             if pairs:
                 facet_exposure.values_count = len(pairs)
                 facet_exposure.total_count = sum(count for _, count in pairs)
