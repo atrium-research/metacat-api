@@ -1,5 +1,7 @@
+from uuid import UUID
+
 from metacat_api.datasources.store import store
-from metacat_api.models import Catalogue, FacetExposure, FacetExposureStatus, PivotFacet, Vocabulary
+from metacat_api.models import Catalogue, CatalogueVersion
 
 
 def list_catalogues() -> list[Catalogue]:
@@ -10,26 +12,22 @@ def get_catalogue(catalogue_id: str) -> Catalogue | None:
     return next((c for c in store.catalogues if c.id == catalogue_id), None)
 
 
-def catalogue_facets(catalogue_id: str) -> list[FacetExposure]:
-    return [e for e in store.facet_exposures if e.catalogue_id == catalogue_id]
+def list_catalogue_versions(catalogue_id: str) -> list[CatalogueVersion]:
+    return [v for v in store.catalogues_versions if v.catalogue_id == catalogue_id]
 
 
-def catalogue_vocabularies(catalogue_id: str) -> list[Vocabulary]:
-    return [v for v in store.vocabularies if catalogue_id in v.used_by_catalogues]
+def get_catalogue_version(catalogue_id: str, version_id: UUID) -> CatalogueVersion | None:
+    return next(
+        (v for v in store.catalogues_versions if v.catalogue_id == catalogue_id and v.version_id == version_id), None
+    )
 
 
-def facet_coverage(catalogue_id: str) -> dict[PivotFacet, FacetExposureStatus]:
-    return {e.facet: e.status for e in catalogue_facets(catalogue_id)}
+def get_last_catalogue_version(catalogue_id: str) -> CatalogueVersion | None:
+    versions = list_catalogue_versions(catalogue_id)
+    if not versions:
+        return None
+    return max(versions, key=lambda v: v.harvest_at)
 
 
-def provenance(catalogue_id: str) -> dict:
-    catalogue = get_catalogue(catalogue_id)
-    if not catalogue:
-        return {}
-    return {
-        "catalogue_id": catalogue.id,
-        "source_catalogue_url": str(catalogue.url),
-        "datastore": "metacat-data (timestamped JSON) and GraphDB (AO-Cat model)",
-        "last_harvest_at": catalogue.last_harvest_at,
-        "harvest_status": catalogue.harvest_status,
-    }
+def get_last_catalogues_version() -> list[CatalogueVersion]:
+    return [lv for cv in list_catalogues() for lv in [get_last_catalogue_version(cv.id)] if lv is not None]

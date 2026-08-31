@@ -10,10 +10,12 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
+import anyio
+
 from metacat_api.harvesters.clarin_lib.vlo_querymodule import extract_facet_values
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import PivotFacet, RawFacets, Reasons, StatusOverrides, raw_facets_adapter
+from metacat_api.models import FacetExposure, FacetExposureStatus, FacetId, RawFacets, raw_facets_adapter
 
 logger = logging.getLogger(__name__)
 
@@ -24,15 +26,23 @@ class ClarinHarvester(Harvester):
         return "clarin-vlo"
 
     @property
-    def reasons(self) -> Reasons:
-        return {
-            PivotFacet.discipline: "CLARIN VLO does not expose a discipline facet.",
-            PivotFacet.source_2: "CLARIN VLO exposes no secondary source facet.",
-        }
+    def vocabularies(self) -> list[str]:
+        return ["unesco-thesaurus", "lcsh", "iso-639-3", "olac-disciplines", "clarin-ccr"]
 
     @property
-    def status_overrides(self) -> StatusOverrides:
-        return {}
+    def facet_exposures(self) -> list[FacetExposure]:
+        return [
+            FacetExposure(
+                facet=FacetId.discipline,
+                status=FacetExposureStatus.gap,
+                reason="CLARIN VLO does not expose a discipline facet.",
+            ),
+            FacetExposure(
+                facet=FacetId.source_2,
+                status=FacetExposureStatus.gap,
+                reason="CLARIN VLO exposes no secondary source facet.",
+            ),
+        ]
 
     def harvest(self) -> RawFacets:
         logger.info("Clarin: Start harvest")
@@ -43,7 +53,7 @@ class ClarinHarvester(Harvester):
         raw = extract_facet_values(collection)
         facets = raw_facets_adapter.validate_python(
             {
-                PivotFacet(facet).name: [(value, count) for entry in entries for value, count in entry.items()]
+                FacetId(facet).name: [(value, count) for entry in entries for value, count in entry.items()]
                 for facet, entries in raw.items()
             },
             extra="forbid",
@@ -54,4 +64,4 @@ class ClarinHarvester(Harvester):
 
 if __name__ == "__main__":
     setup_logging()
-    ClarinHarvester().apply()
+    anyio.run(ClarinHarvester().apply)

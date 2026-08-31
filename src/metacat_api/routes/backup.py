@@ -1,11 +1,11 @@
 import logging
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import RedirectResponse
 
-from metacat_api.models import ErrorResponse
-from metacat_api.models.backup import BackupInfo
+from metacat_api.models import BackupInfo, BackupLastUpdate, ErrorResponse
 from metacat_api.services.auth import is_api_key_valid
-from metacat_api.services.backup import BackupError, read_backup, write_backup
+from metacat_api.services.backup import GIT_PAGE, BackupError, read_backup, read_last_update_from_url, write_backup
 
 router = APIRouter(prefix="/backup", tags=["Backup"])
 
@@ -13,8 +13,24 @@ logger = logging.getLogger(__name__)
 
 
 @router.get(
+    "/page",
+    response_class=RedirectResponse,
+    status_code=status.HTTP_301_MOVED_PERMANENTLY,
+    summary="Backup page redirection",
+)
+async def get_page():
+    return GIT_PAGE
+
+
+@router.get("/last-update", summary="Last backup timestamp")
+async def get_last_update() -> BackupLastUpdate:
+    return await read_last_update_from_url()
+
+
+@router.get(
     "/last-update-info",
     dependencies=[Depends(is_api_key_valid)],
+    summary="Last backup information",
 )
 async def get_last_update_info() -> BackupInfo:
     try:
@@ -30,6 +46,7 @@ async def get_last_update_info() -> BackupInfo:
     responses={
         status.HTTP_502_BAD_GATEWAY: {"model": ErrorResponse},
     },
+    summary="Create a new backup manually",
 )
 async def post_create_backup() -> BackupInfo:
     try:

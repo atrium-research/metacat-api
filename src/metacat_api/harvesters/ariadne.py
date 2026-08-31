@@ -14,12 +14,12 @@ never fabricating data.
 import logging
 from datetime import datetime
 
+import anyio
 from SPARQLWrapper import JSON, SPARQLWrapper
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import FacetExposureStatus, PivotFacet, RawFacets, Reasons, StatusOverrides
-from metacat_api.models.common import raw_facets_adapter
+from metacat_api.models import FacetExposure, FacetExposureStatus, FacetId, RawFacets, raw_facets_adapter
 
 ARIADNE_SPARQL_ENDPOINT = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
 
@@ -31,7 +31,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 """
 
 QUERIES = {
-    PivotFacet.resource_type: """
+    FacetId.resource_type: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           ?resource aocat:has_ARIADNE_subject ?as .
@@ -39,7 +39,7 @@ QUERIES = {
         }
         GROUP BY ?value
         """,
-    PivotFacet.format: """
+    FacetId.format: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           ?resource aocat:has_data_type ?dt .
@@ -47,7 +47,7 @@ QUERIES = {
         }
         GROUP BY ?value
         """,
-    PivotFacet.source: """
+    FacetId.source: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           GRAPH <https://ariadne-infrastructure.eu/datasourceApis> {
@@ -65,7 +65,7 @@ QUERIES = {
         }
         GROUP BY ?value
         """,
-    PivotFacet.source_2: """
+    FacetId.source_2: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           ?resource aocat:has_publisher ?pub .
@@ -73,7 +73,7 @@ QUERIES = {
         }
         GROUP BY ?value
         """,
-    PivotFacet.subjects: """
+    FacetId.subjects: """
         SELECT ?value (count(?resource) AS ?cnt)
         WHERE {
           ?resource aocat:has_derived_subject ?s .
@@ -101,16 +101,18 @@ class AriadneHarvester(Harvester):
         return "ariadne"
 
     @property
-    def reasons(self) -> Reasons:
-        return {
-            PivotFacet.discipline: "The whole catalogue is archaeology, so discipline is not a queryable facet.",
-        }
+    def vocabularies(self) -> list[str]:
+        return ["getty-aat", "aocat-resource-types"]
 
     @property
-    def status_overrides(self) -> StatusOverrides:
-        return {
-            PivotFacet.discipline: FacetExposureStatus.implicit,
-        }
+    def facet_exposures(self) -> list[FacetExposure]:
+        return [
+            FacetExposure(
+                facet=FacetId.discipline,
+                status=FacetExposureStatus.implicit,
+                reason="The whole catalogue is archaeology, so discipline is not a queryable facet.",
+            ),
+        ]
 
     def harvest(self) -> RawFacets:
         logger.info("Ariadne: Start harvest")
@@ -129,12 +131,12 @@ class AriadneHarvester(Harvester):
             logger.exception(f"ARIADNE endpoint is not queryable: {error}")
             raise error
 
-        total = sum(count for _, count in facets[PivotFacet.resource_type.name])
-        facets[PivotFacet.discipline.name] = [("Archaeology", total)]
+        total = sum(count for _, count in facets[FacetId.resource_type.name])
+        facets[FacetId.discipline.name] = [("Archaeology", total)]
         logger.info(f"Ariadne: End harvest, duration: {datetime.now() - start}")
         return facets
 
 
 if __name__ == "__main__":
     setup_logging()
-    AriadneHarvester().apply()
+    anyio.run(AriadneHarvester().apply)

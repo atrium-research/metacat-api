@@ -2,11 +2,12 @@ from functools import cached_property
 
 from pydantic import BaseModel, computed_field
 
+from metacat_api.models.collection import Collection
 from metacat_api.services.util import sizeof_fmt
 
 
 class DataFile(BaseModel):
-    name: str
+    collection: Collection
     filename: str
     size: int
 
@@ -16,6 +17,9 @@ class DataFile(BaseModel):
         return sizeof_fmt(self.size)
 
 
-class BackupInfo(BaseModel):
+class BackupLastUpdate(BaseModel):
     last_update: str
+
+
+class BackupInfo(BackupLastUpdate):
     data_files: list[DataFile] = []

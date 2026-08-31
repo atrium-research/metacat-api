@@ -12,7 +12,13 @@ def test_list_catalogues(client):
 def test_get_catalogue(client):
     response = client.get("/v1/catalogues/clarin-vlo")
     assert response.status_code == 200
-    assert response.json()["total_resources"] == 1087412
+    assert response.json()["domain"] == "Linguistics"
+
+
+def test_get_catalogue_version(client):
+    response = client.get("/v1/catalogues/clarin-vlo/versions/228608b7-f3fb-4b9d-883d-1ae94d2b92b9")
+    assert response.status_code == 200
+    assert response.json()["total_resources"] == 2285870
 
 
 def test_unknown_catalogue_returns_error_envelope(client):
@@ -24,26 +30,29 @@ def test_unknown_catalogue_returns_error_envelope(client):
 
 
 def test_catalogue_facets_returns_six(client):
-    response = client.get("/v1/catalogues/ariadne/facets")
+    response = client.get("/v1/catalogues/ariadne/versions/last")
     assert response.status_code == 200
-    facets = response.json()
-    assert len(facets) == 6
+    catalogue_version = response.json()
+    assert len(catalogue_version["facet_exposures"]) == 6
 
 
 def test_gap_is_reported_explicitly(client):
-    response = client.get("/v1/catalogues/gotriple/facets")
-    facets = {f["facet"]: f for f in response.json()}
-    assert facets["format"]["status"] == "gap"
-    assert facets["format"]["reason"]
-    assert facets["format"]["total_count"] is None
+    response = client.get("/v1/catalogues/gotriple/versions/last")
+    facet_format = next(f for f in response.json()["facet_exposures"] if f["facet"] == "format")
+    assert facet_format
+    assert facet_format["status"] == "gap"
+    assert facet_format["reason"]
+    assert facet_format["total_count"] is None
 
 
 def test_facet_coverage_is_compact(client):
-    response = client.get("/v1/catalogues/ariadne/facet-coverage")
+    response = client.get("/v1/catalogues/ariadne/versions/last")
     assert response.status_code == 200
-    coverage = response.json()
-    assert coverage["discipline"] == "implicit"
-    assert len(coverage) == 6
+    catalogue_version = response.json()
+    assert len(catalogue_version["facet_exposures"]) == 6
+    fe_discipline = next(fe for fe in catalogue_version["facet_exposures"] if fe["facet"] == "discipline")
+    assert fe_discipline
+    assert fe_discipline["status"] == "implicit"
 
 
 def test(client):
@@ -51,7 +60,8 @@ def test(client):
     response = client.get("/v1/catalogues")
     assert response.status_code == 200
     catalogues = response.json()
-    assert catalogues and {c["id"] for c in catalogues} == {"ariadne", "clarin-vlo", "gotriple", "sshomp"}
+    assert catalogues
+    assert {c["id"] for c in catalogues} == {"ariadne", "clarin-vlo", "gotriple", "sshomp"}
 
     set_store("nonexistent")
 
@@ -65,4 +75,5 @@ def test(client):
     response = client.get("/v1/catalogues")
     assert response.status_code == 200
     catalogues = response.json()
-    assert catalogues and {c["id"] for c in catalogues} == {"ariadne", "clarin-vlo", "gotriple", "sshomp"}
+    assert catalogues
+    assert {c["id"] for c in catalogues} == {"ariadne", "clarin-vlo", "gotriple", "sshomp"}

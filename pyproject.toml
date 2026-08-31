@@ -8,7 +8,7 @@ license = { text = "Apache-2.0" }
 authors = [{ name = "Foxcub", email = "julien.homo@foxcub.fr" }]
 dependencies = [
     "apscheduler>=3.11.3",
-    "fastapi[standard]>=0.139.2",
+    "fastapi[standard]>=0.141.1",
     "jq>=1.12.0",
     "pydantic>=2.7",
     "pydantic-settings>=2.3",
@@ -16,6 +16,8 @@ dependencies = [
     "sparqlwrapper>=2.0.0",
     "anyio>=4.14.1",
     "gitpython>=3.1.58",
+    "aiohttp>=3.14.3",
+    "fastapi-pagination>=0.15.16",
 ]
 
 [dependency-groups]

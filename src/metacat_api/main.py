@@ -5,18 +5,16 @@ from fastapi import FastAPI, status
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi_pagination import add_pagination
 
 from metacat_api.config import get_version
 from metacat_api.logging_setup import setup_logging
 from metacat_api.models import ErrorResponse
 from metacat_api.routes import (
-    activity,
     backup,
     catalogues,
     facets,
     harvest,
-    mappings,
-    snapshots,
     system,
     vocabularies,
 )
@@ -28,7 +26,7 @@ logger = logging.getLogger(__name__)
 DESCRIPTION = (
     "REST serving layer for the MetaCat dashboard. MetaCat catalogues the four major "
     "SSH European catalogues (ARIADNE Portal, CLARIN VLO, GoTriple, SSH Open Marketplace), "
-    "their facets, controlled vocabularies and cross-mappings. The smallest queryable unit "
+    "their facets and controlled vocabularies. The smallest queryable unit "
     "is always a catalogue, on a facet, at a moment in time. "
     "Source: https://github.com/atrium-research/metacat-api"
 )
@@ -48,9 +46,6 @@ _V1_ROUTERS = (
     catalogues.router,
     facets.router,
     vocabularies.router,
-    mappings.router,
-    snapshots.router,
-    activity.router,
 )
 
 
@@ -99,6 +94,7 @@ def create_app() -> FastAPI:
     app.include_router(harvest.router)
     app.include_router(backup.router)
 
+    add_pagination(app)
     return app
 
 

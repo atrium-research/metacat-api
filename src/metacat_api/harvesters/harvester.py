@@ -1,98 +1,25 @@
 import logging
+import uuid
 from abc import ABC, abstractmethod
-from datetime import UTC, datetime
 
 from metacat_api.config import settings
-from metacat_api.datasources.store import store, write_store
+from metacat_api.datasources.store import store, update_catalogue_version, write_facet_values
 from metacat_api.models import (
+    CatalogueVersion,
     FacetExposure,
+    FacetId,
     FacetValue,
     HarvestStatus,
-    PivotFacet,
     RawFacets,
-    Reasons,
-    StatusOverrides,
 )
 from metacat_api.services.util import now, time_to_str
 
 logger = logging.getLogger(__name__)
 
 
-def apply_catalogue(
-    catalogue_id: str,
-    harvested: RawFacets,
-    reasons: Reasons,
-    status_overrides: StatusOverrides,
-) -> None:
-    snapshot_ts = time_to_str(now())
-    logger.info(f"Start apply catalogue {catalogue_id} for snapshot {snapshot_ts}")
-    ranked = {facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items()}
-
-    store.facet_values = [v for v in store.facet_values if v.catalogue_id != catalogue_id]
-    store.facet_exposures = [e for e in store.facet_exposures if e.catalogue_id != catalogue_id]
-
-    for facet, pairs in ranked.items():
-        for value, count in pairs:
-            store.facet_values.append(
-                FacetValue.model_validate(
-                    {
-                        "catalogue_id": catalogue_id,
-                        "facet": PivotFacet.from_str(facet),
-                        "value": value,
-                        "count": count,
-                        "timestamp": snapshot_ts,
-                    },
-                    extra="forbid",
-                )
-            )
-
-    for facet in PivotFacet:
-        pairs = ranked.get(facet)
-        if pairs:
-            status = status_overrides.get(facet, "exposed")
-            top_value, top_count = pairs[0]
-            store.facet_exposures.append(
-                FacetExposure.model_validate(
-                    {
-                        "catalogue_id": catalogue_id,
-                        "facet": facet,
-                        "status": status,
-                        "reason": None if status == "exposed" else reasons.get(facet),
-                        "values_count": len(pairs),
-                        "top_value": top_value,
-                        "top_value_count": top_count,
-                        "total_count": sum(count for _, count in pairs),
-                    },
-                    extra="forbid",
-                )
-            )
-        else:
-            store.facet_exposures.append(
-                FacetExposure.model_validate(
-                    {
-                        "catalogue_id": catalogue_id,
-                        "facet": facet,
-                        "status": "gap",
-                        "reason": reasons.get(facet, "Facet not exposed by the source."),
-                        "values_count": None,
-                        "top_value": None,
-                        "top_value_count": None,
-                        "total_count": None,
-                    },
-                    extra="forbid",
-                )
-            )
-
-    harvest_ts = datetime.now(UTC)
-    for catalogue in store.catalogues:
-        if catalogue.id == catalogue_id:
-            catalogue.last_harvest_at = harvest_ts
-            catalogue.harvest_status = HarvestStatus.live
-
-
-def report(catalogue_id: str, harvested: RawFacets) -> None:
+def _report(catalogue_id: str, harvested: RawFacets) -> None:
     logger.info(f"Harvested {catalogue_id} into {settings.json_data_path()}")
-    for facet in PivotFacet:
+    for facet in FacetId:
         pairs = harvested.get(facet)
         if pairs:
             top = max(pairs, key=lambda item: item[1])
@@ -108,17 +35,82 @@ class Harvester(ABC):
 
     @property
     @abstractmethod
-    def reasons(self) -> Reasons: ...
+    def vocabularies(self) -> list[str]: ...
 
     @property
     @abstractmethod
-    def status_overrides(self) -> StatusOverrides: ...
+    def facet_exposures(self) -> list[FacetExposure]: ...
 
     @abstractmethod
     def harvest(self) -> RawFacets: ...
 
-    def apply(self) -> None:
-        harvested = self.harvest()
-        apply_catalogue(self.catalogue_id, harvested, self.reasons, self.status_overrides)
-        write_store()
-        report(self.catalogue_id, harvested)
+    def _create_catalogue_version(self) -> CatalogueVersion:
+        version_id = uuid.uuid4()
+        version_ts = now()
+        logger.info(f"New version {self.catalogue_id} / {version_id} at {time_to_str(version_ts)}")
+
+        new_version = CatalogueVersion(
+            catalogue_id=self.catalogue_id,
+            version_id=version_id,
+            harvest_at=version_ts,
+            vocabularies=self.vocabularies,
+        )
+        store.catalogues_versions.append(new_version)
+        return new_version
+
+    def _add_version(self, harvested: RawFacets | None) -> CatalogueVersion:
+        new_version = self._create_catalogue_version()
+
+        if not harvested:
+            logger.error("No facet harvested")
+            new_version.harvest_status = HarvestStatus.error
+            new_version.harvest_error = "No facet harvested"
+            return new_version
+
+        new_facet_values = []
+        ranked = {facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items()}
+        for facet, pairs in ranked.items():
+            for value, count in pairs:
+                new_facet_values.append(
+                    FacetValue(
+                        catalogue_id=self.catalogue_id,
+                        version_id=new_version.version_id,
+                        facet=FacetId.from_str(facet),
+                        value=value,
+                        count=count,
+                    )
+                )
+        store.update_facet_values(self.catalogue_id, new_facet_values)
+
+        for facet_id in FacetId:
+            facet_exposure = next(
+                (fe for fe in self.facet_exposures if fe.facet == facet_id),
+                FacetExposure(facet=facet_id),
+            )
+            new_version.facet_exposures.append(facet_exposure)
+            pairs = ranked.get(facet_id.name)
+            if pairs:
+                facet_exposure.values_count = len(pairs)
+                facet_exposure.total_count = sum(count for _, count in pairs)
+
+        new_version.total_resources = sum(
+            facet_exposure.total_count or 0 for facet_exposure in new_version.facet_exposures
+        )
+        return new_version
+
+    def _add_error_version(self, e: Exception):
+        new_version = self._create_catalogue_version()
+        new_version.harvest_status = HarvestStatus.error
+        new_version.harvest_error = str(e)
+
+    async def apply(self) -> None:
+        try:
+            harvested = self.harvest()
+            _report(self.catalogue_id, harvested)
+            new_version = self._add_version(harvested)
+            await write_facet_values(new_version.catalogue_id, new_version.version_id)
+        except Exception as e:
+            logger.exception(f"Unexpected error during harvest: {e}")
+            self._add_error_version(e)
+
+        await update_catalogue_version()
