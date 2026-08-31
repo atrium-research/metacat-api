@@ -8,8 +8,7 @@ from anyio import Path, TemporaryDirectory, open_file
 from git import GitCommandError, Repo
 
 from metacat_api.config import settings
-from metacat_api.models.backup import BackupInfo, BackupLastUpdate, DataFile
-from metacat_api.models.common import COLLECTION_NAMES, Collection
+from metacat_api.models import COLLECTION_LABELS, BackupInfo, BackupLastUpdate, Collection, DataFile
 from metacat_api.services.util import now, sizeof_fmt, time_to_str
 
 GIT_URL = "github.com/atrium-research/metacat-api.git"
@@ -66,18 +65,28 @@ def _get_last_update(readme: str) -> datetime:
 
 
 async def _get_data_files(repo_dir: str) -> list[DataFile]:
-    return sorted(
-        [
-            DataFile(
-                name=COLLECTION_NAMES[Collection(p.name.removesuffix(".json"))],
-                filename=p.name,
-                size=(await p.stat()).st_size,
-            )
-            async for p in Path(f"{repo_dir}/data").iterdir()
-            if p.name.removesuffix(".json") in Collection
-        ],
-        key=lambda d: d.name,
-    )
+    static_collections = [Collection.catalogues, Collection.catalogues_versions, Collection.vocabularies]
+
+    files = [
+        DataFile(
+            collection=Collection(p.name.removesuffix(".json")),
+            filename=p.name,
+            size=(await p.stat()).st_size,
+        )
+        async for p in Path(f"{repo_dir}/data").glob("*.json")
+        if p.name.removesuffix(".json") in static_collections
+    ]
+
+    files += [
+        DataFile(
+            collection=Collection.facet_values,
+            filename=f"{p.parent.name}/{p.name}",
+            size=(await p.stat()).st_size,
+        )
+        async for p in Path(f"{repo_dir}/data/{Collection.facet_values}").glob("*/*.json")
+    ]
+
+    return sorted(files, key=lambda d: d.collection)
 
 
 async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[DataFile]) -> None:
@@ -101,7 +110,7 @@ async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[D
     )
     for data_file in data_files:
         readme += (
-            f"| {data_file.name} "
+            f"| {COLLECTION_LABELS[data_file.collection]} "
             f"| [data/{data_file.filename}](data/{data_file.filename}) "
             f"| {sizeof_fmt(data_file.size)} |\n"
         )
@@ -153,7 +162,15 @@ async def write_backup() -> BackupInfo:
 
         logger.info("Saving to remote repo")
         try:
-            repo.index.add(["README.md", "data/*.json"])
+            repo.index.add(
+                [
+                    "README.md",
+                    "data/catalogues.json",
+                    "data/catalogues_versions.json",
+                    "data/facet_values/*/*.json",
+                    "data/vocabularies.json",
+                ]
+            )
             repo.index.commit(f"Dump at {update_date}")
             origin = repo.remote("origin")
             origin.push()

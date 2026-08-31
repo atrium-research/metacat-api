@@ -1,10 +1,11 @@
 [
-  {
+    {
     "catalogue_id": "ariadne",
-    "version_id": "6c295440-8fdd-406a-a033-2e4409eb0825",
-    "total_resources": 3142897,
-    "harvest_at": "2026-07-20T15:32:10.758693+00:00",
+    "version_id": "8742fee7-c769-4639-8a13-802acc3b16a0",
+    "total_resources": 33491439,
+    "harvest_at": "2026-08-31T10:25:25.362095Z",
     "harvest_status": "success",
+    "harvest_error": null,
     "vocabularies": [
       "getty-aat",
       "aocat-resource-types"
@@ -14,107 +15,53 @@
         "facet": "resource-type",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 3170000
+        "values_count": 14,
+        "total_count": 4264908
       },
       {
         "facet": "format",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 2550000
+        "values_count": 5,
+        "total_count": 2716234
       },
       {
         "facet": "discipline",
         "status": "implicit",
         "reason": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
         "values_count": 1,
-        "total_count": 3142897
+        "total_count": 4264908
       },
       {
         "facet": "source",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 2878000
+        "values_count": 38,
+        "total_count": 4161560
       },
       {
         "facet": "source-2",
         "status": "exposed",
         "reason": null,
-        "values_count": 2,
-        "total_count": 310000
+        "values_count": 55,
+        "total_count": 5762229
       },
       {
         "facet": "subjects",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 723000
-      }
-    ]
-  },
-  {
-    "catalogue_id": "ariadne",
-    "version_id": "1abd5556-8c86-4c71-871d-747993920b98",
-    "total_resources": 3142897,
-    "harvest_at": "2026-08-10T15:32:10.758693+00:00",
-    "harvest_status": "success",
-    "vocabularies": [
-      "getty-aat",
-      "aocat-resource-types"
-    ],
-    "facet_exposures": [
-      {
-        "facet": "resource-type",
-        "status": "exposed",
-        "reason": null,
-        "values_count": 4,
-        "total_count": 3170000
-      },
-      {
-        "facet": "format",
-        "status": "exposed",
-        "reason": null,
-        "values_count": 4,
-        "total_count": 2550000
-      },
-      {
-        "facet": "discipline",
-        "status": "implicit",
-        "reason": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
-        "values_count": 1,
-        "total_count": 3142897
-      },
-      {
-        "facet": "source",
-        "status": "exposed",
-        "reason": null,
-        "values_count": 4,
-        "total_count": 2878000
-      },
-      {
-        "facet": "source-2",
-        "status": "exposed",
-        "reason": null,
-        "values_count": 2,
-        "total_count": 310000
-      },
-      {
-        "facet": "subjects",
-        "status": "exposed",
-        "reason": null,
-        "values_count": 4,
-        "total_count": 723000
+        "values_count": 5865,
+        "total_count": 12321600
       }
     ]
   },
   {
     "catalogue_id": "clarin-vlo",
-    "version_id": "1abd5556-8c86-4c71-871d-747993920b98",
-    "total_resources": 1087412,
-    "harvest_at": "2026-05-03T03:40:00Z",
+    "version_id": "228608b7-f3fb-4b9d-883d-1ae94d2b92b9",
+    "total_resources": 2285870,
+    "harvest_at": "2026-08-31T10:23:09.182266Z",
     "harvest_status": "success",
+    "harvest_error": null,
     "vocabularies": [
       "unesco-thesaurus",
       "lcsh",
@@ -127,15 +74,15 @@
         "facet": "resource-type",
         "status": "exposed",
         "reason": null,
-        "values_count": 3,
-        "total_count": 1027000
+        "values_count": 505,
+        "total_count": 419350
       },
       {
         "facet": "format",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 910000
+        "values_count": 169,
+        "total_count": 946704
       },
       {
         "facet": "discipline",
@@ -148,8 +95,8 @@
         "facet": "source",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 560000
+        "values_count": 48,
+        "total_count": 488467
       },
       {
         "facet": "source-2",
@@ -162,17 +109,18 @@
         "facet": "subjects",
         "status": "exposed",
         "reason": null,
-        "values_count": 4,
-        "total_count": 345000
+        "values_count": 52627,
+        "total_count": 431349
       }
     ]
   },
   {
     "catalogue_id": "gotriple",
-    "version_id": "1abd5556-8c86-4c71-871d-747993920b98",
-    "total_resources": 7204551,
-    "harvest_at": "2026-05-02T23:05:00Z",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "total_resources": 120198973,
+    "harvest_at": "2026-08-31T10:17:53.014957Z",
     "harvest_status": "success",
+    "harvest_error": null,
     "vocabularies": [
       "triple-vocabulary"
     ],
@@ -181,8 +129,8 @@
         "facet": "resource-type",
         "status": "exposed",
         "reason": null,
-        "values_count": 6,
-        "total_count": 20980000
+        "values_count": 22,
+        "total_count": 32454657
       },
       {
         "facet": "format",
@@ -195,15 +143,15 @@
         "facet": "discipline",
         "status": "exposed",
         "reason": null,
-        "values_count": 5,
-        "total_count": 15100000
+        "values_count": 27,
+        "total_count": 55065869
       },
       {
         "facet": "source",
         "status": "exposed",
         "reason": null,
-        "values_count": 5,
-        "total_count": 21906000
+        "values_count": 36,
+        "total_count": 32678447
       },
       {
         "facet": "source-2",
@@ -223,10 +171,11 @@
   },
   {
     "catalogue_id": "sshomp",
-    "version_id": "fcf0f473-910b-4c11-af35-dc7ecf78fe8f",
-    "total_resources": 20557,
-    "harvest_at": "2026-08-27T15:33:57.358155Z",
+    "version_id": "2c38ece1-218c-4176-ac95-418f278d44a8",
+    "total_resources": 26934,
+    "harvest_at": "2026-08-31T10:22:57.687113Z",
     "harvest_status": "success",
+    "harvest_error": null,
     "vocabularies": [
       "lcsh",
       "sshomp-keywords"
@@ -236,8 +185,8 @@
         "facet": "resource-type",
         "status": "exposed",
         "reason": null,
-        "values_count": null,
-        "total_count": null
+        "values_count": 5,
+        "total_count": 6366
       },
       {
         "facet": "format",
@@ -251,7 +200,7 @@
         "status": "exposed",
         "reason": null,
         "values_count": 199,
-        "total_count": 2903
+        "total_count": 2906
       },
       {
         "facet": "source",
@@ -272,7 +221,7 @@
         "status": "exposed",
         "reason": null,
         "values_count": 2014,
-        "total_count": 12338
+        "total_count": 12346
       }
     ]
   }

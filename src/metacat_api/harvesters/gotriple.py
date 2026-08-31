@@ -8,6 +8,7 @@ metacat-code sibling checkout. Run from the metacat-api root:
 import logging
 from datetime import datetime
 
+import anyio
 import requests
 
 from metacat_api.harvesters.harvester import Harvester
@@ -78,4 +79,4 @@ class GotripleHarvester(Harvester):
 
 if __name__ == "__main__":
     setup_logging()
-    GotripleHarvester().apply()
+    anyio.run(GotripleHarvester().apply)

@@ -10,6 +10,8 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
+import anyio
+
 from metacat_api.harvesters.clarin_lib.vlo_querymodule import extract_facet_values
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
@@ -62,4 +64,4 @@ class ClarinHarvester(Harvester):
 
 if __name__ == "__main__":
     setup_logging()
-    ClarinHarvester().apply()
+    anyio.run(ClarinHarvester().apply)

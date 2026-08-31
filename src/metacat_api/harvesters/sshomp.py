@@ -14,8 +14,7 @@ sshomp's facet_values with whichever single snapshot was selected (same one-mome
 behaviour as the other connectors).
 
 Run from the metacat-api root:
-    uv run --with requests python scripts/sshomp.py
-    SSHOMP_SNAPSHOT_DATE=2025-08-01 uv run --with requests python scripts/sshomp.py
+    uv run src/metacat_api/harvesters/sshomp.py
 """
 
 import logging
@@ -23,6 +22,7 @@ import os
 import re
 from datetime import UTC, date, datetime
 
+import anyio
 import requests
 
 from metacat_api.harvesters.harvester import Harvester
@@ -186,4 +186,4 @@ class SshompHarvester(Harvester):
 
 if __name__ == "__main__":
     setup_logging()
-    SshompHarvester().apply()
+    anyio.run(SshompHarvester().apply)

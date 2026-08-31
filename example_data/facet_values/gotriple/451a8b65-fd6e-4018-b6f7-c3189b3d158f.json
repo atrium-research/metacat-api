@@ -1,0 +1,597 @@
+[
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_article",
+    "count": 11955634
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_text",
+    "count": 6072166
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "other",
+    "count": 5777930
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_thesis",
+    "count": 3144653
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_book",
+    "count": 1635703
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_conference",
+    "count": 1059512
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_report",
+    "count": 816769
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_image",
+    "count": 783369
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_dataset",
+    "count": 397407
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_review",
+    "count": 270399
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_book-part",
+    "count": 209486
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "undefined",
+    "count": 85398
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_manuscript",
+    "count": 71045
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_video",
+    "count": 60837
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_preprint",
+    "count": 38974
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_map",
+    "count": 29331
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_periodical",
+    "count": 16457
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_learning-object",
+    "count": 11685
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_audio",
+    "count": 9081
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_software",
+    "count": 7088
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_blog-post",
+    "count": 1164
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "resource-type",
+    "value": "typ_bibliography",
+    "count": 569
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "hist",
+    "count": 7032695
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "socio",
+    "count": 4338914
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "lang",
+    "count": 3884878
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "phil",
+    "count": 3491038
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "scipo",
+    "count": 3268482
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "edu",
+    "count": 3084757
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "psy",
+    "count": 2567205
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "envir",
+    "count": 2438752
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "litt",
+    "count": 2334669
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "droit",
+    "count": 2191260
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "musiq",
+    "count": 2168625
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "art",
+    "count": 2124769
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "geo",
+    "count": 2095351
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "eco",
+    "count": 2046111
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "manag",
+    "count": 1776319
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "info",
+    "count": 1696268
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "hisphilso",
+    "count": 1381635
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "relig",
+    "count": 1223722
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "demo",
+    "count": 1195895
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "anthro-se",
+    "count": 1179707
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "archi",
+    "count": 982705
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "archeo",
+    "count": 905224
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "stat",
+    "count": 615531
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "genre",
+    "count": 395057
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "class",
+    "count": 348928
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "museo",
+    "count": 211332
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "discipline",
+    "value": "anthro-bio",
+    "count": 86040
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "base",
+    "count": 22498115
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "isidore",
+    "count": 2973554
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "doaj",
+    "count": 2116601
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "HAL",
+    "count": 1718232
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "German National Library (DNB)",
+    "count": 1670946
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "openedition",
+    "count": 444576
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "bibliotekanauki",
+    "count": 322789
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "econstor",
+    "count": 281836
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "openaire",
+    "count": 197666
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "ekt",
+    "count": 154468
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "hrcak",
+    "count": 72406
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Canal-U",
+    "count": 59783
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Universidad Complutense de Madrid",
+    "count": 52057
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "RECYT",
+    "count": 38979
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "cessda",
+    "count": 27751
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "zrcsazu",
+    "count": 20097
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "OAPEN",
+    "count": 10185
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "clarin",
+    "count": 5845
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "coimbra",
+    "count": 2839
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Federal University of Santa Catarina",
+    "count": 1820
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Universidad de Córdoba",
+    "count": 1466
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Pontifical Catholic University of Chile",
+    "count": 1187
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Zurich University of Applied Sciences",
+    "count": 882
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Chulalongkorn University",
+    "count": 501
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "University of Antwerp",
+    "count": 469
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "University of Granada",
+    "count": 438
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "University of Vigo",
+    "count": 428
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "University of Trento",
+    "count": 424
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Nicolaus Copernicus University in Toruń",
+    "count": 394
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "University of Valladolid",
+    "count": 335
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "University of Barcelona",
+    "count": 324
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Jaume I University",
+    "count": 289
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "Autonomous University of Barcelona",
+    "count": 246
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "University of Porto",
+    "count": 198
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "European Association for Studies in Screen Translation",
+    "count": 164
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "451a8b65-fd6e-4018-b6f7-c3189b3d158f",
+    "facet": "source",
+    "value": "University of Salamanca",
+    "count": 157
+  }
+]

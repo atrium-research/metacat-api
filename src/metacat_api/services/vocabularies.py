@@ -1,5 +1,5 @@
 from metacat_api.datasources.store import store
-from metacat_api.models.vocabulary import Vocabulary
+from metacat_api.models import Vocabulary
 
 
 def list_vocabularies() -> list[Vocabulary]:

@@ -14,12 +14,12 @@ never fabricating data.
 import logging
 from datetime import datetime
 
+import anyio
 from SPARQLWrapper import JSON, SPARQLWrapper
 
 from metacat_api.harvesters.harvester import Harvester
 from metacat_api.logging_setup import setup_logging
-from metacat_api.models import FacetExposure, FacetExposureStatus, FacetId, RawFacets
-from metacat_api.models.common import raw_facets_adapter
+from metacat_api.models import FacetExposure, FacetExposureStatus, FacetId, RawFacets, raw_facets_adapter
 
 ARIADNE_SPARQL_ENDPOINT = "https://ariadne-graphdb.cloud.d4science.org/repositories/ariadneplus-pr01"
 
@@ -139,4 +139,4 @@ class AriadneHarvester(Harvester):
 
 if __name__ == "__main__":
     setup_logging()
-    AriadneHarvester().apply()
+    anyio.run(AriadneHarvester().apply)

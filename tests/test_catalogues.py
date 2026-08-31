@@ -16,9 +16,9 @@ def test_get_catalogue(client):
 
 
 def test_get_catalogue_version(client):
-    response = client.get("/v1/catalogues/clarin-vlo/versions/1abd5556-8c86-4c71-871d-747993920b98")
+    response = client.get("/v1/catalogues/clarin-vlo/versions/228608b7-f3fb-4b9d-883d-1ae94d2b92b9")
     assert response.status_code == 200
-    assert response.json()["total_resources"] == 1087412
+    assert response.json()["total_resources"] == 2285870
 
 
 def test_unknown_catalogue_returns_error_envelope(client):

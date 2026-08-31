@@ -2,8 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from metacat_api.models.common import ErrorResponse
-from metacat_api.models.vocabulary import Vocabulary
+from metacat_api.models import ErrorResponse, Vocabulary
 from metacat_api.services import vocabularies as service
 
 router = APIRouter(prefix="/vocabularies", tags=["Vocabularies"])

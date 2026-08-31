@@ -3,7 +3,7 @@ import uuid
 from abc import ABC, abstractmethod
 
 from metacat_api.config import settings
-from metacat_api.datasources.store import store, write_store
+from metacat_api.datasources.store import store, update_catalogue_version, write_facet_values
 from metacat_api.models import (
     CatalogueVersion,
     FacetExposure,
@@ -58,14 +58,14 @@ class Harvester(ABC):
         store.catalogues_versions.append(new_version)
         return new_version
 
-    def _add_version(self, harvested: RawFacets | None) -> None:
+    def _add_version(self, harvested: RawFacets | None) -> CatalogueVersion:
         new_version = self._create_catalogue_version()
 
         if not harvested:
             logger.error("No facet harvested")
             new_version.harvest_status = HarvestStatus.error
             new_version.harvest_error = "No facet harvested"
-            return
+            return new_version
 
         store.facet_values = [v for v in store.facet_values if v.catalogue_id != self.catalogue_id]
 
@@ -96,19 +96,21 @@ class Harvester(ABC):
         new_version.total_resources = sum(
             facet_exposure.total_count or 0 for facet_exposure in new_version.facet_exposures
         )
+        return new_version
 
     def _add_error_version(self, e: Exception):
         new_version = self._create_catalogue_version()
         new_version.harvest_status = HarvestStatus.error
         new_version.harvest_error = str(e)
 
-    def apply(self) -> None:
+    async def apply(self) -> None:
         try:
             harvested = self.harvest()
-            self._add_version(harvested)
             _report(self.catalogue_id, harvested)
+            new_version = self._add_version(harvested)
+            await write_facet_values(new_version.catalogue_id, new_version.version_id)
         except Exception as e:
             logger.exception(f"Unexpected error during harvest: {e}")
             self._add_error_version(e)
 
-        write_store()
+        await update_catalogue_version()

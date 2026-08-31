@@ -3,8 +3,7 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 
-from metacat_api.models import ErrorResponse
-from metacat_api.models.backup import BackupInfo, BackupLastUpdate
+from metacat_api.models import BackupInfo, BackupLastUpdate, ErrorResponse
 from metacat_api.services.auth import is_api_key_valid
 from metacat_api.services.backup import GIT_PAGE, BackupError, read_backup, read_last_update_from_url, write_backup
 
