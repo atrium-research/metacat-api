@@ -7,8 +7,10 @@ from metacat_api.models import (
     Catalogue,
     CatalogueVersion,
     ErrorResponse,
+    FacetValue,
 )
 from metacat_api.services import catalogues as service
+from metacat_api.services.facets import facet_values
 
 router = APIRouter(prefix="/catalogues", tags=["Catalogues"])
 
@@ -94,3 +96,12 @@ def catalogue_version_by_id(
     catalogue_id: str, version_id: UUID, catalogue_version: required_catalogue_version
 ) -> CatalogueVersion:
     return catalogue_version
+
+
+@router.get(
+    "/{catalogue_id}/versions/last/facet_values",
+    summary="Facet values",
+    dependencies=[Depends(_require_last_catalogue_version)],
+)
+def catalogue_last_facet_values(catalogue_id: str) -> list[FacetValue]:
+    return facet_values(catalogues=[catalogue_id])

@@ -18,8 +18,25 @@ def _parse_catalogues(raw: str | None) -> list[str]:
     known_catalogues = [catalogue.id for catalogue in catalogues_service.list_catalogues()]
     unknown_catalogues = [catalogue_id for catalogue_id in selected_catalogues if catalogue_id not in known_catalogues]
     if unknown_catalogues:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Unknown catalogues: '{unknown_catalogues}'")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Unknown catalogues: '{unknown_catalogues}'",
+        )
     return selected_catalogues
+
+
+def _parse_facets(raw: str | None) -> list[FacetId]:
+    if not raw:
+        return []
+
+    selected_facets = [item.strip() for item in raw.split(",") if item.strip()]
+    unknown_facets = [facet_id for facet_id in selected_facets if facet_id not in FacetId]
+    if unknown_facets:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail=f"Unknown facets: '{unknown_facets}'",
+        )
+    return [FacetId.from_str(f) for f in selected_facets]
 
 
 _catalogues_query = Annotated[
@@ -28,23 +45,21 @@ _catalogues_query = Annotated[
     Query(description="Comma-separated catalogue identifiers to restrict the result."),
 ]
 
+_facets_query = Annotated[
+    str | None,
+    Depends(_parse_facets),
+    Query(description="Comma-separated facet identifiers to restrict the result."),
+]
+
 
 @router.get("", summary="List the facets")
 def list_facets() -> list[FacetId]:
     return facets_service.list_facets()
 
 
-def _to_utc(dt: datetime | None) -> datetime | None:
-    if not dt:
-        return None
-    return dt.replace(tzinfo=UTC)
-
-
-@router.get("/{facet}/values", summary="Facet values")
+@router.get("/values", summary="Facet values")
 def facet_values(
-    facet: FacetId,
+    facets: _facets_query = None,
     catalogues: _catalogues_query = None,
-    date_from: Annotated[datetime | None, Query(alias="from")] = None,
-    date_to: Annotated[datetime | None, Query(alias="to")] = None,
 ) -> list[FacetValue]:
-    return facets_service.facet_values(facet, _parse_catalogues(catalogues), _to_utc(date_from), _to_utc(date_to))
+    return facets_service.facet_values(_parse_facets(facets), _parse_catalogues(catalogues))

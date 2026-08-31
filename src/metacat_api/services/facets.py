@@ -1,28 +1,41 @@
-from datetime import datetime
-
-from metacat_api.datasources.store import store
-from metacat_api.models import FacetId, FacetValue
+from metacat_api.config import settings
+from metacat_api.datasources.store import read_facet_values, store
+from metacat_api.models import CatalogueVersion, FacetId, FacetValue
+from metacat_api.services.catalogues import get_last_catalogues_version
 
 
 def list_facets() -> list[FacetId]:
     return list(FacetId)
 
 
+def _update_facet_values(catalogue_version: CatalogueVersion):
+    new_facet_values = read_facet_values(
+        settings.json_data_dir,
+        catalogue_version.catalogue_id,
+        catalogue_version.version_id,
+    )
+    store.update_facet_values(catalogue_version.catalogue_id, new_facet_values)
+
+
+def update_all_facet_values():
+    for lv in get_last_catalogues_version():
+        _update_facet_values(lv)
+
+
+def catalogue_facet_values(catalogue_id: str) -> list[FacetValue]:
+    if not store.facet_values:
+        update_all_facet_values()
+    return [fv for fv in store.facet_values if fv.catalogue_id == catalogue_id]
+
+
 def facet_values(
-    facet: FacetId,
-    catalogues: list[str],
-    date_from: datetime | None = None,
-    date_to: datetime | None = None,
+    facets: list[FacetId] | None = None,
+    catalogues: list[str] | None = None,
 ) -> list[FacetValue]:
-    result = []
-    for value in store.facet_values:
-        if value.facet != facet:
-            continue
-        if catalogues and value.catalogue_id not in catalogues:
-            continue
-        if date_from and value.timestamp < date_from:
-            continue
-        if date_to and value.timestamp > date_to:
-            continue
-        result.append(value)
-    return result
+    if not store.facet_values:
+        update_all_facet_values()
+    return [
+        fv
+        for fv in store.facet_values
+        if (not facets or fv.facet in facets) and (not catalogues or fv.catalogue_id in catalogues)
+    ]

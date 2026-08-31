@@ -27,3 +27,7 @@ def get_last_catalogue_version(catalogue_id: str) -> CatalogueVersion | None:
     if not versions:
         return None
     return max(versions, key=lambda v: v.harvest_at)
+
+
+def get_last_catalogues_version() -> list[CatalogueVersion]:
+    return [lv for cv in list_catalogues() for lv in [get_last_catalogue_version(cv.id)] if lv is not None]

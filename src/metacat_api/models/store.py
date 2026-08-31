@@ -20,7 +20,7 @@ class Store(BaseModel):
 
     catalogues: list[Catalogue]
     catalogues_versions: list[CatalogueVersion]
-    facet_values: list[FacetValue]
+    facet_values: list[FacetValue] = []
     vocabularies: list[Vocabulary]
 
     def update(self, input_store: Store) -> None:
@@ -29,3 +29,7 @@ class Store(BaseModel):
         self.catalogues_versions = tmp_store.catalogues_versions
         self.facet_values = tmp_store.facet_values
         self.vocabularies = tmp_store.vocabularies
+
+    def update_facet_values(self, catalogue_id: str, new_facet_values: list[FacetValue]) -> None:
+        self.facet_values = [other_fv for other_fv in self.facet_values if other_fv.catalogue_id != catalogue_id]
+        self.facet_values.extend([new_fv for new_fv in new_facet_values if new_fv.catalogue_id == catalogue_id])

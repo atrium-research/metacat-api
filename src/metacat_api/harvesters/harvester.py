@@ -67,12 +67,11 @@ class Harvester(ABC):
             new_version.harvest_error = "No facet harvested"
             return new_version
 
-        store.facet_values = [v for v in store.facet_values if v.catalogue_id != self.catalogue_id]
-
+        new_facet_values = []
         ranked = {facet: sorted(pairs, key=lambda item: item[1], reverse=True) for facet, pairs in harvested.items()}
         for facet, pairs in ranked.items():
             for value, count in pairs:
-                store.facet_values.append(
+                new_facet_values.append(
                     FacetValue(
                         catalogue_id=self.catalogue_id,
                         version_id=new_version.version_id,
@@ -81,6 +80,7 @@ class Harvester(ABC):
                         count=count,
                     )
                 )
+        store.update_facet_values(self.catalogue_id, new_facet_values)
 
         for facet_id in FacetId:
             facet_exposure = next(

@@ -10,6 +10,7 @@ from metacat_api.config import settings
 from metacat_api.models import (
     Collection,
     CollectionValues,
+    FacetValue,
     Store,
 )
 
@@ -24,17 +25,15 @@ def _read(file_path: Path) -> CollectionValues:
         return json.load(file)
 
 
-def _read_last_facet_values(json_data_dir: str) -> CollectionValues:
-    path = Path(json_data_dir) / Collection.facet_values
-    facet_values = [fv for file in path.glob("**/*.json") for fv in _read(file)]
-    return facet_values
+def read_facet_values(json_data_dir: str, catalogue_id: str, version_id: UUID) -> list[FacetValue]:
+    file = Path(json_data_dir) / Collection.facet_values / catalogue_id / f"{version_id}.json"
+    return [FacetValue.model_validate(fv) for fv in _read(file)]
 
 
 def _read_store(json_data_dir: str) -> Store:
     path = Path(json_data_dir)
     static_files = [Collection.catalogues, Collection.catalogues_versions, Collection.vocabularies]
     loaded = {name: _read(path / f"{name}.json") for name in static_files}
-    loaded[Collection.facet_values] = _read_last_facet_values(json_data_dir)
     return Store.model_validate(
         loaded,
         extra="forbid",
