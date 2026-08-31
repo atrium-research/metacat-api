@@ -1,8 +1,49 @@
+from enum import StrEnum, auto
+from typing import TypedDict
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, TypeAdapter
 
-from metacat_api.models.common import FacetExposureStatus, FacetId
+
+class FacetId(StrEnum):
+    resource_type = "resource-type"
+    format = auto()
+    discipline = auto()
+    source = auto()
+    source_2 = "source-2"
+    subjects = auto()
+
+    @staticmethod
+    def from_str(label):
+        match label:
+            case "resource_type":
+                return FacetId.resource_type
+            case "source_2":
+                return FacetId.source_2
+            case x:
+                return FacetId(x)
+
+
+RawFacetValue = tuple[str, int]
+RawFacetValues = list[RawFacetValue]
+
+
+class RawFacets(TypedDict, total=False):
+    resource_type: RawFacetValues
+    format: RawFacetValues
+    discipline: RawFacetValues
+    source: RawFacetValues
+    source_2: RawFacetValues
+    subjects: RawFacetValues
+
+
+raw_facets_adapter = TypeAdapter(RawFacets)
+
+
+class FacetExposureStatus(StrEnum):
+    exposed = "exposed"
+    implicit = "implicit"
+    gap = "gap"
 
 
 class FacetExposure(BaseModel):

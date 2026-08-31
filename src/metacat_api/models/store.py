@@ -1,10 +1,8 @@
 import logging
-from functools import cached_property
 
-from pydantic import BaseModel, computed_field
+from pydantic import BaseModel
 
 from metacat_api.models.catalogue import Catalogue, CatalogueVersion
-from metacat_api.models.common import Collection
 from metacat_api.models.facet import FacetValue
 from metacat_api.models.vocabulary import Vocabulary
 
@@ -24,24 +22,6 @@ class Store(BaseModel):
     catalogues_versions: list[CatalogueVersion]
     facet_values: list[FacetValue]
     vocabularies: list[Vocabulary]
-
-    @computed_field
-    @cached_property
-    def catalogue_ids(self) -> list[str]:
-        return [c.id for c in self.catalogues]
-
-    def get(self, collection: Collection) -> list[BaseModel]:
-        match collection:
-            case Collection.catalogues:
-                return self.catalogues
-            case Collection.catalogues_versions:
-                return self.catalogues_versions
-            case Collection.facet_values:
-                return self.facet_values
-            case Collection.vocabularies:
-                return self.vocabularies
-            case _:
-                raise ValueError(f"Unexcepted collection {collection}")
 
     def update(self, input_store: Store) -> None:
         tmp_store = input_store.model_copy(deep=True)

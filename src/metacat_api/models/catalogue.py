@@ -3,8 +3,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field, HttpUrl
 
-from metacat_api.models.common import HarvestStatus
 from metacat_api.models.facet import FacetExposure
+from metacat_api.models.harvest import HarvestStatus
 
 CatalogueId = str
 VersionId = UUID

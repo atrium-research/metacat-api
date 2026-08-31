@@ -1,7 +1,7 @@
-from enum import StrEnum, auto
-from typing import Any, TypedDict
+from enum import StrEnum
+from typing import Any
 
-from pydantic import BaseModel, Field, TypeAdapter
+from pydantic import BaseModel, Field
 
 
 class Collection(StrEnum):
@@ -20,52 +20,6 @@ COLLECTION_NAMES: dict[Collection, str] = {
 
 
 CollectionValues = list[dict[str, Any]]
-
-
-class FacetId(StrEnum):
-    resource_type = "resource-type"
-    format = auto()
-    discipline = auto()
-    source = auto()
-    source_2 = "source-2"
-    subjects = auto()
-
-    @staticmethod
-    def from_str(label):
-        match label:
-            case "resource_type":
-                return FacetId.resource_type
-            case "source_2":
-                return FacetId.source_2
-            case x:
-                return FacetId(x)
-
-
-RawFacetValue = tuple[str, int]
-RawFacetValues = list[RawFacetValue]
-
-
-class RawFacets(TypedDict, total=False):
-    resource_type: RawFacetValues
-    format: RawFacetValues
-    discipline: RawFacetValues
-    source: RawFacetValues
-    source_2: RawFacetValues
-    subjects: RawFacetValues
-
-
-raw_facets_adapter = TypeAdapter(RawFacets)
-
-
-class FacetExposureStatus(StrEnum):
-    exposed = "exposed"
-    implicit = "implicit"
-    gap = "gap"
-
-
-class HarvestStatus(StrEnum):
-    success = "success"
-    error = "error"
 
 
 class Pagination(BaseModel):
