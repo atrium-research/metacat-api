@@ -1,5 +1,5 @@
 [
-    {
+  {
     "catalogue_id": "ariadne",
     "version_id": "8742fee7-c769-4639-8a13-802acc3b16a0",
     "total_resources": 33491439,
@@ -174,6 +174,62 @@
     "version_id": "2c38ece1-218c-4176-ac95-418f278d44a8",
     "total_resources": 26934,
     "harvest_at": "2026-08-31T10:22:57.687113Z",
+    "harvest_status": "success",
+    "harvest_error": null,
+    "vocabularies": [
+      "lcsh",
+      "sshomp-keywords"
+    ],
+    "facet_exposures": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 5,
+        "total_count": 6366
+      },
+      {
+        "facet": "format",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 69,
+        "total_count": 607
+      },
+      {
+        "facet": "discipline",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 199,
+        "total_count": 2906
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 18,
+        "total_count": 4709
+      },
+      {
+        "facet": "source-2",
+        "status": "gap",
+        "reason": "The SSH Open Marketplace exposes no secondary source facet.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "subjects",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 2014,
+        "total_count": 12346
+      }
+    ]
+  },
+  {
+    "catalogue_id": "sshomp",
+    "version_id": "c3a5881e-e3e1-4421-bd39-8d45d6584570",
+    "total_resources": 26934,
+    "harvest_at": "2026-08-31T10:49:18.898408Z",
     "harvest_status": "success",
     "harvest_error": null,
     "vocabularies": [
