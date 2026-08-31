@@ -80,7 +80,7 @@ async def _get_data_files(repo_dir: str) -> list[DataFile]:
     files += [
         DataFile(
             collection=Collection.facet_values,
-            filename=f"{p.parent.name}/{p.name}",
+            filename=f"{Collection.facet_values.name}/{p.parent.name}/{p.name}",
             size=(await p.stat()).st_size,
         )
         async for p in Path(f"{repo_dir}/data/{Collection.facet_values}").glob("*/*.json")
