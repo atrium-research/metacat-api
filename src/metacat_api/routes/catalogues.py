@@ -2,12 +2,15 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi_pagination import Page, paginate
 
 from metacat_api.models import (
     Catalogue,
     CatalogueVersion,
     ErrorResponse,
     FacetValue,
+    FacetValuesSort,
+    FacetValuesSortDirection,
 )
 from metacat_api.services import catalogues as service
 from metacat_api.services.facets import facet_values
@@ -103,5 +106,9 @@ def catalogue_version_by_id(
     summary="Facet values",
     dependencies=[Depends(_require_last_catalogue_version)],
 )
-def catalogue_last_facet_values(catalogue_id: str) -> list[FacetValue]:
-    return facet_values(catalogues=[catalogue_id])
+def catalogue_last_facet_values(
+    catalogue_id: str,
+    sort: FacetValuesSort | None = FacetValuesSort.count,
+    direction: FacetValuesSortDirection | None = FacetValuesSortDirection.desc,
+) -> Page[FacetValue]:
+    return paginate(facet_values(catalogues=[catalogue_id], sort=sort, direction=direction))

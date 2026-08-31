@@ -1,9 +1,9 @@
-from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi_pagination import Page, paginate
 
-from metacat_api.models import FacetId, FacetValue
+from metacat_api.models import FacetId, FacetValue, FacetValuesSort, FacetValuesSortDirection
 from metacat_api.services import catalogues as catalogues_service
 from metacat_api.services import facets as facets_service
 
@@ -61,5 +61,7 @@ def list_facets() -> list[FacetId]:
 def facet_values(
     facets: _facets_query = None,
     catalogues: _catalogues_query = None,
-) -> list[FacetValue]:
-    return facets_service.facet_values(_parse_facets(facets), _parse_catalogues(catalogues))
+    sort: FacetValuesSort | None = FacetValuesSort.count,
+    direction: FacetValuesSortDirection | None = FacetValuesSortDirection.desc,
+) -> Page[FacetValue]:
+    return paginate(facets_service.facet_values(_parse_facets(facets), _parse_catalogues(catalogues), sort, direction))

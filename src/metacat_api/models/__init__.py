@@ -1,12 +1,14 @@
 from metacat_api.models.backup import BackupInfo, BackupLastUpdate, DataFile
 from metacat_api.models.catalogue import Catalogue, CatalogueVersion
 from metacat_api.models.collection import COLLECTION_LABELS, Collection, CollectionValues
-from metacat_api.models.common import ErrorResponse, Pagination
+from metacat_api.models.common import ErrorResponse
 from metacat_api.models.facet import (
     FacetExposure,
     FacetExposureStatus,
     FacetId,
     FacetValue,
+    FacetValuesSort,
+    FacetValuesSortDirection,
     RawFacets,
     RawFacetValue,
     RawFacetValues,
@@ -29,8 +31,9 @@ __all__ = [
     "FacetExposure",
     "FacetExposureStatus",
     "FacetValue",
+    "FacetValuesSort",
+    "FacetValuesSortDirection",
     "HarvestStatus",
-    "Pagination",
     "FacetId",
     "RawFacetValue",
     "RawFacetValues",

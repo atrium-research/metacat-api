@@ -63,3 +63,14 @@ class FacetValue(BaseModel):
     facet: FacetId = Field(description="Facet the value belongs to.")
     value: str = Field(description="Facet value label.")
     count: int = Field(description="Number of resources carrying this value.")
+
+
+class FacetValuesSort(StrEnum):
+    facet = auto()
+    value = auto()
+    count = auto()
+
+
+class FacetValuesSortDirection(StrEnum):
+    asc = auto()
+    desc = auto()

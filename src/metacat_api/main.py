@@ -5,6 +5,7 @@ from fastapi import FastAPI, status
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi_pagination import add_pagination
 
 from metacat_api.config import get_version
 from metacat_api.logging_setup import setup_logging
@@ -93,6 +94,7 @@ def create_app() -> FastAPI:
     app.include_router(harvest.router)
     app.include_router(backup.router)
 
+    add_pagination(app)
     return app
 
 

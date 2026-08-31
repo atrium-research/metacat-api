@@ -1,6 +1,6 @@
 from metacat_api.config import settings
 from metacat_api.datasources.store import read_facet_values, store
-from metacat_api.models import CatalogueVersion, FacetId, FacetValue
+from metacat_api.models import CatalogueVersion, FacetId, FacetValue, FacetValuesSort, FacetValuesSortDirection
 from metacat_api.services.catalogues import get_last_catalogues_version
 
 
@@ -28,14 +28,34 @@ def catalogue_facet_values(catalogue_id: str) -> list[FacetValue]:
     return [fv for fv in store.facet_values if fv.catalogue_id == catalogue_id]
 
 
+def _sort(
+    facet_values: list[FacetValue],
+    sort: FacetValuesSort,
+    direction: FacetValuesSortDirection,
+) -> list[FacetValue]:
+    reverse = direction == FacetValuesSortDirection.desc
+    match sort:
+        case FacetValuesSort.facet:
+            return sorted(facet_values, key=lambda fv: fv.facet, reverse=reverse)
+        case FacetValuesSort.value:
+            return sorted(facet_values, key=lambda fv: fv.value, reverse=reverse)
+        case FacetValuesSort.count:
+            return sorted(facet_values, key=lambda fv: fv.count, reverse=reverse)
+        case _:
+            return facet_values
+
+
 def facet_values(
     facets: list[FacetId] | None = None,
     catalogues: list[str] | None = None,
+    sort: FacetValuesSort | None = None,
+    direction: FacetValuesSortDirection = FacetValuesSortDirection.asc,
 ) -> list[FacetValue]:
     if not store.facet_values:
         update_all_facet_values()
-    return [
+    filtered_facet_values = [
         fv
         for fv in store.facet_values
         if (not facets or fv.facet in facets) and (not catalogues or fv.catalogue_id in catalogues)
     ]
+    return _sort(filtered_facet_values, sort, direction)
