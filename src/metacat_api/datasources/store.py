@@ -4,6 +4,7 @@ from pathlib import Path
 from uuid import UUID
 
 import anyio
+from anyio import open_file
 from pydantic_core import to_jsonable_python
 
 from metacat_api.config import settings
@@ -49,7 +50,7 @@ def set_store(json_data_dir: str):
 
 async def update_catalogue_version():
     file = settings.json_data_path() / f"{Collection.catalogues_versions}.json"
-    async with await anyio.open_file(file, "w", encoding="utf-8") as handle:
+    async with await open_file(file, mode="w", encoding="utf-8", newline="\n") as handle:
         await handle.write(
             json.dumps(
                 store.catalogues_versions,
@@ -66,7 +67,7 @@ async def write_facet_values(catalogue_id: str, version_id: UUID):
     await folder.mkdir(parents=True, exist_ok=True)
 
     data = [fv for fv in store.facet_values if fv.catalogue_id == catalogue_id and fv.version_id == version_id]
-    async with await anyio.open_file(folder / f"{version_id}.json", "w", encoding="utf-8") as handle:
+    async with await open_file(folder / f"{version_id}.json", mode="w", encoding="utf-8", newline="\n") as handle:
         await handle.write(
             json.dumps(
                 data,

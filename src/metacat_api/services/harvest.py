@@ -3,6 +3,7 @@ import logging
 from anyio import fail_after
 
 from metacat_api.harvesters import HARVESTERS
+from metacat_api.services.export import recompute_ao_cat
 
 _TIMEOUT = 600
 
@@ -14,6 +15,7 @@ async def harvest_all():
     for harvester in HARVESTERS:
         with fail_after(_TIMEOUT):
             await harvester.apply()
+    await recompute_ao_cat()
     logger.info("End harvest all")
 
 
@@ -23,3 +25,4 @@ async def harvest(catalogue_id: str):
         raise ValueError(f"Unknown catalogue '{catalogue_id}'")
     with fail_after(_TIMEOUT):
         await harvester.apply()
+    await recompute_ao_cat()

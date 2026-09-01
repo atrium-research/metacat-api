@@ -1,12 +1,15 @@
 import logging
+import os
 import urllib
-from functools import lru_cache
+from datetime import datetime
 from uuid import UUID
 
 import anyio
 import rdflib
-from anyio import open_file
-from rdflib import RDF, RDFS, SKOS, BNode, Graph, Literal, URIRef
+from anyio import fail_after, open_file, to_thread
+from cachetools import LRUCache
+from cachetools_async import cached
+from rdflib import RDF, RDFS, SKOS, BNode, Graph, Literal, Node, URIRef
 
 from metacat_api.config import settings
 from metacat_api.logging_setup import setup_logging
@@ -25,6 +28,7 @@ from metacat_api.models.export import (
 )
 from metacat_api.services.catalogues import list_catalogues, list_catalogues_versions
 from metacat_api.services.facets import facet_values, list_facets
+from metacat_api.services.util import sizeof_fmt
 from metacat_api.services.vocabularies import list_vocabularies
 
 logger = logging.getLogger(__name__)
@@ -40,15 +44,22 @@ def _encode(term: str) -> str:
     return urllib.parse.quote_plus(term)
 
 
-def _add_dimension(g: Graph, subject: URIRef, schema: URIRef, value: int | float):
+def _to_dimension(
+    g: Graph, subject: URIRef, schema: URIRef, value: int | float
+) -> list[tuple[Node, Node, Node, Graph]]:
     if not value:
-        return
+        return []
 
+    triplets = []
     dimension = BNode()
-    g.add((dimension, RDF.type, AO_CAT.AO_Dimension))
-    g.add((dimension, AO_CAT.has_value, Literal(value)))
+    triplets.append((dimension, RDF.type, AO_CAT.AO_Dimension, g))
+    triplets.append((dimension, AO_CAT.has_value, Literal(value), g))
+    triplets.append((subject, schema, dimension, g))
+    return triplets
 
-    g.add((subject, schema, dimension))
+
+def _add_dimension(g: Graph, subject: URIRef, schema: URIRef, value: int | float):
+    g.addN(_to_dimension(g, subject, schema, value))
 
 
 def _add_catalogue(g: Graph, c: Catalogue) -> None:
@@ -78,6 +89,8 @@ def _add_facet(g: Graph, facet: FacetId) -> None:
     g.add((subject, RDF.type, ATRIUM.term("Facet")))
     g.add((subject, AO_CAT.has_identifier, Literal(facet.name)))
     g.add((subject, AO_CAT.has_identifier, Literal(facet.value)))
+    g.add((subject, AO_CAT.has_title, Literal(facet.value)))
+    g.add((subject, RDFS.label, Literal(facet.value)))
 
 
 def _add_facet_exposure(g: Graph, catalogue_id: str, version_id: UUID, fe: FacetExposure) -> None:
@@ -120,20 +133,22 @@ def _add_catalogue_version(g: Graph, cv: CatalogueVersion):
     _add_dimension(g, subject, AO_CAT.has_extent, cv.total_resources)
 
 
-def _add_facet_value(g: Graph, fv: FacetValue):
+def _to_facet_value(g: Graph, fv: FacetValue) -> list[tuple[Node, Node, Node, Graph]]:
+    triplets = []
     fv_id = f"{fv.catalogue_id}_{fv.version_id}_{fv.facet}_{fv.value}"
     subject = ATRIUM_FACET_VALUE.term(_encode(fv_id))
-    g.add((subject, RDF.type, ATRIUM.term("FacetValue")))
-    g.add((subject, RDF.type, AO_CAT.AO_Entity))
+    triplets.append((subject, RDF.type, ATRIUM.term("FacetValue"), g))
+    triplets.append((subject, RDF.type, AO_CAT.AO_Entity, g))
 
-    g.add((subject, ATRIUM.catalogue, ATRIUM_CATALOGUE.term(_encode(fv.catalogue_id))))
+    triplets.append((subject, ATRIUM.catalogue, ATRIUM_CATALOGUE.term(_encode(fv.catalogue_id)), g))
     cv_uri = ATRIUM_CATALOGUE_VERSION.term(_encode(f"{fv.catalogue_id}_{fv.version_id}"))
-    g.add((subject, ATRIUM.catalogue_version, cv_uri))
+    triplets.append((subject, ATRIUM.catalogue_version, cv_uri, g))
 
-    g.add((subject, CRM.P2_has_type, ATRIUM_FACET.term(_encode(fv.facet))))
-    g.add((subject, AO_CAT.has_native_subject, Literal(fv.value)))
+    triplets.append((subject, CRM.P2_has_type, ATRIUM_FACET.term(_encode(fv.facet)), g))
+    triplets.append((subject, AO_CAT.has_native_subject, Literal(fv.value), g))
 
-    _add_dimension(g, subject, AO_CAT.has_extent, fv.count)
+    triplets.extend(_to_dimension(g, subject, AO_CAT.has_extent, fv.count))
+    return triplets
 
 
 rdflib.plugin.register(
@@ -145,6 +160,9 @@ rdflib.plugin.register(
 
 
 def _compute_ao_cat() -> str:
+    logger.info("Start AO-Cat compute")
+    start_compute = datetime.now()
+
     g = Graph()
     for prefix, ns in NAMESPACES.items():
         g.bind(prefix, ns)
@@ -161,30 +179,68 @@ def _compute_ao_cat() -> str:
     for voc in list_vocabularies():
         _add_vocabulary(g, voc)
 
-    for fv in facet_values():
-        _add_facet_value(g, fv)
+    logger.info("Start get facet values")
+    start = datetime.now()
+    fvs = facet_values()
+    logger.info(f"End get facet values in {datetime.now() - start}")
 
-    return g.serialize(format="custom_ttl", canon=True).strip()
+    logger.info("Start compute facet values")
+    start = datetime.now()
+    facet_values_triplets = [triplet for fv in fvs for triplet in _to_facet_value(g, fv)]
+    logger.info(f"End compute facet values in {datetime.now() - start}")
+
+    logger.info("Start add to graph")
+    start = datetime.now()
+    g.addN(facet_values_triplets)
+    logger.info(f"End add to graph in {datetime.now() - start}")
+
+    logger.info("Start serialize")
+    start = datetime.now()
+    ttl = g.serialize(format="custom_ttl").strip()
+    logger.info(f"End serialize in {datetime.now() - start}")
+
+    logger.info(f"End compute AO-Cat in {datetime.now() - start_compute}")
+    return ttl
 
 
-_ao_cat: str | None = None
+@cached(cache=LRUCache(maxsize=128))
+async def get_ao_cat() -> str:
+    with fail_after(300):
+        return await to_thread.run_sync(_compute_ao_cat)
 
 
-@lru_cache
-def get_current_ao_cat() -> str:
-    global _ao_cat
-    if not _ao_cat:
-        _ao_cat = _compute_ao_cat()
-    return _ao_cat
+def clear_computed_ao_cat() -> None:
+    logger.info("Start AO-Cat clear cache")
+    get_ao_cat.cache_clear()
 
 
-def clear_compute_ao_cat() -> None:
-    get_current_ao_cat.cache_clear()
+async def recompute_ao_cat() -> None:
+    logger.info("Start AO-Cat recompute")
+    clear_computed_ao_cat()
+    await get_ao_cat()
+
+
+async def write_ao_cat(ttl: str) -> None:
+    logger.info("Start AO-Cat write file")
+    start = datetime.now()
+    async with await open_file(
+        f"{settings.json_data_dir}/ao-cat.ttl",
+        mode="w",
+        encoding="utf-8",
+        newline="\n",
+    ) as file:
+        await file.write(ttl)
+    logger.info(f"End write_ao_cat in {datetime.now() - start}")
 
 
 async def export_ao_cat() -> None:
-    async with await open_file(f"{settings.json_data_dir}/ao-cat.ttl", encoding="utf-8", mode="w") as file:
-        await file.write(get_current_ao_cat())
+    logger.info("Start AO-Cat export")
+    start = datetime.now()
+
+    ttl = await get_ao_cat()
+    await write_ao_cat(ttl)
+    size = sizeof_fmt(os.lstat(f"{settings.json_data_dir}/ao-cat.ttl").st_size)
+    logger.info(f"End export in {datetime.now() - start}: size = {size}")
 
 
 if __name__ == "__main__":

@@ -115,7 +115,7 @@ async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[D
             f"| {sizeof_fmt(data_file.size)} |\n"
         )
 
-    async with await open_file(f"{repo_dir}/README.md", mode="w", encoding="utf-8") as fw:
+    async with await open_file(f"{repo_dir}/README.md", mode="w", encoding="utf-8", newline="\n") as fw:
         await fw.write(readme)
 
 

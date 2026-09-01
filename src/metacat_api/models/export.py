@@ -16,7 +16,7 @@ ATRIUM_FACET = Namespace("https://atrium-research.eu/Facet/")
 ATRIUM_FACET_EXPOSURE = Namespace("https://atrium-research.eu/FacetExposure/")
 ATRIUM_FACET_VALUE = Namespace("https://atrium-research.eu/FacetValue/")
 
-AO_CAT = Namespace("https://www.ariadne-infrastructure.eu/resource/ao/cat/1.1/")
+AO_CAT = Namespace("https://ariadne-infrastructure.eu/aocat/")
 CRM = Namespace("http://www.cidoc-crm.org/cidoc-crm/")
 CRMPE = Namespace("http://parthenos.d4science.org/CRMext/CRMpe/")
 

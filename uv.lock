@@ -142,6 +142,27 @@ wheels = [
 ]
 
 [[package]]
+name = "cachetools"
+version = "7.1.8"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/39/9a4689914dd907915cee74733b95888fc1d8a21aad47a24a0a2deec73ac4/cachetools-7.1.8.tar.gz", hash = "sha256:1221d547a0b24b7f26fa891d40d488b5258beab9aebd8ed68c729be3af849c43", size = 40909, upload-time = "2026-08-31T19:02:53.985Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d7/3d/9487690d0e937854db587205c66bab3c3cf88d9f00ed380b74cb88cc94ee/cachetools-7.1.8-py3-none-any.whl", hash = "sha256:a81e3844acaa7355b6567f97bd67a94a14ec3a9bc2cbbdae45b9592cc036775b", size = 16842, upload-time = "2026-08-31T19:02:52.554Z" },
+]
+
+[[package]]
+name = "cachetools-async"
+version = "0.0.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cachetools" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/59/6d/01404fffea95b33d186a4d921b141918c0daf3ff74b6a715c0ac2de8f42e/cachetools_async-0.0.5.tar.gz", hash = "sha256:e99ec8f3a78e82b4f524e78f01d15b8746531481d862ac4f2d8af2a686e1c571", size = 24837, upload-time = "2025-06-09T08:11:28.925Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b5/fa/136f97313ab298286725fc8004d44f5fc352ea416c2b874b7a91e83df66a/cachetools_async-0.0.5-py3-none-any.whl", hash = "sha256:8f690c8bc291718a652395832e90afa797195c838e98d6a9e530dc1de66fbc34", size = 4750, upload-time = "2025-06-09T08:11:27.871Z" },
+]
+
+[[package]]
 name = "certifi"
 version = "2026.7.22"
 source = { registry = "https://pypi.org/simple" }
@@ -721,6 +742,8 @@ dependencies = [
     { name = "aiohttp" },
     { name = "anyio" },
     { name = "apscheduler" },
+    { name = "cachetools" },
+    { name = "cachetools-async" },
     { name = "fastapi", extra = ["standard"] },
     { name = "fastapi-pagination" },
     { name = "gitpython" },
@@ -730,6 +753,7 @@ dependencies = [
     { name = "rdflib" },
     { name = "requests" },
     { name = "sparqlwrapper" },
+    { name = "tqdm" },
 ]
 
 [package.dev-dependencies]
@@ -744,6 +768,8 @@ requires-dist = [
     { name = "aiohttp", specifier = ">=3.14.3" },
     { name = "anyio", specifier = ">=4.14.1" },
     { name = "apscheduler", specifier = ">=3.11.3" },
+    { name = "cachetools", specifier = ">=7.1.8" },
+    { name = "cachetools-async", specifier = ">=0.0.5" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.141.1" },
     { name = "fastapi-pagination", specifier = ">=0.15.16" },
     { name = "gitpython", specifier = ">=3.1.58" },
@@ -753,6 +779,7 @@ requires-dist = [
     { name = "rdflib", specifier = ">=7.6.0" },
     { name = "requests", specifier = ">=2.34.2" },
     { name = "sparqlwrapper", specifier = ">=2.0.0" },
+    { name = "tqdm", specifier = ">=4.70.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -1238,6 +1265,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b5/b4/205b0d5241d934e8add0c38aa924c4f9fb7330834ff11e5444db964ec3f9/starlette-1.6.0.tar.gz", hash = "sha256:d4e3ac5e546444960c710297a3c9fc3f7ebae1b7e963f3d36173b49da535be9b", size = 2716969, upload-time = "2026-08-08T18:27:57.512Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c8/cb/6a6a47d5b464bd08695d254f3da6e7986cc70c9fa5d778eda57538edfe56/starlette-1.6.0-py3-none-any.whl", hash = "sha256:a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c", size = 75969, upload-time = "2026-08-08T18:27:56.196Z" },
+]
+
+[[package]]
+name = "tqdm"
+version = "4.70.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/21/3b/6c24bec5be5e743ffd99576daa5cc077722fc7d5bbc00bd133fa0c698dc6/tqdm-4.70.0.tar.gz", hash = "sha256:55b0b0dbd97462d06ebee91e4dac24ed4d4702be82b24f07e6c1d27e08cea220", size = 795438, upload-time = "2026-07-27T11:33:15.271Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f9/1c/01bfd571a64e7f270e6bab5e33777debe0edc56759233ce84f27dec92d14/tqdm-4.70.0-py3-none-any.whl", hash = "sha256:7f585706bfddbdebf89daac705b2dfcc16890130727d3197ca62c732b4310953", size = 80184, upload-time = "2026-07-27T11:33:13.167Z" },
 ]
 
 [[package]]
