@@ -1,6 +1,7 @@
 import logging
 import uuid
 from abc import ABC, abstractmethod
+from datetime import datetime
 
 from metacat_api.config import settings
 from metacat_api.datasources.store import store, update_catalogue_version, write_facet_values
@@ -12,6 +13,7 @@ from metacat_api.models import (
     HarvestStatus,
     RawFacets,
 )
+from metacat_api.services.export import clear_computed_ao_cat
 from metacat_api.services.util import now, time_to_str
 
 logger = logging.getLogger(__name__)
@@ -104,7 +106,10 @@ class Harvester(ABC):
         new_version.harvest_error = str(e)
 
     async def apply(self) -> None:
+        logger.info(f"Start apply for {self.catalogue_id}")
+        start = datetime.now()
         try:
+            clear_computed_ao_cat()
             harvested = self.harvest()
             _report(self.catalogue_id, harvested)
             new_version = self._add_version(harvested)
@@ -114,3 +119,4 @@ class Harvester(ABC):
             self._add_error_version(e)
 
         await update_catalogue_version()
+        logger.info(f"End apply for {self.catalogue_id} in {datetime.now() - start}")

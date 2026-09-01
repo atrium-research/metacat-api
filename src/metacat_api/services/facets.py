@@ -1,7 +1,12 @@
+import logging
+from datetime import datetime
+
 from metacat_api.config import settings
 from metacat_api.datasources.store import read_facet_values, store
 from metacat_api.models import CatalogueVersion, FacetId, FacetValue, FacetValuesSort, FacetValuesSortDirection
 from metacat_api.services.catalogues import get_last_catalogues_version
+
+logger = logging.getLogger(__name__)
 
 
 def list_facets() -> list[FacetId]:
@@ -18,8 +23,11 @@ def _update_facet_values(catalogue_version: CatalogueVersion):
 
 
 def update_all_facet_values():
+    logger.info("Start update_all_facet_values")
+    start = datetime.now()
     for lv in get_last_catalogues_version():
         _update_facet_values(lv)
+    logger.info(f"End update_all_facet_values in {datetime.now() - start}, facet values: {len(store.facet_values)}")
 
 
 def catalogue_facet_values(catalogue_id: str) -> list[FacetValue]:
