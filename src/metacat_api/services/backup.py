@@ -2,6 +2,7 @@ import logging
 import re
 import shutil
 from datetime import datetime
+from uuid import UUID
 
 import aiohttp
 from anyio import Path, TemporaryDirectory, open_file
@@ -9,6 +10,7 @@ from git import GitCommandError, Repo
 
 from metacat_api.config import settings
 from metacat_api.models import COLLECTION_LABELS, BackupInfo, BackupLastUpdate, Collection, DataFile
+from metacat_api.services.catalogues import get_catalogue_version
 from metacat_api.services.util import now, sizeof_fmt, time_to_str
 
 GIT_URL = "github.com/atrium-research/metacat-api.git"
@@ -64,6 +66,13 @@ def _get_last_update(readme: str) -> datetime:
         raise BackupError(f"Unable to parse last update: {last_update_str}") from e
 
 
+def get_last_update(catalogue_id: str, version_id: UUID) -> datetime | None:
+    cv = get_catalogue_version(catalogue_id, version_id)
+    if not cv:
+        return None
+    return cv.harvest_at
+
+
 async def _get_data_files(repo_dir: str) -> list[DataFile]:
     static_collections = [Collection.catalogues, Collection.catalogues_versions, Collection.vocabularies]
 
@@ -82,11 +91,14 @@ async def _get_data_files(repo_dir: str) -> list[DataFile]:
             collection=Collection.facet_values,
             filename=f"{Collection.facet_values.name}/{p.parent.name}/{p.name}",
             size=(await p.stat()).st_size,
+            catalogue=p.parent.name,
+            version=UUID(p.name.removesuffix(".json")),
+            harvest_at=get_last_update(p.parent.name, UUID(p.name.removesuffix(".json"))),
         )
         async for p in Path(f"{repo_dir}/data/{Collection.facet_values}").glob("*/*.json")
     ]
 
-    return sorted(files, key=lambda d: d.collection)
+    return sorted(files, key=lambda d: f"{d.collection}_{d.catalogue}_{d.harvest_at}")
 
 
 async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[DataFile]) -> None:
@@ -108,14 +120,31 @@ async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[D
         "| Collection | Link | Size |\n"
         "| :--------- | :--- | ---: |\n"
     )
-    for data_file in data_files:
+    for data_file in [data_file for data_file in data_files if data_file.collection != Collection.facet_values]:
         readme += (
             f"| {COLLECTION_LABELS[data_file.collection]} "
-            f"| [data/{data_file.filename}](data/{data_file.filename}) "
+            f"| [JSON file](data/{data_file.filename}) "
             f"| {sizeof_fmt(data_file.size)} |\n"
         )
 
-    async with await open_file(f"{repo_dir}/README.md", mode="w", encoding="utf-8") as fw:
+    readme += (
+        "\n"
+        "## Link to facet values data files\n"
+        "\n"
+        "| Catalogue | Date | Version | Link | Size |\n"
+        "| :-------- | :--- | :------ | :--- | :--- |\n"
+    )
+    facet_values_files = [data_file for data_file in data_files if data_file.collection == Collection.facet_values]
+    facet_values_files = sorted(facet_values_files, key=lambda d: f"{d.catalogue}_{d.harvest_at}")
+    for facet_values_file in facet_values_files:
+        readme += (
+            f"| {facet_values_file.catalogue} "
+            f"| {time_to_str(facet_values_file.harvest_at)} "
+            f"| {facet_values_file.version} "
+            f"| [JSON file](data/{facet_values_file.filename}) "
+            f"| {sizeof_fmt(facet_values_file.size)} |\n"
+        )
+    async with await open_file(f"{repo_dir}/README.md", mode="w", encoding="utf-8", newline="\n") as fw:
         await fw.write(readme)
 
 
@@ -138,6 +167,8 @@ async def read_backup() -> BackupInfo:
         data_files = await _get_data_files(repo_dir)
         logger.info(f"Last update: {last_update}, tz = {last_update.tzname()}")
         repo.close()
+        for d in data_files:
+            logger.info(f"{d.harvest_at}")
     return BackupInfo(
         last_update=time_to_str(last_update),
         data_files=data_files,
