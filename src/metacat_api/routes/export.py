@@ -1,7 +1,8 @@
 import logging
 
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 
+from metacat_api.services.auth import is_api_key_valid
 from metacat_api.services.export import ExportError, read_ao_cat, update_ao_cat
 
 router = APIRouter(prefix="/export", tags=["Export"])
@@ -31,6 +32,7 @@ async def get_export_ao_cat():
 @router.post(
     "/ao-cat",
     summary="Update AO-Cat: recompute and write ttl",
+    dependencies=[Depends(is_api_key_valid)],
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def post_update_ao_cat():
