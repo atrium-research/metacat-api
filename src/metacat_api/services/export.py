@@ -45,7 +45,7 @@ def _encode(term: str) -> str:
 
 
 def _to_dimension(
-    g: Graph, subject: URIRef, schema: URIRef, value: int | float
+    g: Graph, subject: URIRef, schema: URIRef, value: int | float, unit: str | None = None
 ) -> list[tuple[Node, Node, Node, Graph]]:
     if not value:
         return []
@@ -54,12 +54,13 @@ def _to_dimension(
     dimension = BNode()
     triplets.append((dimension, RDF.type, AO_CAT.AO_Dimension, g))
     triplets.append((dimension, AO_CAT.has_value, Literal(value), g))
+    triplets.append((dimension, AO_CAT.has_unit, Literal(unit or "unite"), g))
     triplets.append((subject, schema, dimension, g))
     return triplets
 
 
-def _add_dimension(g: Graph, subject: URIRef, schema: URIRef, value: int | float):
-    g.addN(_to_dimension(g, subject, schema, value))
+def _add_dimension(g: Graph, subject: URIRef, schema: URIRef, value: int | float, unit: str | None = None):
+    g.addN(_to_dimension(g, subject, schema, value, unit))
 
 
 def _add_catalogue(g: Graph, c: Catalogue) -> None:
