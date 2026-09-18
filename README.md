@@ -2,7 +2,7 @@
 
 This page presents the latest data from Metacat harvesters.
 
-The dump was updated on 2026-09-18T10:52:23Z.
+The dump was updated on 2026-09-18T10:56:00Z.
 
 ## Link to data files
 
@@ -11,6 +11,7 @@ The dump was updated on 2026-09-18T10:52:23Z.
 | Catalogues | [JSON file](data/catalogues.json) | 1.0KiB |
 | Catalogues versions | [JSON file](data/catalogues_versions.json) | 11.9KiB |
 | Vocabularies | [JSON file](data/vocabularies.json) | 1.4KiB |
+
 ## Link to facet values data files
 
 | Catalogue | Date | Version | Link | Size |
