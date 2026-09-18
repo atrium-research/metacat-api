@@ -13,7 +13,6 @@ from metacat_api.models import (
     HarvestStatus,
     RawFacets,
 )
-from metacat_api.services.export import clear_computed_ao_cat
 from metacat_api.services.util import now, time_to_str
 
 logger = logging.getLogger(__name__)
@@ -109,7 +108,6 @@ class Harvester(ABC):
         logger.info(f"Start apply for {self.catalogue_id}")
         start = datetime.now()
         try:
-            clear_computed_ao_cat()
             harvested = self.harvest()
             _report(self.catalogue_id, harvested)
             new_version = self._add_version(harvested)

@@ -2,6 +2,7 @@ import logging
 import os
 import urllib
 from datetime import datetime
+from pathlib import Path
 from uuid import UUID
 
 import anyio
@@ -205,23 +206,31 @@ def _compute_ao_cat() -> str:
 
 
 @cached(cache=LRUCache(maxsize=128))
-async def get_ao_cat() -> str:
-    with fail_after(300):
+async def _get_ao_cat() -> str:
+    with fail_after(600):
         return await to_thread.run_sync(_compute_ao_cat)
 
 
-def clear_computed_ao_cat() -> None:
-    logger.info("Start AO-Cat clear cache")
-    get_ao_cat.cache_clear()
+@cached(cache=LRUCache(maxsize=128))
+async def read_ao_cat() -> str:
+    logger.info("Start read AO-Cat file")
+    start = datetime.now()
+
+    if not Path(f"{settings.json_data_dir}/ao-cat.ttl").exists():
+        logger.warning("AO-Cat file not found")
+        await update_ao_cat()
+
+    async with await open_file(
+        f"{settings.json_data_dir}/ao-cat.ttl",
+        encoding="utf-8",
+        newline="\n",
+    ) as file:
+        ttl = await file.read()
+    logger.info(f"End read AO-Cat in {datetime.now() - start}")
+    return ttl
 
 
-async def recompute_ao_cat() -> None:
-    logger.info("Start AO-Cat recompute")
-    clear_computed_ao_cat()
-    await get_ao_cat()
-
-
-async def write_ao_cat(ttl: str) -> None:
+async def _write_ao_cat(ttl: str) -> None:
     logger.info("Start AO-Cat write file")
     start = datetime.now()
     async with await open_file(
@@ -234,16 +243,20 @@ async def write_ao_cat(ttl: str) -> None:
     logger.info(f"End write_ao_cat in {datetime.now() - start}")
 
 
-async def export_ao_cat() -> None:
+async def update_ao_cat() -> None:
     logger.info("Start AO-Cat export")
     start = datetime.now()
 
-    ttl = await get_ao_cat()
-    await write_ao_cat(ttl)
+    ttl = await _get_ao_cat()
+    await _write_ao_cat(ttl)
     size = sizeof_fmt(os.lstat(f"{settings.json_data_dir}/ao-cat.ttl").st_size)
+
+    _get_ao_cat.cache_clear()
+    read_ao_cat.cache_clear()
+
     logger.info(f"End export in {datetime.now() - start}: size = {size}")
 
 
 if __name__ == "__main__":
     setup_logging()
-    anyio.run(export_ao_cat)
+    anyio.run(update_ao_cat)
