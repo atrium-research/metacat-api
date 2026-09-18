@@ -1,4 +1,6 @@
+from datetime import datetime
 from functools import cached_property
+from uuid import UUID
 
 from pydantic import BaseModel, computed_field
 
@@ -10,6 +12,9 @@ class DataFile(BaseModel):
     collection: Collection
     filename: str
     size: int
+    catalogue: str | None = None
+    version: UUID | None = None
+    harvest_at: datetime | None = None
 
     @computed_field
     @cached_property
