@@ -2,7 +2,7 @@
 
 This page presents the latest data from Metacat harvesters.
 
-The dump was updated on 2026-09-21T05:03:21Z.
+The dump was updated on 2026-09-22T09:50:02Z.
 
 ## Link to data files
 
@@ -33,3 +33,10 @@ The dump was updated on 2026-09-21T05:03:21Z.
 | sshomp | 2026-09-18T09:09:20Z | 70e60420-14f2-49ab-93ff-e70580acb472 | [JSON file](data/facet_values/sshomp/70e60420-14f2-49ab-93ff-e70580acb472.json) | 380.2KiB |
 | sshomp | 2026-09-18T11:02:01Z | 0d5eaa6e-8911-48da-99bd-0585143e794f | [JSON file](data/facet_values/sshomp/0d5eaa6e-8911-48da-99bd-0585143e794f.json) | 380.2KiB |
 | sshomp | 2026-09-21T05:02:17Z | 31a76651-34f3-462e-a973-d912e83ec7ad | [JSON file](data/facet_values/sshomp/31a76651-34f3-462e-a973-d912e83ec7ad.json) | 380.2KiB |
+
+## Information and contacts
+
+* Project: [MetaCat](https://zenodo.org/records/17208781)
+* European project: [ATRIUM](https://atrium-research.eu)
+* Contact point: [Foxcub](mailto:julien.homo@foxcub.fr)
+* Repository: [MetaCat API](https://github.com/atrium-research/metacat-api)
