@@ -64,8 +64,20 @@ def _add_dimension(g: Graph, subject: URIRef, schema: URIRef, value: int | float
     g.addN(_to_dimension(g, subject, schema, value, unit))
 
 
+def _get_catalogue(catalogue_id: str) -> URIRef:
+    return ATRIUM_CATALOGUE.term(_encode(catalogue_id))
+
+
+def _get_catalogue_version(catalogue_id: str, version_id: UUID) -> URIRef:
+    return ATRIUM_CATALOGUE_VERSION.term(_encode(f"{catalogue_id}_{version_id}"))
+
+
+def _get_facet_exposure(catalogue_id: str, version_id: UUID, facet: str) -> URIRef:
+    return ATRIUM_FACET_EXPOSURE.term(_encode(f"{catalogue_id}_{version_id}_{facet}"))
+
+
 def _add_catalogue(g: Graph, c: Catalogue) -> None:
-    subject = ATRIUM_CATALOGUE.term(_encode(c.id))
+    subject = _get_catalogue(c.id)
     g.add((subject, RDF.type, ATRIUM.term("Catalogue")))
     g.add((subject, RDF.type, AO_CAT.AO_Entity))
     g.add((subject, AO_CAT.has_identifier, Literal(c.id)))
@@ -96,10 +108,11 @@ def _add_facet(g: Graph, facet: FacetId) -> None:
 
 
 def _add_facet_exposure(g: Graph, catalogue_id: str, version_id: UUID, fe: FacetExposure) -> None:
-    fe_id = f"{catalogue_id}_{version_id}_{fe.facet}"
-    subject = ATRIUM_FACET_EXPOSURE.term(_encode(fe_id))
+    subject = _get_facet_exposure(catalogue_id, version_id, fe.facet)
     g.add((subject, RDF.type, ATRIUM.term("FacetExposure")))
     g.add((subject, RDF.type, AO_CAT.AO_Collection))
+
+    g.add((subject, ATRIUM.catalogue_version, _get_catalogue_version(catalogue_id, version_id)))
 
     g.add((subject, CRM.P2_has_type, ATRIUM_FACET.term(_encode(fe.facet))))
 
@@ -115,14 +128,13 @@ def _add_facet_exposure(g: Graph, catalogue_id: str, version_id: UUID, fe: Facet
 
 
 def _add_catalogue_version(g: Graph, cv: CatalogueVersion):
-    cv_id = f"{cv.catalogue_id}_{cv.version_id}"
-    subject = ATRIUM_CATALOGUE_VERSION.term(_encode(cv_id))
+    subject = _get_catalogue_version(cv.catalogue_id, cv.version_id)
     g.add((subject, RDF.type, ATRIUM.term("CatalogueVersion")))
     g.add((subject, RDF.type, AO_CAT.AO_Entity))
 
-    g.add((subject, AO_CAT.has_identifier, Literal(cv_id)))
+    g.add((subject, AO_CAT.has_identifier, Literal(f"{cv.catalogue_id}_{cv.version_id}")))
     g.add((subject, AO_CAT.has_identifier, Literal(cv.version_id)))
-    g.add((subject, ATRIUM.catalogue, ATRIUM_CATALOGUE.term(_encode(cv.catalogue_id))))
+    g.add((subject, ATRIUM.catalogue, _get_catalogue(cv.catalogue_id)))
 
     g.add((subject, CRM.term("P4_has_time-span"), Literal(cv.harvest_at)))
 
@@ -142,9 +154,7 @@ def _to_facet_value(g: Graph, fv: FacetValue) -> list[tuple[Node, Node, Node, Gr
     triplets.append((subject, RDF.type, ATRIUM.term("FacetValue"), g))
     triplets.append((subject, RDF.type, AO_CAT.AO_Entity, g))
 
-    triplets.append((subject, ATRIUM.catalogue, ATRIUM_CATALOGUE.term(_encode(fv.catalogue_id)), g))
-    cv_uri = ATRIUM_CATALOGUE_VERSION.term(_encode(f"{fv.catalogue_id}_{fv.version_id}"))
-    triplets.append((subject, ATRIUM.catalogue_version, cv_uri, g))
+    triplets.append((subject, ATRIUM.facet_exposure, _get_facet_exposure(fv.catalogue_id, fv.version_id, fv.facet), g))
 
     triplets.append((subject, CRM.P2_has_type, ATRIUM_FACET.term(_encode(fv.facet)), g))
     triplets.append((subject, AO_CAT.has_native_subject, Literal(fv.value), g))
