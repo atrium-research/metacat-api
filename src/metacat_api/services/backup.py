@@ -5,6 +5,7 @@ from datetime import datetime
 from uuid import UUID
 
 import aiohttp
+import anyio
 from anyio import Path, TemporaryDirectory, open_file
 from git import GitCommandError, Repo
 
@@ -101,13 +102,7 @@ async def _get_data_files(repo_dir: str) -> list[DataFile]:
     return sorted(files, key=lambda d: f"{d.collection}_{d.catalogue}_{d.harvest_at}")
 
 
-async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[DataFile]) -> None:
-    if not data_files:
-        raise BackupError("No data files")
-    if not update_date_str:
-        raise BackupError("No update date defined")
-    logger.info(f"New update date: {update_date_str}")
-
+def _compute_readme(update_date_str: str, data_files: list[DataFile]) -> str:
     readme = (
         "# Metacat API Data\n"
         "\n"
@@ -144,8 +139,18 @@ async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[D
             f"| [JSON file](data/{facet_values_file.filename}) "
             f"| {sizeof_fmt(facet_values_file.size)} |\n"
         )
-    async with await open_file(f"{repo_dir}/README.md", mode="w", encoding="utf-8", newline="\n") as fw:
-        await fw.write(readme)
+
+    readme += (
+        "\n"
+        "## Information and contacts\n"
+        "\n"
+        "* Project: [MetaCat](https://zenodo.org/records/17208781)\n"
+        "* European project: [ATRIUM](https://atrium-research.eu)\n"
+        "* Contact point: [Foxcub](mailto:julien.homo@foxcub.fr)\n"
+        "* Repository: [MetaCat API](https://github.com/atrium-research/metacat-api)\n"
+    )
+
+    return readme
 
 
 async def _update_data(repo_dir: str) -> list[DataFile]:
@@ -187,9 +192,15 @@ async def write_backup() -> BackupInfo:
     async with TemporaryDirectory(prefix="repo_dir_w_") as repo_dir:
         repo = _get_repo(repo_dir, with_auth=True)
         data_files = await _update_data(repo_dir)
+        if not data_files:
+            raise BackupError("No data files")
 
         update_date = time_to_str(now())
-        await _update_readme(repo_dir, update_date, data_files)
+        logger.info(f"New update date: {update_date}")
+
+        readme = _compute_readme(update_date, data_files)
+        async with await open_file(f"{repo_dir}/README.md", mode="w", encoding="utf-8", newline="\n") as fw:
+            await fw.write(readme)
 
         logger.info("Saving to remote repo")
         try:
@@ -212,3 +223,13 @@ async def write_backup() -> BackupInfo:
         last_update=update_date,
         data_files=data_files,
     )
+
+
+if __name__ == "__main__":
+
+    async def test_readme():
+        df = await _get_data_files(".")
+        readme = _compute_readme(time_to_str(now()), df)
+        print(f"Readme:\n{readme}")
+
+    anyio.run(test_readme)
