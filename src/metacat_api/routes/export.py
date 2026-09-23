@@ -19,7 +19,7 @@ async def get_export_ao_cat():
         ao_cat = await read_ao_cat()
 
     except ExportError as e:
-        logger.exception(f"Export read error: {str(e)}")
+        logger.exception("Export read error")
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Unable to read AO-Cat") from e
 
     return Response(
@@ -39,5 +39,5 @@ async def post_update_ao_cat():
     try:
         await update_ao_cat()
     except ExportError as e:
-        logger.exception(f"Export update error: {str(e)}")
+        logger.exception("Export update error")
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Unable to update AO-Cat") from e

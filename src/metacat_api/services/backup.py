@@ -36,7 +36,7 @@ def _get_repo(tmp_dir: str, with_auth=False) -> Repo:
     try:
         repo = Repo.clone_from(f"https://{_get_auth(with_auth)}{GIT_URL}", tmp_dir, branch=GIT_BRANCH)
     except GitCommandError as e:
-        raise BackupError(f"Error during git clone: {str(e)}") from e
+        raise BackupError(f"Error during git clone: {e!s}") from e
     return repo
 
 
@@ -49,11 +49,10 @@ async def _read_readme_from_repo(repo_dir) -> str:
 
 
 async def _read_readme_from_url() -> str:
-    async with aiohttp.ClientSession() as session:
-        async with session.get(GIT_PAGE) as response:
-            if not response.ok:
-                raise BackupError(f"Unable to get online README: {response.status}")
-            return await response.text()
+    async with aiohttp.ClientSession() as session, session.get(GIT_PAGE) as response:
+        if not response.ok:
+            raise BackupError(f"Unable to get online README: {response.status}")
+        return await response.text()
 
 
 def _get_last_update(readme: str) -> datetime:
@@ -217,7 +216,7 @@ async def write_backup() -> BackupInfo:
             origin = repo.remote("origin")
             origin.push()
         except GitCommandError as e:
-            raise BackupError(f"Error during git writing: {str(e)}") from e
+            raise BackupError(f"Error during git writing: {e!s}") from e
         repo.close()
     return BackupInfo(
         last_update=update_date,

@@ -7,7 +7,7 @@ from the metacat-api root:
 
 import json
 import logging
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 import anyio
@@ -46,7 +46,7 @@ class ClarinHarvester(Harvester):
 
     def harvest(self) -> RawFacets:
         logger.info("Clarin: Start harvest")
-        start = datetime.now()
+        start = datetime.now(tz=UTC)
         with open(Path(__file__).parent / "clarin_lib/vlo-query-collection.json", encoding="utf-8") as handle:
             collection = json.load(handle)
 
@@ -58,7 +58,7 @@ class ClarinHarvester(Harvester):
             },
             extra="forbid",
         )
-        logger.info(f"Clarin: End harvest, duration: {datetime.now() - start}")
+        logger.info(f"Clarin: End harvest, duration: {datetime.now(tz=UTC) - start}")
         return facets
 
 

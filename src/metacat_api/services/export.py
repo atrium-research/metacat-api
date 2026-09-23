@@ -1,7 +1,7 @@
 import logging
 import os
 import urllib
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from uuid import UUID
 
@@ -46,7 +46,7 @@ def _encode(term: str) -> str:
 
 
 def _to_dimension(
-    g: Graph, subject: URIRef, schema: URIRef, value: int | float, unit: str | None = None
+    g: Graph, subject: URIRef, schema: URIRef, value: float, unit: str | None = None
 ) -> list[tuple[Node, Node, Node, Graph]]:
     if not value:
         return []
@@ -60,7 +60,7 @@ def _to_dimension(
     return triplets
 
 
-def _add_dimension(g: Graph, subject: URIRef, schema: URIRef, value: int | float, unit: str | None = None):
+def _add_dimension(g: Graph, subject: URIRef, schema: URIRef, value: float, unit: str | None = None):
     g.addN(_to_dimension(g, subject, schema, value, unit))
 
 
@@ -173,7 +173,7 @@ rdflib.plugin.register(
 
 def _compute_ao_cat() -> str:
     logger.info("Start AO-Cat compute")
-    start_compute = datetime.now()
+    start_compute = datetime.now(tz=UTC)
 
     g = Graph()
     for prefix, ns in NAMESPACES.items():
@@ -192,26 +192,26 @@ def _compute_ao_cat() -> str:
         _add_vocabulary(g, voc)
 
     logger.info("Start get facet values")
-    start = datetime.now()
+    start = datetime.now(tz=UTC)
     fvs = facet_values()
-    logger.info(f"End get facet values in {datetime.now() - start}")
+    logger.info(f"End get facet values in {datetime.now(tz=UTC) - start}")
 
     logger.info("Start compute facet values")
-    start = datetime.now()
+    start = datetime.now(tz=UTC)
     facet_values_triplets = [triplet for fv in fvs for triplet in _to_facet_value(g, fv)]
-    logger.info(f"End compute facet values in {datetime.now() - start}")
+    logger.info(f"End compute facet values in {datetime.now(tz=UTC) - start}")
 
     logger.info("Start add to graph")
-    start = datetime.now()
+    start = datetime.now(tz=UTC)
     g.addN(facet_values_triplets)
-    logger.info(f"End add to graph in {datetime.now() - start}")
+    logger.info(f"End add to graph in {datetime.now(tz=UTC) - start}")
 
     logger.info("Start serialize")
-    start = datetime.now()
+    start = datetime.now(tz=UTC)
     ttl = g.serialize(format="custom_ttl").strip()
-    logger.info(f"End serialize in {datetime.now() - start}")
+    logger.info(f"End serialize in {datetime.now(tz=UTC) - start}")
 
-    logger.info(f"End compute AO-Cat in {datetime.now() - start_compute}")
+    logger.info(f"End compute AO-Cat in {datetime.now(tz=UTC) - start_compute}")
     return ttl
 
 
@@ -224,7 +224,7 @@ async def _get_ao_cat() -> str:
 @cached(cache=LRUCache(maxsize=128))
 async def read_ao_cat() -> str:
     logger.info("Start read AO-Cat file")
-    start = datetime.now()
+    start = datetime.now(tz=UTC)
 
     if not Path(f"{settings.json_data_dir}/ao-cat.ttl").exists():
         logger.warning("AO-Cat file not found")
@@ -236,13 +236,13 @@ async def read_ao_cat() -> str:
         newline="\n",
     ) as file:
         ttl = await file.read()
-    logger.info(f"End read AO-Cat in {datetime.now() - start}")
+    logger.info(f"End read AO-Cat in {datetime.now(tz=UTC) - start}")
     return ttl
 
 
 async def _write_ao_cat(ttl: str) -> None:
     logger.info("Start AO-Cat write file")
-    start = datetime.now()
+    start = datetime.now(tz=UTC)
     async with await open_file(
         f"{settings.json_data_dir}/ao-cat.ttl",
         mode="w",
@@ -250,12 +250,12 @@ async def _write_ao_cat(ttl: str) -> None:
         newline="\n",
     ) as file:
         await file.write(ttl)
-    logger.info(f"End write_ao_cat in {datetime.now() - start}")
+    logger.info(f"End write_ao_cat in {datetime.now(tz=UTC) - start}")
 
 
 async def update_ao_cat() -> None:
     logger.info("Start AO-Cat export")
-    start = datetime.now()
+    start = datetime.now(tz=UTC)
 
     ttl = await _get_ao_cat()
     await _write_ao_cat(ttl)
@@ -264,7 +264,7 @@ async def update_ao_cat() -> None:
     _get_ao_cat.cache_clear()
     read_ao_cat.cache_clear()
 
-    logger.info(f"End export in {datetime.now() - start}: size = {size}")
+    logger.info(f"End export in {datetime.now(tz=UTC) - start}: size = {size}")
 
 
 if __name__ == "__main__":
