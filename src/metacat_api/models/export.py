@@ -3,7 +3,7 @@ from rdflib.plugins.serializers.turtle import TurtleSerializer
 
 
 class CustomTurtleSerializer(TurtleSerializer):
-    indentString = "  "
+    indentString = "  "  # noqa: N815
     _spacious = False
 
 
