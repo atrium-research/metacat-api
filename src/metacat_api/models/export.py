@@ -17,8 +17,8 @@ ATRIUM_FACET_EXPOSURE = Namespace("https://atrium-research.eu/FacetExposure/")
 ATRIUM_FACET_VALUE = Namespace("https://atrium-research.eu/FacetValue/")
 
 AO_CAT = Namespace("https://ariadne-infrastructure.eu/aocat/")
-CRM = Namespace("http://www.cidoc-crm.org/cidoc-crm/")
-CRMPE = Namespace("http://parthenos.d4science.org/CRMext/CRMpe/")
+CRM = Namespace("http://www.cidoc-crm.org/cidoc-crm/")  # noqa: S5332
+CRMPE = Namespace("http://parthenos.d4science.org/CRMext/CRMpe/")  # noqa: S5332
 
 NAMESPACES = {
     "dc": DC,
