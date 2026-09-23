@@ -12,7 +12,7 @@ never fabricating data.
 """
 
 import logging
-from datetime import datetime
+from datetime import UTC, datetime
 
 import anyio
 from SPARQLWrapper import JSON, SPARQLWrapper
@@ -88,10 +88,10 @@ logger = logging.getLogger(__name__)
 
 def _run_query(client: SPARQLWrapper, query: str, facet: str) -> list[tuple[str, int]]:
     logger.info(f"Start query {facet}")
-    start = datetime.now()
+    start = datetime.now(tz=UTC)
     client.setQuery(PREFIXES + query)
     rows = client.query().convert()["results"]["bindings"]
-    logger.info(f"End query {facet}, duration: {datetime.now() - start}")
+    logger.info(f"End query {facet}, duration: {datetime.now(tz=UTC) - start}")
     return [(row["value"]["value"], int(row["cnt"]["value"])) for row in rows]
 
 
@@ -116,7 +116,7 @@ class AriadneHarvester(Harvester):
 
     def harvest(self) -> RawFacets:
         logger.info("Ariadne: Start harvest")
-        start = datetime.now()
+        start = datetime.now(tz=UTC)
         client = SPARQLWrapper(ARIADNE_SPARQL_ENDPOINT)
         client.setReturnFormat(JSON)
         client.customHttpHeaders = {
@@ -127,13 +127,13 @@ class AriadneHarvester(Harvester):
                 {facet.name: _run_query(client, query, facet) for facet, query in QUERIES.items()},
                 extra="forbid",
             )
-        except Exception as error:
-            logger.exception(f"ARIADNE endpoint is not queryable: {error}")
-            raise error
+        except Exception:
+            logger.exception("ARIADNE endpoint is not queryable")
+            raise
 
         total = sum(count for _, count in facets[FacetId.resource_type.name])
         facets[FacetId.discipline.name] = [("Archaeology", total)]
-        logger.info(f"Ariadne: End harvest, duration: {datetime.now() - start}")
+        logger.info(f"Ariadne: End harvest, duration: {datetime.now(tz=UTC) - start}")
         return facets
 
 

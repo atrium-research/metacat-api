@@ -1,6 +1,7 @@
 import logging
 import uuid
 from abc import ABC, abstractmethod
+from datetime import UTC, datetime
 
 from metacat_api.config import settings
 from metacat_api.datasources.store import store, update_catalogue_version, write_facet_values
@@ -104,13 +105,16 @@ class Harvester(ABC):
         new_version.harvest_error = str(e)
 
     async def apply(self) -> None:
+        logger.info(f"Start apply for {self.catalogue_id}")
+        start = datetime.now(tz=UTC)
         try:
             harvested = self.harvest()
             _report(self.catalogue_id, harvested)
             new_version = self._add_version(harvested)
             await write_facet_values(new_version.catalogue_id, new_version.version_id)
         except Exception as e:
-            logger.exception(f"Unexpected error during harvest: {e}")
+            logger.exception("Unexpected error during harvest")
             self._add_error_version(e)
 
         await update_catalogue_version()
+        logger.info(f"End apply for {self.catalogue_id} in {datetime.now(tz=UTC) - start}")
