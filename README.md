@@ -2,14 +2,14 @@
 
 This page presents the latest data from Metacat harvesters.
 
-The dump was updated on 2026-11-02T05:05:45Z.
+The dump was updated on 2026-11-09T05:05:43Z.
 
 ## Link to data files
 
 | Collection | Link | Size |
 | :--------- | :--- | ---: |
 | Catalogues | [JSON file](data/catalogues.json) | 1.0KiB |
-| Catalogues versions | [JSON file](data/catalogues_versions.json) | 56.3KiB |
+| Catalogues versions | [JSON file](data/catalogues_versions.json) | 60.8KiB |
 | Vocabularies | [JSON file](data/vocabularies.json) | 1.5KiB |
 
 ## Link to facet values data files
@@ -25,6 +25,7 @@ The dump was updated on 2026-11-02T05:05:45Z.
 | ariadne | 2026-10-12T05:02:54Z | 84370fb1-b663-48ae-8156-4aace5178417 | [JSON file](data/facet_values/ariadne/84370fb1-b663-48ae-8156-4aace5178417.json) | 1002.3KiB |
 | ariadne | 2026-10-19T05:02:45Z | c6466a7a-0500-4a74-9235-cf0a71ab5034 | [JSON file](data/facet_values/ariadne/c6466a7a-0500-4a74-9235-cf0a71ab5034.json) | 1002.3KiB |
 | ariadne | 2026-11-02T05:02:32Z | b650ce92-556a-478c-8791-1a31b782428e | [JSON file](data/facet_values/ariadne/b650ce92-556a-478c-8791-1a31b782428e.json) | 1022.2KiB |
+| ariadne | 2026-11-09T05:02:50Z | 1188e945-ed78-4d8a-bd9c-d06ce5467b0d | [JSON file](data/facet_values/ariadne/1188e945-ed78-4d8a-bd9c-d06ce5467b0d.json) | 1022.4KiB |
 | clarin-vlo | 2026-08-31T10:23:09Z | 228608b7-f3fb-4b9d-883d-1ae94d2b92b9 | [JSON file](data/facet_values/clarin-vlo/228608b7-f3fb-4b9d-883d-1ae94d2b92b9.json) | 9.5MiB |
 | clarin-vlo | 2026-09-18T09:09:22Z | c177f479-dfe3-452f-a985-596a18a4c6d9 | [JSON file](data/facet_values/clarin-vlo/c177f479-dfe3-452f-a985-596a18a4c6d9.json) | 6.8MiB |
 | clarin-vlo | 2026-09-18T11:02:02Z | 495ac81f-33e4-4cea-88ed-8cc4161d5394 | [JSON file](data/facet_values/clarin-vlo/495ac81f-33e4-4cea-88ed-8cc4161d5394.json) | 6.8MiB |
@@ -45,6 +46,7 @@ The dump was updated on 2026-11-02T05:05:45Z.
 | gotriple | 2026-10-19T05:00:03Z | f6fccecc-af25-49c3-bcd9-b7221379b693 | [JSON file](data/facet_values/gotriple/f6fccecc-af25-49c3-bcd9-b7221379b693.json) | 14.6KiB |
 | gotriple | 2026-10-26T05:00:03Z | 090b40be-7492-4df1-b600-9f720175b087 | [JSON file](data/facet_values/gotriple/090b40be-7492-4df1-b600-9f720175b087.json) | 14.6KiB |
 | gotriple | 2026-11-02T05:00:03Z | 1c0872f9-7621-4e78-bdb1-fa3c07e2a6a6 | [JSON file](data/facet_values/gotriple/1c0872f9-7621-4e78-bdb1-fa3c07e2a6a6.json) | 14.6KiB |
+| gotriple | 2026-11-09T05:00:02Z | 15eb1274-07dd-428d-af3c-a1d862cfc28f | [JSON file](data/facet_values/gotriple/15eb1274-07dd-428d-af3c-a1d862cfc28f.json) | 14.6KiB |
 | sshomp | 2026-08-31T10:22:57Z | 2c38ece1-218c-4176-ac95-418f278d44a8 | [JSON file](data/facet_values/sshomp/2c38ece1-218c-4176-ac95-418f278d44a8.json) | 394.9KiB |
 | sshomp | 2026-08-31T10:49:18Z | c3a5881e-e3e1-4421-bd39-8d45d6584570 | [JSON file](data/facet_values/sshomp/c3a5881e-e3e1-4421-bd39-8d45d6584570.json) | 379.2KiB |
 | sshomp | 2026-09-18T09:09:20Z | 70e60420-14f2-49ab-93ff-e70580acb472 | [JSON file](data/facet_values/sshomp/70e60420-14f2-49ab-93ff-e70580acb472.json) | 380.2KiB |
@@ -56,6 +58,7 @@ The dump was updated on 2026-11-02T05:05:45Z.
 | sshomp | 2026-10-19T05:02:51Z | f4572ee7-b3c5-46e6-a6a1-0053f85bda79 | [JSON file](data/facet_values/sshomp/f4572ee7-b3c5-46e6-a6a1-0053f85bda79.json) | 382.5KiB |
 | sshomp | 2026-10-26T05:08:09Z | 92a7cb30-97d0-43fd-b9c4-f5b07f3aa4e1 | [JSON file](data/facet_values/sshomp/92a7cb30-97d0-43fd-b9c4-f5b07f3aa4e1.json) | 383.2KiB |
 | sshomp | 2026-11-02T05:02:38Z | 8e6b1616-8b05-4e3e-9a15-5ce52df905c4 | [JSON file](data/facet_values/sshomp/8e6b1616-8b05-4e3e-9a15-5ce52df905c4.json) | 383.2KiB |
+| sshomp | 2026-11-09T05:02:56Z | 707f3819-36e2-4b20-ac33-4331060fea53 | [JSON file](data/facet_values/sshomp/707f3819-36e2-4b20-ac33-4331060fea53.json) | 350.1KiB |
 
 ## Information and contacts
 
