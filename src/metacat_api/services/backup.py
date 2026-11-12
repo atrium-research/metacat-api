@@ -2,13 +2,16 @@ import logging
 import re
 import shutil
 from datetime import datetime
+from uuid import UUID
 
 import aiohttp
+import anyio
 from anyio import Path, TemporaryDirectory, open_file
 from git import GitCommandError, Repo
 
 from metacat_api.config import settings
 from metacat_api.models import COLLECTION_LABELS, BackupInfo, BackupLastUpdate, Collection, DataFile
+from metacat_api.services.catalogues import get_catalogue_version
 from metacat_api.services.util import now, sizeof_fmt, time_to_str
 
 GIT_URL = "github.com/atrium-research/metacat-api.git"
@@ -33,7 +36,7 @@ def _get_repo(tmp_dir: str, with_auth=False) -> Repo:
     try:
         repo = Repo.clone_from(f"https://{_get_auth(with_auth)}{GIT_URL}", tmp_dir, branch=GIT_BRANCH)
     except GitCommandError as e:
-        raise BackupError(f"Error during git clone: {str(e)}") from e
+        raise BackupError(f"Error during git clone: {e!s}") from e
     return repo
 
 
@@ -46,11 +49,10 @@ async def _read_readme_from_repo(repo_dir) -> str:
 
 
 async def _read_readme_from_url() -> str:
-    async with aiohttp.ClientSession() as session:
-        async with session.get(GIT_PAGE) as response:
-            if not response.ok:
-                raise BackupError(f"Unable to get online README: {response.status}")
-            return await response.text()
+    async with aiohttp.ClientSession() as session, session.get(GIT_PAGE) as response:
+        if not response.ok:
+            raise BackupError(f"Unable to get online README: {response.status}")
+        return await response.text()
 
 
 def _get_last_update(readme: str) -> datetime:
@@ -62,6 +64,13 @@ def _get_last_update(readme: str) -> datetime:
         return datetime.strptime(last_update_str, "%Y-%m-%dT%H:%M:%S%z")
     except ValueError as e:
         raise BackupError(f"Unable to parse last update: {last_update_str}") from e
+
+
+def get_last_update(catalogue_id: str, version_id: UUID) -> datetime | None:
+    cv = get_catalogue_version(catalogue_id, version_id)
+    if not cv:
+        return None
+    return cv.harvest_at
 
 
 async def _get_data_files(repo_dir: str) -> list[DataFile]:
@@ -82,20 +91,17 @@ async def _get_data_files(repo_dir: str) -> list[DataFile]:
             collection=Collection.facet_values,
             filename=f"{Collection.facet_values.name}/{p.parent.name}/{p.name}",
             size=(await p.stat()).st_size,
+            catalogue=p.parent.name,
+            version=UUID(p.name.removesuffix(".json")),
+            harvest_at=get_last_update(p.parent.name, UUID(p.name.removesuffix(".json"))),
         )
         async for p in Path(f"{repo_dir}/data/{Collection.facet_values}").glob("*/*.json")
     ]
 
-    return sorted(files, key=lambda d: d.collection)
+    return sorted(files, key=lambda d: f"{d.collection}_{d.catalogue}_{d.harvest_at}")
 
 
-async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[DataFile]) -> None:
-    if not data_files:
-        raise BackupError("No data files")
-    if not update_date_str:
-        raise BackupError("No update date defined")
-    logger.info(f"New update date: {update_date_str}")
-
+def _compute_readme(update_date_str: str, data_files: list[DataFile]) -> str:
     readme = (
         "# Metacat API Data\n"
         "\n"
@@ -108,15 +114,42 @@ async def _update_readme(repo_dir: str, update_date_str: str, data_files: list[D
         "| Collection | Link | Size |\n"
         "| :--------- | :--- | ---: |\n"
     )
-    for data_file in data_files:
+    for data_file in [data_file for data_file in data_files if data_file.collection != Collection.facet_values]:
         readme += (
             f"| {COLLECTION_LABELS[data_file.collection]} "
-            f"| [data/{data_file.filename}](data/{data_file.filename}) "
+            f"| [JSON file](data/{data_file.filename}) "
             f"| {sizeof_fmt(data_file.size)} |\n"
         )
 
-    async with await open_file(f"{repo_dir}/README.md", mode="w", encoding="utf-8") as fw:
-        await fw.write(readme)
+    readme += (
+        "\n"
+        "## Link to facet values data files\n"
+        "\n"
+        "| Catalogue | Date | Version | Link | Size |\n"
+        "| :-------- | :--- | :------ | :--- | :--- |\n"
+    )
+    facet_values_files = [data_file for data_file in data_files if data_file.collection == Collection.facet_values]
+    facet_values_files = sorted(facet_values_files, key=lambda d: f"{d.catalogue}_{d.harvest_at}")
+    for facet_values_file in facet_values_files:
+        readme += (
+            f"| {facet_values_file.catalogue} "
+            f"| {time_to_str(facet_values_file.harvest_at)} "
+            f"| {facet_values_file.version} "
+            f"| [JSON file](data/{facet_values_file.filename}) "
+            f"| {sizeof_fmt(facet_values_file.size)} |\n"
+        )
+
+    readme += (
+        "\n"
+        "## Information and contacts\n"
+        "\n"
+        "* Project: [MetaCat](https://zenodo.org/records/17208781)\n"
+        "* European project: [ATRIUM](https://atrium-research.eu)\n"
+        "* Contact point: [Foxcub](mailto:julien.homo@foxcub.fr)\n"
+        "* Repository: [MetaCat API](https://github.com/atrium-research/metacat-api)\n"
+    )
+
+    return readme
 
 
 async def _update_data(repo_dir: str) -> list[DataFile]:
@@ -138,6 +171,8 @@ async def read_backup() -> BackupInfo:
         data_files = await _get_data_files(repo_dir)
         logger.info(f"Last update: {last_update}, tz = {last_update.tzname()}")
         repo.close()
+        for d in data_files:
+            logger.info(f"{d.harvest_at}")
     return BackupInfo(
         last_update=time_to_str(last_update),
         data_files=data_files,
@@ -156,9 +191,15 @@ async def write_backup() -> BackupInfo:
     async with TemporaryDirectory(prefix="repo_dir_w_") as repo_dir:
         repo = _get_repo(repo_dir, with_auth=True)
         data_files = await _update_data(repo_dir)
+        if not data_files:
+            raise BackupError("No data files")
 
         update_date = time_to_str(now())
-        await _update_readme(repo_dir, update_date, data_files)
+        logger.info(f"New update date: {update_date}")
+
+        readme = _compute_readme(update_date, data_files)
+        async with await open_file(f"{repo_dir}/README.md", mode="w", encoding="utf-8", newline="\n") as fw:
+            await fw.write(readme)
 
         logger.info("Saving to remote repo")
         try:
@@ -175,9 +216,19 @@ async def write_backup() -> BackupInfo:
             origin = repo.remote("origin")
             origin.push()
         except GitCommandError as e:
-            raise BackupError(f"Error during git writing: {str(e)}") from e
+            raise BackupError(f"Error during git writing: {e!s}") from e
         repo.close()
     return BackupInfo(
         last_update=update_date,
         data_files=data_files,
     )
+
+
+if __name__ == "__main__":
+
+    async def test_readme():
+        df = await _get_data_files(".")
+        readme = _compute_readme(time_to_str(now()), df)
+        print(f"Readme:\n{readme}")
+
+    anyio.run(test_readme)

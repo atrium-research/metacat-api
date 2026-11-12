@@ -22,6 +22,6 @@ def extract_facet_values(collection_def):
             logger.info(f"* Retrieving data for facet '{name}' at <{url}>")
 
             # Query facet values and counts
-            response_json = requests.get(url).json()
+            response_json = requests.get(url, timeout=600).json()
             result[name] = jq_query.input_value(response_json).all()
     return result

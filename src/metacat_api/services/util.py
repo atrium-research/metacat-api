@@ -1,7 +1,9 @@
 from datetime import UTC, datetime
 
 
-def time_to_str(dt: datetime) -> str:
+def time_to_str(dt: datetime | None) -> str:
+    if not dt:
+        return "-"
     return dt.isoformat(timespec="seconds").replace("+00:00", "Z")
 
 

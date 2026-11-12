@@ -12,6 +12,10 @@ def get_catalogue(catalogue_id: str) -> Catalogue | None:
     return next((c for c in store.catalogues if c.id == catalogue_id), None)
 
 
+def list_catalogues_versions() -> list[CatalogueVersion]:
+    return store.catalogues_versions
+
+
 def list_catalogue_versions(catalogue_id: str) -> list[CatalogueVersion]:
     return [v for v in store.catalogues_versions if v.catalogue_id == catalogue_id]
 

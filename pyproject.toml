@@ -18,13 +18,17 @@ dependencies = [
     "gitpython>=3.1.58",
     "aiohttp>=3.14.3",
     "fastapi-pagination>=0.15.16",
+    "rdflib>=7.6.0",
+    "cachetools>=7.1.8",
+    "cachetools-async>=0.0.5",
+    "tqdm>=4.70.0",
 ]
 
 [dependency-groups]
 dev = [
     "pytest>=8.2",
     "httpx2>=2.7.0",
-    "ruff>=0.5",
+    "ruff>=0.16.8",
 ]
 
 [project.urls]
@@ -47,11 +51,17 @@ target-version = "py314"
 src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "W"]
+extend-select = ["N", "S", "E", "F", "I", "UP", "B", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+
+[tool.ruff.format]
+line-ending = "lf"
 
 [tool.ruff.lint.flake8-bugbear]
 extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path", "fastapi.Header"]
 
-[tool.pytest.ini_options]
+[tool.pytest]
 pythonpath = ["src"]
 testpaths = ["tests"]

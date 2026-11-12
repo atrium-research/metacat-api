@@ -143,7 +143,7 @@ class SshompHarvester(Harvester):
             list of (value, count) pairs.
         """
         logger.info("SSHOMP: Start harvest")
-        start = datetime.now()
+        start = datetime.now(tz=UTC)
         url, _snapshot_ts = _select_snapshot()
         items = requests.get(url, timeout=120).json()
 
@@ -180,7 +180,7 @@ class SshompHarvester(Harvester):
             discipline=list(discipline.items()),
             format=list(fmt.items()),
         )
-        logger.info(f"SSHOMP: End harvest, duration: {datetime.now() - start}")
+        logger.info(f"SSHOMP: End harvest, duration: {datetime.now(tz=UTC) - start}")
         return facets
 
 

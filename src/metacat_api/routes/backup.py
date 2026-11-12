@@ -36,7 +36,7 @@ async def get_last_update_info() -> BackupInfo:
     try:
         return await read_backup()
     except BackupError as e:
-        logger.exception(f"Backup error: {str(e)}")
+        logger.exception("Backup error during read_backup")
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Unable to get last update") from e
 
 
@@ -52,5 +52,5 @@ async def post_create_backup() -> BackupInfo:
     try:
         return await write_backup()
     except BackupError as e:
-        logger.exception(f"Backup error: {str(e)}")
+        logger.exception("Backup error during write_backup")
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Unable to create backup") from e

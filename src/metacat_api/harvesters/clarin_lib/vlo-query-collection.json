@@ -3,12 +3,12 @@
         {
             "catalogue": "vlo",
             "facet": "resource-type",
-            "url": "https://beta-vlo.clarin.eu/api/facets/resourceClass"
+            "url": "https://vlo.clarin.eu/api/facets/resourceClass"
         },
         {
             "catalogue": "vlo",
             "facet": "format",
-            "url": "https://beta-vlo.clarin.eu/api/facets/format"
+            "url": "https://vlo.clarin.eu/api/facets/format"
         },
         {
             "catalogue": "vlo",
@@ -18,7 +18,7 @@
         {
             "catalogue": "vlo",
             "facet": "source",
-            "url": "https://beta-vlo.clarin.eu/api/facets/dataProvider"
+            "url": "https://vlo.clarin.eu/api/facets/dataProvider"
         },
         {
             "catalogue": "vlo",
@@ -28,7 +28,7 @@
         {
             "catalogue": "vlo",
             "facet": "subjects",
-            "url": "https://beta-vlo.clarin.eu/api/facets/subject"
+            "url": "https://vlo.clarin.eu/api/facets/subject"
         }
     ],
     "interpretation": {

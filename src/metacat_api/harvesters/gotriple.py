@@ -6,7 +6,7 @@ metacat-code sibling checkout. Run from the metacat-api root:
 """
 
 import logging
-from datetime import datetime
+from datetime import UTC, datetime
 
 import anyio
 import requests
@@ -68,12 +68,12 @@ class GotripleHarvester(Harvester):
 
     def harvest(self) -> RawFacets:
         logger.info("GoTriple: Start harvest")
-        start = datetime.now()
+        start = datetime.now(tz=UTC)
         facets = raw_facets_adapter.validate_python(
             {facet.name: _fetch(aggs) for facet, aggs in FACET_AGGS.items()},
             extra="forbid",
         )
-        logger.info(f"GoTriple: End harvest, duration: {datetime.now() - start}")
+        logger.info(f"GoTriple: End harvest, duration: {datetime.now(tz=UTC) - start}")
         return facets
 
 
