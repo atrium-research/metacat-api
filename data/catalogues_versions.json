@@ -2521,5 +2521,231 @@
       "clarin-ccr"
     ],
     "facet_exposures": []
+  },
+  {
+    "catalogue_id": "gotriple",
+    "version_id": "eee6d240-dd3b-434a-849b-6f81259bfd27",
+    "total_resources": 133872947,
+    "harvest_at": "2026-11-12T09:29:10.267930Z",
+    "harvest_status": "success",
+    "harvest_error": null,
+    "vocabularies": [
+      "triple-vocabulary"
+    ],
+    "facet_exposures": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 22,
+        "total_count": 36196335
+      },
+      {
+        "facet": "format",
+        "status": "gap",
+        "reason": "Format is a documented gap in the GoTriple API.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "discipline",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 27,
+        "total_count": 61359888
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 37,
+        "total_count": 36316724
+      },
+      {
+        "facet": "source-2",
+        "status": "gap",
+        "reason": "GoTriple exposes no secondary source facet.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "subjects",
+        "status": "gap",
+        "reason": "Subjects are a documented gap in the GoTriple API.",
+        "values_count": null,
+        "total_count": null
+      }
+    ]
+  },
+  {
+    "catalogue_id": "ariadne",
+    "version_id": "85c2881a-038e-4f9d-b165-87ddde6c9f1d",
+    "total_resources": 36290181,
+    "harvest_at": "2026-11-12T09:31:39.676887Z",
+    "harvest_status": "success",
+    "harvest_error": null,
+    "vocabularies": [
+      "getty-aat",
+      "aocat-resource-types"
+    ],
+    "facet_exposures": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 16,
+        "total_count": 4445281
+      },
+      {
+        "facet": "format",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 12,
+        "total_count": 4370313
+      },
+      {
+        "facet": "discipline",
+        "status": "implicit",
+        "reason": "The whole catalogue is archaeology, so discipline is not a queryable facet.",
+        "values_count": 1,
+        "total_count": 4445281
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 40,
+        "total_count": 4341330
+      },
+      {
+        "facet": "source-2",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 57,
+        "total_count": 6068592
+      },
+      {
+        "facet": "subjects",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 6069,
+        "total_count": 12619384
+      }
+    ]
+  },
+  {
+    "catalogue_id": "sshomp",
+    "version_id": "95ecce5f-30c4-4f0e-8e6e-ea8bdd8c47f8",
+    "total_resources": 27381,
+    "harvest_at": "2026-11-12T09:31:46.846658Z",
+    "harvest_status": "success",
+    "harvest_error": null,
+    "vocabularies": [
+      "lcsh",
+      "sshomp-keywords"
+    ],
+    "facet_exposures": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 5,
+        "total_count": 6429
+      },
+      {
+        "facet": "format",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 69,
+        "total_count": 613
+      },
+      {
+        "facet": "discipline",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 204,
+        "total_count": 3014
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 18,
+        "total_count": 4710
+      },
+      {
+        "facet": "source-2",
+        "status": "gap",
+        "reason": "The SSH Open Marketplace exposes no secondary source facet.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "subjects",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 2069,
+        "total_count": 12615
+      }
+    ]
+  },
+  {
+    "catalogue_id": "clarin-vlo",
+    "version_id": "16604e64-2dc3-4865-8963-71808ec2f1aa",
+    "total_resources": 2880667,
+    "harvest_at": "2026-11-12T09:31:48.708293Z",
+    "harvest_status": "success",
+    "harvest_error": null,
+    "vocabularies": [
+      "unesco-thesaurus",
+      "lcsh",
+      "iso-639-3",
+      "olac-disciplines",
+      "clarin-ccr"
+    ],
+    "facet_exposures": [
+      {
+        "facet": "resource-type",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 286,
+        "total_count": 504433
+      },
+      {
+        "facet": "format",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 176,
+        "total_count": 1228925
+      },
+      {
+        "facet": "discipline",
+        "status": "gap",
+        "reason": "CLARIN VLO does not expose a discipline facet.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "source",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 62,
+        "total_count": 576117
+      },
+      {
+        "facet": "source-2",
+        "status": "gap",
+        "reason": "CLARIN VLO exposes no secondary source facet.",
+        "values_count": null,
+        "total_count": null
+      },
+      {
+        "facet": "subjects",
+        "status": "exposed",
+        "reason": null,
+        "values_count": 79105,
+        "total_count": 571192
+      }
+    ]
   }
 ]
